@@ -28,23 +28,27 @@ export default async function PostDetailPage({ params }) {
   }
 
   return (
-    <main>
-      {/* Back Button */}
-      <div className="bg-slate-50 border-b border-slate-200 px-6 py-4">
-        <div className="max-w-5xl mx-auto">
-          <Link href="/updates" className="text-emerald-600 font-medium hover:underline">
-            ← Back to Updates
+    <main className="bg-slate-50">
+      <div className="border-b border-slate-200 bg-white/80 px-6 py-4 backdrop-blur">
+        <div className="mx-auto max-w-5xl">
+          <Link
+            href="/updates"
+            className="inline-flex items-center gap-2 text-sm font-medium text-emerald-600 transition hover:text-emerald-700 hover:underline"
+          >
+            Back to Updates
           </Link>
         </div>
       </div>
 
-      <article className="max-w-5xl mx-auto px-6 py-16">
-        {/* Title and Date */}
+      <article className="mx-auto max-w-5xl px-6 py-16">
         <div className="mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.32em] text-emerald-700">
+            Company update
+          </p>
+          <h1 className="mt-4 text-4xl font-black tracking-tight text-slate-950 md:text-5xl">
             {post.title || "Update"}
           </h1>
-          <p className="text-slate-600 text-lg">
+          <p className="mt-4 text-base text-slate-600 md:text-lg">
             {new Date(post.createdAt).toLocaleDateString("en-US", {
               year: "numeric",
               month: "long",
@@ -53,9 +57,8 @@ export default async function PostDetailPage({ params }) {
           </p>
         </div>
 
-        {/* Featured Image */}
-        {post.image && (
-          <div className="relative w-full h-[480px] overflow-hidden rounded-2xl border border-slate-200 shadow-lg mb-12">
+        {post.image ? (
+          <div className="relative mb-12 h-[320px] overflow-hidden rounded-[2rem] border border-slate-200 shadow-[0_18px_50px_rgba(15,23,42,0.08)] md:h-[480px]">
             <Image
               src={post.image}
               alt={post.title || "Post image"}
@@ -64,22 +67,22 @@ export default async function PostDetailPage({ params }) {
               priority
             />
           </div>
-        )}
+        ) : null}
 
-        {/* Summary */}
-        {post.summary && (
-          <div className="bg-slate-50 border-l-4 border-emerald-600 pl-6 py-4 mb-12 rounded-r-lg">
-            <p className="text-xl text-slate-700 italic leading-relaxed">{post.summary}</p>
+        {post.summary ? (
+          <div className="mb-12 rounded-[1.5rem] border border-emerald-100 bg-emerald-50 px-6 py-5">
+            <p className="text-lg italic leading-relaxed text-slate-700 md:text-xl">
+              {post.summary}
+            </p>
           </div>
-        )}
+        ) : null}
 
-        {/* Main Content */}
         <div className="prose prose-slate max-w-none">
-          {post.content && (
-            <div className="text-slate-800 leading-relaxed whitespace-pre-wrap break-words text-lg">
+          {post.content ? (
+            <div className="whitespace-pre-wrap break-words text-lg leading-8 text-slate-800">
               {post.content}
             </div>
-          )}
+          ) : null}
         </div>
       </article>
     </main>

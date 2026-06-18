@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
+import LoadingState from "@/components/LoadingState";
 
 const emptyService = {
   title: "",
@@ -140,10 +141,10 @@ function readFileAsDataUrl(file) {
 
 async function fetchDashboardData() {
   const [servicesRes, projectsRes, postsRes, aboutRes] = await Promise.all([
-    fetch("/api/services"),
-    fetch("/api/projects"),
-    fetch("/api/posts"),
-    fetch("/api/about"),
+    fetch("/api/services", { cache: "no-store" }),
+    fetch("/api/projects", { cache: "no-store" }),
+    fetch("/api/posts", { cache: "no-store" }),
+    fetch("/api/about", { cache: "no-store" }),
   ]);
 
   const services = servicesRes.ok ? await servicesRes.json() : [];
@@ -235,7 +236,7 @@ export default function AdminPage() {
     if (res.ok) {
       setServiceForm(emptyService);
       setStatus("Service created.");
-      loadData();
+      await loadData();
     } else {
       setStatus("Failed to create service.");
     }
@@ -252,7 +253,7 @@ export default function AdminPage() {
       setStatus("Service deleted.");
       setEditingServiceId(null);
       setServiceForm(emptyService);
-      loadData();
+      await loadData();
     }
   }
 
@@ -289,7 +290,7 @@ export default function AdminPage() {
       setStatus("Service updated.");
       setEditingServiceId(null);
       setServiceForm(emptyService);
-      loadData();
+      await loadData();
     } else {
       const errorData = await res.json();
       setStatus(errorData.message || "Failed to update service.");
@@ -307,7 +308,7 @@ export default function AdminPage() {
     if (res.ok) {
       setProjectForm(emptyProject);
       setStatus("Project created.");
-      loadData();
+      await loadData();
     } else {
       setStatus("Failed to create project.");
     }
@@ -324,7 +325,7 @@ export default function AdminPage() {
       setStatus("Project deleted.");
       setEditingProjectId(null);
       setProjectForm(emptyProject);
-      loadData();
+      await loadData();
     }
   }
 
@@ -361,7 +362,7 @@ export default function AdminPage() {
       setStatus("Project updated.");
       setEditingProjectId(null);
       setProjectForm(emptyProject);
-      loadData();
+      await loadData();
     } else {
       const errorData = await res.json();
       setStatus(errorData.message || "Failed to update project.");
@@ -379,7 +380,7 @@ export default function AdminPage() {
     if (res.ok) {
       setPostForm(emptyPost);
       setStatus("Post created.");
-      loadData();
+      await loadData();
     } else {
       const errorData = await res.json();
       setStatus(errorData.message || "Failed to create post.");
@@ -395,7 +396,7 @@ export default function AdminPage() {
       setStatus("Post deleted.");
       setEditingPostId(null);
       setPostForm(emptyPost);
-      loadData();
+      await loadData();
     }
   }
 
@@ -430,7 +431,7 @@ export default function AdminPage() {
       setStatus("Post updated.");
       setEditingPostId(null);
       setPostForm(emptyPost);
-      loadData();
+      await loadData();
     } else {
       const errorData = await res.json();
       setStatus(errorData.message || "Failed to update post.");
@@ -451,7 +452,7 @@ export default function AdminPage() {
     });
     if (res.ok) {
       setStatus("About page updated.");
-      loadData();
+      await loadData();
     } else {
       setStatus("Failed to update about page.");
     }
@@ -509,7 +510,11 @@ export default function AdminPage() {
       </div>
 
       {loading ? (
-        <p className="text-slate-500">Loading...</p>
+        <LoadingState
+          eyebrow="Admin dashboard"
+          title="Loading your dashboard"
+          subtitle="We are fetching live services, projects, posts, and about content."
+        />
       ) : (
         <>
           {tab === "services" && (

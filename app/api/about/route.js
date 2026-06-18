@@ -3,6 +3,7 @@ import About from "@/models/About";
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/requireAdmin";
 import { createDefaultAbout, normalizeAboutContent } from "@/lib/siteDefaults";
+import { revalidateSite } from "@/lib/revalidateSite";
 
 export async function GET() {
   try {
@@ -43,6 +44,8 @@ export async function PUT(request) {
     } else {
       about = await About.create(payload);
     }
+
+    revalidateSite();
 
     return NextResponse.json({
       message: "About updated",

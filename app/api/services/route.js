@@ -2,6 +2,7 @@ import { connectMongoDB } from "@/lib/mongodb";
 import Service from "@/models/Service";
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/requireAdmin";
+import { revalidateSite } from "@/lib/revalidateSite";
 
 export async function GET() {
   try {
@@ -22,6 +23,7 @@ export async function POST(request) {
     const body = await request.json();
     await connectMongoDB();
     const service = await Service.create(body);
+    revalidateSite();
     return NextResponse.json(
       { message: "Service created", service },
       { status: 201 }
@@ -43,6 +45,7 @@ export async function DELETE(request) {
     const { id } = await request.json();
     await connectMongoDB();
     await Service.findByIdAndDelete(id);
+    revalidateSite();
     return NextResponse.json({ message: "Service deleted" });
   } catch (error) {
     console.error("DELETE /api/services error:", error);

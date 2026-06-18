@@ -5,7 +5,7 @@ const postSchema = new Schema(
     title: { type: String, required: true },
     summary: { type: String, required: true },
     content: { type: String, required: true },
-    image: { type: String, default: "/images/project1.jpg" },
+    image: { type: String, default: "/images/project1.webp" },
   },
   {
     timestamps: true,

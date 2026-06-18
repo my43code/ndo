@@ -2,6 +2,7 @@ import { connectMongoDB } from "@/lib/mongodb";
 import Post from "@/models/Post";
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/requireAdmin";
+import { revalidateSite } from "@/lib/revalidateSite";
 
 export async function PUT(request, { params }) {
   const authError = await requireAdmin(request);
@@ -33,6 +34,8 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ message: "Post not found" }, { status: 404 });
     }
 
+    revalidateSite();
+
     return NextResponse.json({ message: "Post updated", post: updatedPost }, { status: 200 });
   } catch (error) {
     console.error("PUT /api/posts/[id] error:", error);
@@ -51,6 +54,7 @@ export async function DELETE(request, { params }) {
     const { id } = await params;
     await connectMongoDB();
     await Post.findByIdAndDelete(id);
+    revalidateSite();
     return NextResponse.json({ message: "Post deleted" }, { status: 200 });
   } catch (error) {
     console.error("DELETE /api/posts/[id] error:", error);

@@ -2,6 +2,7 @@ import { connectMongoDB } from "@/lib/mongodb";
 import Project from "@/models/Project";
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/requireAdmin";
+import { revalidateSite } from "@/lib/revalidateSite";
 
 export async function PUT(request, { params }) {
   const authError = await requireAdmin(request);
@@ -23,6 +24,8 @@ export async function PUT(request, { params }) {
     if (!updatedProject) {
       return NextResponse.json({ message: "Project not found" }, { status: 404 });
     }
+
+    revalidateSite();
 
     return NextResponse.json({ message: "Project updated", project: updatedProject }, { status: 200 });
   } catch (error) {

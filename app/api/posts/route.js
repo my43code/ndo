@@ -2,6 +2,7 @@ import { connectMongoDB } from "@/lib/mongodb";
 import Post from "@/models/Post";
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/requireAdmin";
+import { revalidateSite } from "@/lib/revalidateSite";
 
 export async function GET() {
   try {
@@ -39,6 +40,8 @@ export async function POST(request) {
       content,
       image,
     });
+
+    revalidateSite();
 
     return NextResponse.json(
       { message: "Post created successfully", post: newPost },

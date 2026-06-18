@@ -3,6 +3,7 @@ import { connectMongoDB } from "@/lib/mongodb";
 import Project from "@/models/Project";
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/requireAdmin";
+import { revalidateSite } from "@/lib/revalidateSite";
 
 export async function GET() {
 	try {
@@ -23,6 +24,7 @@ export async function POST(request) {
 		const body = await request.json();
 		await connectMongoDB();
 		const project = await Project.create(body);
+		revalidateSite();
 		return NextResponse.json({ message: "Project created", project }, { status: 201 });
 	} catch (error) {
 		console.error("POST /api/projects error:", error);
@@ -39,6 +41,7 @@ export async function DELETE(request) {
 		if (!id) return NextResponse.json({ message: "Missing id" }, { status: 400 });
 		await connectMongoDB();
 		await Project.findByIdAndDelete(id);
+		revalidateSite();
 		return NextResponse.json({ message: "Project deleted" });
 	} catch (error) {
 		console.error("DELETE /api/projects error:", error);

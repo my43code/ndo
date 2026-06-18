@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Search } from "lucide-react";
+import LoadingState from "@/components/LoadingState";
 
 function matchesQuery(item, query) {
   const lowerQuery = (query || "").toString().toLowerCase().trim();
@@ -166,16 +167,22 @@ export default function SearchPage() {
             Search
           </button>
         </div>
-        {searchTerm && filteredServices.length === 0 && filteredProjects.length === 0 && filteredPosts.length === 0 && !aboutMatches ? (
-          <p className="text-slate-500 mb-6">No matches found for &quot;{searchTerm}&quot;.</p>
-        ) : searchTerm ? (
-          <p className="text-slate-500 mb-6">Search results for &quot;{searchTerm}&quot;</p>
-        ) : (
-          <p className="text-slate-500 mb-6">Enter a word or phrase and click Search.</p>
-        )}
+        {!loading ? (
+          searchTerm && filteredServices.length === 0 && filteredProjects.length === 0 && filteredPosts.length === 0 && !aboutMatches ? (
+            <p className="text-slate-500 mb-6">No matches found for &quot;{searchTerm}&quot;.</p>
+          ) : searchTerm ? (
+            <p className="text-slate-500 mb-6">Search results for &quot;{searchTerm}&quot;</p>
+          ) : (
+            <p className="text-slate-500 mb-6">Enter a word or phrase and click Search.</p>
+          )
+        ) : null}
 
         {loading ? (
-          <p className="text-slate-500">Loading search data...</p>
+          <LoadingState
+            eyebrow="Search"
+            title="Loading search data"
+            subtitle="We are pulling services, projects, posts, and about content from MongoDB."
+          />
         ) : (
           <>
             <section className="mb-12">
@@ -209,7 +216,7 @@ export default function SearchPage() {
                       className="bg-white rounded-2xl shadow-sm border border-slate-200 p-4"
                     >
                       <Image
-                        src={project.image || "/images/project1.jpg"}
+                        src={project.image || "/images/project1.webp"}
                         width={400}
                         height={250}
                         alt={project.title || "Project"}
