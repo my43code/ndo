@@ -84,7 +84,7 @@ export default async function ContactPage() {
         <SectionTitle
           eyebrow="Get in touch"
           title="Live contact details and response form"
-          subtitle="The details below are pulled from MongoDB, so when the admin dashboard is updated the site reflects it immediately after revalidation."
+          subtitle="Talk to us about your project."
           align="left"
         />
 
