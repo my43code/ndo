@@ -414,7 +414,7 @@ export default async function AboutPage() {
         {serviceShowcase.length > 0 ? (
           <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
             {serviceShowcase.map((service) => (
-              <ServiceCard key={service._id} service={service} />
+              <ServiceCard key={service._id} service={service}/>
             ))}
           </div>
         ) : (
