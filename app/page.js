@@ -34,7 +34,7 @@ async function getProjects() {
 
 function MediaPreview({ item, alt }) {
   const imageSrc = item?.image || "/images/project1.webp";
-  const videoSrc = item?.video || "/videos/tech-video.mp4";
+  const videoSrc = item?.video || item?.videoUrl || "";
 
   if (videoSrc) {
     return (
@@ -157,7 +157,7 @@ export default async function HomePage() {
             />
             <HeroCard
               title="Reliable systems"
-              description="Managed content with clean admin workflows."
+              description="MongoDB-backed content with clean admin workflows."
               floating
               delayClass="hero-fade-up-delay-3"
             />
@@ -173,7 +173,7 @@ export default async function HomePage() {
       <section className="max-w-7xl mx-auto px-6 py-20">
         <SectionTitle
           title="Our Core Services"
-          subtitle=""
+          subtitle="These services are managed from the admin dashboard and loaded directly from the MongoDB backend."
         />
 
         <div className="mt-10 grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -211,7 +211,7 @@ export default async function HomePage() {
             ))
           ) : (
             <p className="col-span-3 text-center text-gray-500">
-              No services available yet.
+              No services available yet. Admin can add services from the dashboard.
             </p>
           )}
         </div>
@@ -227,7 +227,7 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-6">
           <SectionTitle
             title="Projects Delivered"
-            subtitle="Projects delivered to our clients."
+            subtitle="Projects shown here are fetched from MongoDB and can be managed by the admin through the dashboard."
           />
 
           <div className="mt-10 grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -268,7 +268,7 @@ export default async function HomePage() {
               ))
             ) : (
               <p className="col-span-3 text-center text-gray-500">
-                No projects available yet.
+                No projects available yet. Admin can publish projects from the dashboard.
               </p>
             )}
           </div>
