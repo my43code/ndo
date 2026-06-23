@@ -429,7 +429,7 @@ export default async function AboutPage() {
           <SectionTitle
             eyebrow="Projects"
             title="Selected work and delivered ideas"
-            subtitle="These highlights are sourced from MongoDB and presented in a more cinematic layout."
+            subtitle="Delivered solutions that have made a real impact for our clients."
           />
 
           {projectShowcase.length > 0 ? (
