@@ -11,7 +11,7 @@ const navLinks = [
   { name: "Services", href: "/services" },
   { name: "Updates", href: "/updates" },
   { name: "Contact Us", href: "/contact" },
-  { name: "Admin", href: "/login" },
+  { name: "Login", href: "/login" },
 ];
 
 export default function Navbar() {
