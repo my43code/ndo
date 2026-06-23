@@ -317,7 +317,7 @@ export default async function AboutPage() {
         <SectionTitle
           eyebrow="Story"
           title="Our story and operating rhythm"
-          subtitle="This page reads from MongoDB so the content you manage in the admin dashboard becomes the real source of truth."
+          subtitle="Read about our journey and how we operate."
           align="left"
         />
 
@@ -408,7 +408,7 @@ export default async function AboutPage() {
         <SectionTitle
           eyebrow="Services"
           title="A sample of the services currently published"
-          subtitle="These cards are loaded directly from the services collection and display images or videos as stored in MongoDB."
+          subtitle="Reliable services we offer for your information technology needs."
         />
 
         {serviceShowcase.length > 0 ? (

@@ -63,8 +63,7 @@ export default async function ServicesPage() {
             </h1>
 
             <p className="hero-fade-up-delay-2 mt-6 max-w-2xl text-base leading-8 text-slate-200 md:text-lg">
-              Every service below is pulled from MongoDB and rendered with richer
-              media treatment, stronger typography, and a more intentional layout.
+              We deliver tailored digital solutions that drive growth and innovation for businesses of all sizes.
             </p>
 
             <div className="hero-fade-up-delay-3 mt-10 flex flex-wrap gap-4">

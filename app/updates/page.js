@@ -41,8 +41,7 @@ export default async function UpdatesPage() {
               News, announcements, and fresh stories from the team.
             </h1>
             <p className="hero-fade-up-delay-2 mt-6 max-w-2xl text-base leading-8 text-slate-200 md:text-lg">
-              The updates below are powered by MongoDB and the admin dashboard,
-              so published posts can appear on the website without manual edits.
+              Stay informed with the latest updates, insights, and stories from our team. We share news about our projects, company milestones, and industry trends to keep you in the loop.
             </p>
             <div className="hero-fade-up-delay-3 mt-10 flex flex-wrap gap-4">
               <Link
@@ -66,7 +65,7 @@ export default async function UpdatesPage() {
         <SectionTitle
           eyebrow="Editorial"
           title="Published updates"
-          subtitle="When the admin dashboard publishes a new post, the site revalidates this page and the article pages right away."
+          subtitle="Stay informed with the latest news and insights from our team."
           align="left"
         />
 
