@@ -84,7 +84,7 @@ export default async function ContactPage() {
         <SectionTitle
           eyebrow="Get in touch"
           title="Live contact details and response form"
-          subtitle="Talk to us about your project."
+          subtitle="Talk to us about your project. "
           align="left"
         />
 
