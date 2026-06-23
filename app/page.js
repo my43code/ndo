@@ -173,7 +173,7 @@ export default async function HomePage() {
       <section className="max-w-7xl mx-auto px-6 py-20">
         <SectionTitle
           title="Our Core Services"
-          subtitle="These services are managed from the admin dashboard and loaded directly from the MongoDB backend."
+          subtitle="Services that we offer to help your business thrive in the digital age."
         />
 
         <div className="mt-10 grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -211,7 +211,7 @@ export default async function HomePage() {
             ))
           ) : (
             <p className="col-span-3 text-center text-gray-500">
-              No services available yet. Admin can add services from the dashboard.
+              No services available yet.
             </p>
           )}
         </div>
@@ -227,7 +227,7 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-6">
           <SectionTitle
             title="Projects Delivered"
-            subtitle="Projects shown here are fetched from MongoDB and can be managed by the admin through the dashboard."
+            subtitle="Projects we delivered for our clients, showcasing our expertise and commitment to quality."
           />
 
           <div className="mt-10 grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">

@@ -7,7 +7,7 @@ import { connection } from "next/server";
 export const metadata = {
   title: "Nexus DevOps Limited",
   description:
-    "Professional Nexus DevOps Limited website built with Next.js and MongoDB",
+    "Professional Nexus DevOps Limited website built with Next.js, MongoDB, and Tailwind CSS. Showcasing our services, projects, and company information with dynamic content management.",
   icons: {
     icon: "/images/logo.jpg",
   },
