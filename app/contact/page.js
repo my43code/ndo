@@ -74,7 +74,7 @@ export default async function ContactPage() {
             </h1>
             <p className="hero-fade-up-delay-2 mt-6 max-w-2xl text-base leading-8 text-slate-200 md:text-lg">
               {tagline} Reach out with a project brief, support request, or
-              partnership idea and we will respond as soon as possible.
+              partnership idea and we will respond as soon as possible. 
             </p>
           </div>
         </div>
