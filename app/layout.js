@@ -2,8 +2,6 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AuthProvider from "@/components/AuthProvider";
-import { connection } from "next/server";
-
 export const metadata = {
   title: {
     default: "Manu Maso | Digital Solutions",
@@ -25,9 +23,7 @@ export const metadata = {
   },
 };
 
-export default async function RootLayout({ children }) {
-  await connection();
-
+export default function RootLayout({ children }) {
   return (
     <html lang="en" className="dark">
       <body className="flex min-h-screen flex-col overflow-x-hidden bg-slate-950 text-slate-200 antialiased selection:bg-emerald-400/30 selection:text-white">

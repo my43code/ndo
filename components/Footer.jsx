@@ -8,7 +8,7 @@ import {
   FaMapMarkerAlt,
   FaPhoneAlt,
 } from "react-icons/fa";
-import { getSiteAbout } from "@/lib/siteContent";
+import { createDefaultContact } from "@/lib/siteDefaults";
 import { getTelHref, getWhatsAppHref } from "@/lib/contactLinks";
 
 function SocialLink({ href, label, children }) {
@@ -25,13 +25,10 @@ function SocialLink({ href, label, children }) {
   );
 }
 
-export default async function Footer() {
-  const about = await getSiteAbout();
-  const contact = about.contact || {};
-  const companyName = contact.companyName || "Manu Maso";
-  const tagline =
-    contact.tagline ||
-    "Digital systems, modern websites, and dependable support.";
+export default function Footer() {
+  const contact = createDefaultContact();
+  const companyName = contact.companyName;
+  const tagline = contact.tagline;
   const whatsappHref = getWhatsAppHref(contact.whatsapp, contact.phone);
   const phoneHref = getTelHref(contact.phone);
 
@@ -115,37 +112,29 @@ export default async function Footer() {
             <div className="mt-5 space-y-4 text-sm">
               <p className="font-bold text-white">{companyName}</p>
 
-              {contact.address ? (
-                <div className="flex gap-3 text-slate-400">
-                  <FaMapMarkerAlt className="mt-1 shrink-0 text-emerald-400/60" />
-                  <p>{contact.address}</p>
-                </div>
-              ) : null}
+              <div className="flex gap-3 text-slate-400">
+                <FaMapMarkerAlt className="mt-1 shrink-0 text-emerald-400/60" />
+                <p>{contact.address}</p>
+              </div>
 
-              {contact.email ? (
-                <div className="flex gap-3 text-slate-400">
-                  <FaEnvelope className="mt-1 shrink-0 text-emerald-400/60" />
-                  <a
-                    className="transition hover:text-white"
-                    href={`mailto:${contact.email}`}
-                  >
-                    {contact.email}
-                  </a>
-                </div>
-              ) : null}
+              <div className="flex gap-3 text-slate-400">
+                <FaEnvelope className="mt-1 shrink-0 text-emerald-400/60" />
+                <a
+                  className="transition hover:text-white"
+                  href={`mailto:${contact.email}`}
+                >
+                  {contact.email}
+                </a>
+              </div>
 
-              {contact.phone ? (
-                <div className="flex gap-3 text-slate-400">
-                  <FaPhoneAlt className="mt-1 shrink-0 text-emerald-400/60" />
-                  <a className="transition hover:text-white" href={phoneHref}>
-                    {contact.phone}
-                  </a>
-                </div>
-              ) : null}
+              <div className="flex gap-3 text-slate-400">
+                <FaPhoneAlt className="mt-1 shrink-0 text-emerald-400/60" />
+                <a className="transition hover:text-white" href={phoneHref}>
+                  {contact.phone}
+                </a>
+              </div>
 
-              {contact.hours ? (
-                <p className="text-slate-500">{contact.hours}</p>
-              ) : null}
+              <p className="text-slate-500">{contact.hours}</p>
             </div>
           </div>
         </div>
