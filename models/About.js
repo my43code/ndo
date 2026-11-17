@@ -59,10 +59,10 @@ const AboutSchema = new mongoose.Schema(
     contact: {
       type: ContactSchema,
       default: () => ({
-        companyName: "Nexus DevOps Limited",
+        companyName: "Manu Maso",
         tagline: "Digital systems, modern websites, and dependable support.",
         address: "Port Moresby, Papua New Guinea",
-        email: "info@ndo.com",
+        email: "info@manumaso.com",
         phone: "+675 78337326",
         whatsapp: "+675 78337326",
         hours: "Monday to Friday, 8:00 AM to 5:00 PM",

@@ -5,12 +5,6 @@ import ParticleGrid from "@/components/ParticleGrid";
 import Image from "next/image";
 import { getSiteAbout } from "@/lib/siteContent";
 import { getTelHref, getWhatsAppHref } from "@/lib/contactLinks";
-import {
-  FaEnvelope,
-  FaMapMarkerAlt,
-  FaPhoneAlt,
-  FaWhatsapp,
-} from "react-icons/fa";
 import { Mail, MapPin, Phone, Clock, MessageCircle } from "lucide-react";
 
 function DetailRow({ icon: Icon, label, value, href }) {
