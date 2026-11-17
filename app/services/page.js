@@ -11,6 +11,11 @@ import Service from "@/models/Service";
 
 export const revalidate = 3600;
 
+export const metadata = {
+  title: "Services",
+  description: "Explore Manu Maso's professional services — web development, mobile apps, database systems, cloud solutions, cybersecurity, and IT support.",
+};
+
 async function getServices() {
   try {
     await connectMongoDB();

@@ -24,6 +24,11 @@ import Service from "@/models/Service";
 
 export const revalidate = 3600;
 
+export const metadata = {
+  title: "About Us",
+  description: "Learn about Manu Maso — our mission, vision, team, and the digital solutions we build for businesses in Papua New Guinea.",
+};
+
 async function getServices() {
   try {
     await connectMongoDB();

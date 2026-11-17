@@ -261,6 +261,15 @@ export default function LoginClient({ initialErrorCode = "" }) {
                   ? "Signing in..."
                   : "Sign in with password"}
               </button>
+
+              <div className="mt-3 text-center">
+                <Link
+                  href="/forgot-password"
+                  className="text-sm font-medium text-emerald-400 transition hover:text-emerald-300"
+                >
+                  Forgot your password?
+                </Link>
+              </div>
             </form>
           </div>
         </div>

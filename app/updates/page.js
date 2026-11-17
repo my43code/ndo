@@ -1,5 +1,10 @@
 export const revalidate = 60;
 
+export const metadata = {
+  title: "Updates",
+  description: "Latest news, articles, and updates from Manu Maso — stay informed about our projects and digital solutions.",
+};
+
 import Link from "next/link";
 import SectionTitle from "@/components/SectionTitle";
 import PostCard from "@/components/PostCard";
