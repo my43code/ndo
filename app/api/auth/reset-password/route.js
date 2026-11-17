@@ -2,15 +2,15 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { connectMongoDB } from "@/lib/mongodb";
 import AdminPassword from "@/models/AdminPassword";
+import ResetToken from "@/models/ResetToken";
 import { isAdminEmail } from "@/lib/auth";
 
 export async function POST(req) {
   try {
-    const { email, recoveryKey, newPassword } = await req.json();
-
+    const { email, code, newPassword } = await req.json();
     const normalizedEmail = (email || "").trim().toLowerCase();
 
-    if (!normalizedEmail || !recoveryKey || !newPassword) {
+    if (!normalizedEmail || !code || !newPassword) {
       return NextResponse.json(
         { error: "All fields are required." },
         { status: 400 }
@@ -24,21 +24,6 @@ export async function POST(req) {
       );
     }
 
-    const serverKey = (process.env.ADMIN_RECOVERY_KEY || "").trim();
-    if (!serverKey) {
-      return NextResponse.json(
-        { error: "Password reset is not configured. Set ADMIN_RECOVERY_KEY in environment variables." },
-        { status: 503 }
-      );
-    }
-
-    if (recoveryKey.trim() !== serverKey) {
-      return NextResponse.json(
-        { error: "Invalid recovery key." },
-        { status: 403 }
-      );
-    }
-
     if (newPassword.length < 6) {
       return NextResponse.json(
         { error: "Password must be at least 6 characters." },
@@ -48,6 +33,20 @@ export async function POST(req) {
 
     await connectMongoDB();
 
+    const token = await ResetToken.findOne({
+      email: normalizedEmail,
+      code: code.trim(),
+      used: false,
+      expiresAt: { $gt: new Date() },
+    });
+
+    if (!token) {
+      return NextResponse.json(
+        { error: "Invalid or expired reset code. Request a new one." },
+        { status: 403 }
+      );
+    }
+
     const passwordHash = await bcrypt.hash(newPassword, 12);
 
     await AdminPassword.findOneAndUpdate(
@@ -56,7 +55,12 @@ export async function POST(req) {
       { upsert: true, new: true }
     );
 
-    return NextResponse.json({ message: "Password reset successfully. You can now sign in." });
+    token.used = true;
+    await token.save();
+
+    return NextResponse.json({
+      message: "Password reset successfully. You can now sign in.",
+    });
   } catch (error) {
     console.error("Password reset error:", error);
     return NextResponse.json(

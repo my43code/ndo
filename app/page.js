@@ -13,6 +13,7 @@ import {
   Cloud,
   Headphones,
 } from "lucide-react";
+import { unstable_cache } from "next/cache";
 import { connectMongoDB } from "@/lib/mongodb";
 import Service from "@/models/Service";
 import Project from "@/models/Project";
@@ -26,29 +27,31 @@ import FloatingActions from "@/components/FloatingActions";
 
 export const revalidate = 3600;
 
-async function getServices() {
-  try {
-    await connectMongoDB();
-    return await Service.find().sort({ createdAt: -1 }).lean();
-  } catch (error) {
-    if (process.env.npm_lifecycle_event !== "build") {
-      console.error("Failed to load services:", error);
+const getServices = unstable_cache(
+  async () => {
+    try {
+      await connectMongoDB();
+      return JSON.parse(JSON.stringify(await Service.find().sort({ createdAt: -1 }).lean()));
+    } catch {
+      return [];
     }
-    return [];
-  }
-}
+  },
+  ["home-services"],
+  { revalidate: 3600 }
+);
 
-async function getProjects() {
-  try {
-    await connectMongoDB();
-    return await Project.find().sort({ createdAt: -1 }).lean();
-  } catch (error) {
-    if (process.env.npm_lifecycle_event !== "build") {
-      console.error("Failed to load projects:", error);
+const getProjects = unstable_cache(
+  async () => {
+    try {
+      await connectMongoDB();
+      return JSON.parse(JSON.stringify(await Project.find().sort({ createdAt: -1 }).lean()));
+    } catch {
+      return [];
     }
-    return [];
-  }
-}
+  },
+  ["home-projects"],
+  { revalidate: 3600 }
+);
 
 const capabilities = [
   {

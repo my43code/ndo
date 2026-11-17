@@ -2,27 +2,54 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { KeyRound, ArrowLeft, CheckCircle2, AlertCircle } from "lucide-react";
+import { KeyRound, ArrowLeft, CheckCircle2, AlertCircle, Mail, ShieldCheck } from "lucide-react";
 
 export default function ForgotPasswordPage() {
-  const [form, setForm] = useState({ email: "", recoveryKey: "", newPassword: "", confirmPassword: "" });
+  const [step, setStep] = useState(1);
+  const [email, setEmail] = useState("");
+  const [code, setCode] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState({ type: "", message: "" });
 
-  const handleChange = (e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  const handleSendCode = async (e) => {
+    e.preventDefault();
+    setStatus({ type: "", message: "" });
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setStatus({ type: "error", message: data.error || "Failed to send code." });
+      } else {
+        setStatus({ type: "success", message: "Reset code sent to your email. Check your inbox." });
+        setStep(2);
+      }
+    } catch {
+      setStatus({ type: "error", message: "Network error. Please try again." });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleSubmit = async (e) => {
+  const handleResetPassword = async (e) => {
     e.preventDefault();
     setStatus({ type: "", message: "" });
 
-    if (form.newPassword !== form.confirmPassword) {
+    if (newPassword !== confirmPassword) {
       setStatus({ type: "error", message: "Passwords do not match." });
       return;
     }
 
-    if (form.newPassword.length < 6) {
+    if (newPassword.length < 6) {
       setStatus({ type: "error", message: "Password must be at least 6 characters." });
       return;
     }
@@ -33,11 +60,7 @@ export default function ForgotPasswordPage() {
       const res = await fetch("/api/auth/reset-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: form.email,
-          recoveryKey: form.recoveryKey,
-          newPassword: form.newPassword,
-        }),
+        body: JSON.stringify({ email, code, newPassword }),
       });
 
       const data = await res.json();
@@ -46,7 +69,7 @@ export default function ForgotPasswordPage() {
         setStatus({ type: "error", message: data.error || "Reset failed." });
       } else {
         setStatus({ type: "success", message: data.message });
-        setForm({ email: "", recoveryKey: "", newPassword: "", confirmPassword: "" });
+        setStep(3);
       }
     } catch {
       setStatus({ type: "error", message: "Network error. Please try again." });
@@ -69,6 +92,7 @@ export default function ForgotPasswordPage() {
         </Link>
 
         <div className="rounded-2xl border border-white/10 bg-slate-900/70 p-8 shadow-2xl backdrop-blur-xl">
+          {/* Header */}
           <div className="mb-6 flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/15">
               <KeyRound className="text-emerald-400" size={24} />
@@ -76,11 +100,26 @@ export default function ForgotPasswordPage() {
             <div>
               <h1 className="text-2xl font-bold">Reset Password</h1>
               <p className="text-sm text-slate-400">
-                Enter your admin email and recovery key
+                {step === 1 && "We'll send a code to your email"}
+                {step === 2 && "Enter the code and your new password"}
+                {step === 3 && "Password reset complete"}
               </p>
             </div>
           </div>
 
+          {/* Progress */}
+          <div className="mb-6 flex gap-2">
+            {[1, 2, 3].map((s) => (
+              <div
+                key={s}
+                className={`h-1.5 flex-1 rounded-full transition-all ${
+                  s <= step ? "bg-emerald-500" : "bg-white/10"
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Status */}
           {status.message && (
             <div
               className={`mb-6 flex items-start gap-3 rounded-xl border px-4 py-3 text-sm ${
@@ -98,88 +137,121 @@ export default function ForgotPasswordPage() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <label className="block">
-              <span className="mb-2 block text-sm font-medium text-slate-300">
-                Admin Email
-              </span>
-              <input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20"
-                placeholder="admin@example.com"
-                required
-              />
-            </label>
+          {/* Step 1: Enter email */}
+          {step === 1 && (
+            <form onSubmit={handleSendCode} className="space-y-4">
+              <label className="block">
+                <span className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-300">
+                  <Mail size={14} />
+                  Admin Email
+                </span>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20"
+                  placeholder="Enter your admin email"
+                  required
+                />
+              </label>
 
-            <label className="block">
-              <span className="mb-2 block text-sm font-medium text-slate-300">
-                Recovery Key
-              </span>
-              <input
-                type="password"
-                name="recoveryKey"
-                value={form.recoveryKey}
-                onChange={handleChange}
-                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20"
-                placeholder="Enter your recovery key"
-                required
-              />
-              <p className="mt-1.5 text-xs text-slate-500">
-                This is the ADMIN_RECOVERY_KEY set in your environment variables.
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 px-4 py-3 font-bold text-white shadow-lg shadow-emerald-500/20 transition-all hover:shadow-emerald-500/40 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70"
+              >
+                {loading ? "Sending..." : "Send Reset Code"}
+              </button>
+            </form>
+          )}
+
+          {/* Step 2: Enter code + new password */}
+          {step === 2 && (
+            <form onSubmit={handleResetPassword} className="space-y-4">
+              <label className="block">
+                <span className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-300">
+                  <ShieldCheck size={14} />
+                  Reset Code
+                </span>
+                <input
+                  type="text"
+                  value={code}
+                  onChange={(e) => setCode(e.target.value)}
+                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-center text-xl font-bold tracking-[0.5em] text-white outline-none transition placeholder:text-slate-600 placeholder:tracking-normal placeholder:text-sm placeholder:font-normal focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20"
+                  placeholder="Enter 6-digit code"
+                  maxLength={6}
+                  required
+                />
+                <p className="mt-1.5 text-xs text-slate-500">
+                  Check your email at {email}
+                </p>
+              </label>
+
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-slate-300">
+                  New Password
+                </span>
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20"
+                  placeholder="At least 6 characters"
+                  minLength={6}
+                  required
+                />
+              </label>
+
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-slate-300">
+                  Confirm Password
+                </span>
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20"
+                  placeholder="Re-enter new password"
+                  minLength={6}
+                  required
+                />
+              </label>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 px-4 py-3 font-bold text-white shadow-lg shadow-emerald-500/20 transition-all hover:shadow-emerald-500/40 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70"
+              >
+                {loading ? "Resetting..." : "Reset Password"}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => { setStep(1); setStatus({ type: "", message: "" }); }}
+                className="w-full text-center text-sm text-slate-400 transition hover:text-white"
+              >
+                Didn&apos;t receive the code? Go back
+              </button>
+            </form>
+          )}
+
+          {/* Step 3: Done */}
+          {step === 3 && (
+            <div className="text-center">
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/15">
+                <CheckCircle2 className="text-emerald-400" size={32} />
+              </div>
+              <h2 className="text-xl font-bold text-white">Password Reset!</h2>
+              <p className="mt-2 text-sm text-slate-400">
+                Your admin password has been updated. You can now sign in.
               </p>
-            </label>
-
-            <label className="block">
-              <span className="mb-2 block text-sm font-medium text-slate-300">
-                New Password
-              </span>
-              <input
-                type="password"
-                name="newPassword"
-                value={form.newPassword}
-                onChange={handleChange}
-                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20"
-                placeholder="At least 6 characters"
-                minLength={6}
-                required
-              />
-            </label>
-
-            <label className="block">
-              <span className="mb-2 block text-sm font-medium text-slate-300">
-                Confirm Password
-              </span>
-              <input
-                type="password"
-                name="confirmPassword"
-                value={form.confirmPassword}
-                onChange={handleChange}
-                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20"
-                placeholder="Re-enter new password"
-                minLength={6}
-                required
-              />
-            </label>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="mt-2 flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 px-4 py-3 font-bold text-white shadow-lg shadow-emerald-500/20 transition-all hover:shadow-emerald-500/40 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70"
-            >
-              {loading ? "Resetting..." : "Reset Password"}
-            </button>
-          </form>
-
-          {status.type === "success" && (
-            <Link
-              href="/login"
-              className="mt-6 block text-center text-sm font-semibold text-emerald-400 transition hover:text-emerald-300"
-            >
-              Go to Login Page
-            </Link>
+              <Link
+                href="/login"
+                className="mt-6 inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-3 font-bold text-white shadow-lg shadow-emerald-500/20 transition-all hover:shadow-emerald-500/40 hover:brightness-110"
+              >
+                Go to Login
+              </Link>
+            </div>
           )}
         </div>
       </div>

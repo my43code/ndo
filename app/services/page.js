@@ -6,6 +6,7 @@ import MediaFrame from "@/components/MediaFrame";
 import ScrollReveal from "@/components/ScrollReveal";
 import AnimatedCounter from "@/components/AnimatedCounter";
 import ParticleGrid from "@/components/ParticleGrid";
+import { unstable_cache } from "next/cache";
 import { connectMongoDB } from "@/lib/mongodb";
 import Service from "@/models/Service";
 
@@ -16,17 +17,21 @@ export const metadata = {
   description: "Explore Manu Maso's professional services — web development, mobile apps, database systems, cloud solutions, cybersecurity, and IT support.",
 };
 
-async function getServices() {
-  try {
-    await connectMongoDB();
-    return await Service.find().sort({ createdAt: -1 }).lean();
-  } catch (error) {
+const getServices = unstable_cache(
+  async () => {
+    try {
+      await connectMongoDB();
+      return JSON.parse(JSON.stringify(await Service.find().sort({ createdAt: -1 }).lean()));
+    } catch (error) {
     if (process.env.npm_lifecycle_event !== "build") {
       console.error("Failed to load services:", error);
     }
     return [];
   }
-}
+  },
+  ["services-list"],
+  { revalidate: 3600 }
+);
 
 export default async function ServicesPage() {
   const services = await getServices();

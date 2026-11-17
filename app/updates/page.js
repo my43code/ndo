@@ -10,22 +10,24 @@ import SectionTitle from "@/components/SectionTitle";
 import PostCard from "@/components/PostCard";
 import ScrollReveal from "@/components/ScrollReveal";
 import ParticleGrid from "@/components/ParticleGrid";
+import { unstable_cache } from "next/cache";
 import { connectMongoDB } from "@/lib/mongodb";
 import Post from "@/models/Post";
 import { Newspaper, ArrowRight } from "lucide-react";
 
-async function getPosts() {
-  try {
-    await connectMongoDB();
-    const posts = await Post.find().sort({ createdAt: -1 }).lean();
-    return { posts };
-  } catch (error) {
-    if (process.env.npm_lifecycle_event !== "build") {
-      console.error("Failed to load posts:", error);
+const getPosts = unstable_cache(
+  async () => {
+    try {
+      await connectMongoDB();
+      const posts = await Post.find().sort({ createdAt: -1 }).lean();
+      return { posts: JSON.parse(JSON.stringify(posts)) };
+    } catch {
+      return { posts: [] };
     }
-    return { posts: [] };
-  }
-}
+  },
+  ["updates-posts"],
+  { revalidate: 60 }
+);
 
 export default async function UpdatesPage() {
   const data = await getPosts();
