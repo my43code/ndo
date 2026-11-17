@@ -1,5 +1,7 @@
 import ContactForm from "@/components/ContactForm";
 import SectionTitle from "@/components/SectionTitle";
+import ScrollReveal from "@/components/ScrollReveal";
+import ParticleGrid from "@/components/ParticleGrid";
 import Image from "next/image";
 import { getSiteAbout } from "@/lib/siteContent";
 import { getTelHref, getWhatsAppHref } from "@/lib/contactLinks";
@@ -9,13 +11,16 @@ import {
   FaPhoneAlt,
   FaWhatsapp,
 } from "react-icons/fa";
+import { Mail, MapPin, Phone, Clock, MessageCircle } from "lucide-react";
 
 function DetailRow({ icon: Icon, label, value, href }) {
   const content = (
-    <div className="flex gap-3">
-      <Icon className="mt-1 shrink-0 text-emerald-400" />
+    <div className="flex gap-4">
+      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-500/15">
+        <Icon className="text-emerald-400" size={18} />
+      </div>
       <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
+        <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500">
           {label}
         </p>
         <p className="mt-1 text-sm leading-7 text-slate-200">{value}</p>
@@ -29,7 +34,7 @@ function DetailRow({ icon: Icon, label, value, href }) {
         href={href}
         target={href.startsWith("http") ? "_blank" : undefined}
         rel={href.startsWith("http") ? "noreferrer" : undefined}
-        className="block rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:border-white/20 hover:bg-white/10"
+        className="block rounded-xl border border-white/8 bg-white/[0.03] p-4 transition-all duration-300 hover:border-emerald-500/20 hover:bg-white/[0.06]"
       >
         {content}
       </a>
@@ -37,7 +42,7 @@ function DetailRow({ icon: Icon, label, value, href }) {
   }
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+    <div className="rounded-xl border border-white/8 bg-white/[0.03] p-4">
       {content}
     </div>
   );
@@ -46,7 +51,7 @@ function DetailRow({ icon: Icon, label, value, href }) {
 export default async function ContactPage() {
   const about = await getSiteAbout();
   const contact = about.contact || {};
-  const companyName = contact.companyName || "Nexus DevOps Limited";
+  const companyName = contact.companyName || "Manu Maso";
   const tagline =
     contact.tagline ||
     "Digital systems, modern websites, and dependable support.";
@@ -57,122 +62,131 @@ export default async function ContactPage() {
   const phoneHref = getTelHref(contact.phone);
 
   return (
-    <main className="bg-slate-50">
+    <main className="bg-slate-950">
+      {/* ═══ HERO ═══ */}
       <section className="relative overflow-hidden bg-slate-950 text-white">
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(16,185,129,0.18),transparent_22%),radial-gradient(circle_at_80%_10%,rgba(14,165,233,0.12),transparent_18%),radial-gradient(circle_at_50%_80%,rgba(250,204,21,0.1),transparent_20%)]" />
-          <div className="absolute inset-0 bg-[linear-gradient(130deg,rgba(2,6,23,0.98)_0%,rgba(15,23,42,0.72)_50%,rgba(6,78,59,0.48)_100%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_20%,rgba(16,185,129,0.15),transparent_50%),radial-gradient(ellipse_at_80%_80%,rgba(250,204,21,0.06),transparent_40%)]" />
         </div>
+        <ParticleGrid />
 
         <div className="relative mx-auto max-w-7xl px-6 py-20 lg:py-28">
           <div className="max-w-2xl">
             <span className="hero-fade-up inline-flex items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-4 py-2 text-sm font-medium text-emerald-200 backdrop-blur">
+              <MessageCircle size={16} />
               Contact
             </span>
             <h1 className="hero-fade-up-delay-1 mt-6 text-5xl font-black tracking-tight md:text-7xl">
-              Let us talk about your next build.
+              Let&apos;s talk about your{" "}
+              <span className="gradient-text">next build.</span>
             </h1>
-            <p className="hero-fade-up-delay-2 mt-6 max-w-2xl text-base leading-8 text-slate-200 md:text-lg">
+            <p className="hero-fade-up-delay-2 mt-6 max-w-2xl text-base leading-8 text-slate-300 md:text-lg">
               {tagline} Reach out with a project brief, support request, or
-              partnership idea and we will respond as soon as possible. 
+              partnership idea and we will respond as soon as possible.
             </p>
           </div>
         </div>
       </section>
 
+      {/* ═══ CONTACT DETAILS + FORM ═══ */}
       <section className="mx-auto max-w-7xl px-6 py-16">
-        <SectionTitle
-          eyebrow="Get in touch"
-          title="Live contact details and response form"
-          subtitle="Talk to us about your project. "
-          align="left"
-        />
+        <ScrollReveal>
+          <SectionTitle
+            eyebrow="Get in touch"
+            title="Contact Details & Response Form"
+            subtitle="We read every message carefully and usually respond within one business day."
+            align="left"
+          />
+        </ScrollReveal>
 
         <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
-          <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-slate-950 text-white shadow-[0_18px_50px_rgba(15,23,42,0.08)]">
-            <div className="relative aspect-[16/10]">
-              <Image
-                src="/images/team.webp"
-                alt={`${companyName} contact`}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 45vw"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-6">
-                <p className="text-xs font-semibold uppercase tracking-[0.32em] text-emerald-200">
-                  Office profile
-                </p>
-                <h2 className="mt-3 text-3xl font-black tracking-tight">
-                  {companyName}
-                </h2>
-                <p className="mt-3 max-w-xl text-sm leading-7 text-slate-200">
-                  {tagline}
-                </p>
-              </div>
-            </div>
-
-            <div className="space-y-4 p-6">
-              <DetailRow
-                icon={FaMapMarkerAlt}
-                label="Address"
-                value={
-                  contact.address ||
-                  "Add your office address in the About section."
-                }
-                href={mapHref}
-              />
-              <DetailRow
-                icon={FaEnvelope}
-                label="Email"
-                value={contact.email || "info@ndo.com"}
-                href={`mailto:${contact.email || "info@ndo.com"}`}
-              />
-              <DetailRow
-                icon={FaPhoneAlt}
-                label="Phone"
-                value={contact.phone || "+675 78337326"}
-                href={phoneHref}
-              />
-              <DetailRow
-                icon={FaWhatsapp}
-                label="WhatsApp"
-                value={contact.phone || "+675 78337326"}
-                href={whatsappHref}
-              />
-
-              {contact.hours ? (
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
-                    Hours
+          <ScrollReveal direction="left">
+            <div className="overflow-hidden rounded-2xl border border-white/8 bg-white/[0.03]">
+              <div className="relative aspect-[16/10]">
+                <Image
+                  src="/images/team.webp"
+                  alt={`${companyName} contact`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 45vw"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-6">
+                  <p className="text-xs font-semibold uppercase tracking-[0.32em] text-emerald-300">
+                    Office profile
                   </p>
-                  <p className="mt-1 text-sm leading-7 text-slate-200">
-                    {contact.hours}
+                  <h2 className="mt-3 text-3xl font-black tracking-tight text-white">
+                    {companyName}
+                  </h2>
+                  <p className="mt-3 max-w-xl text-sm leading-7 text-slate-200">
+                    {tagline}
                   </p>
                 </div>
-              ) : null}
+              </div>
 
-              <div className="flex flex-wrap gap-3 pt-2">
-                <a
-                  href={`mailto:${contact.email || "info@ndo.com"}`}
-                  className="inline-flex items-center justify-center rounded-full bg-emerald-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-300"
-                >
-                  Email us
-                </a>
-                <a
+              <div className="space-y-3 p-6">
+                <DetailRow
+                  icon={MapPin}
+                  label="Address"
+                  value={
+                    contact.address ||
+                    "Port Moresby, Papua New Guinea"
+                  }
                   href={mapHref}
-                  target={mapHref.startsWith("http") ? "_blank" : undefined}
-                  rel={mapHref.startsWith("http") ? "noreferrer" : undefined}
-                  className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:border-white/25 hover:bg-white/10"
-                >
-                  Open map
-                </a>
+                />
+                <DetailRow
+                  icon={Mail}
+                  label="Email"
+                  value={contact.email || "info@manumaso.com"}
+                  href={`mailto:${contact.email || "info@manumaso.com"}`}
+                />
+                <DetailRow
+                  icon={Phone}
+                  label="Phone"
+                  value={contact.phone || "+675 78337326"}
+                  href={phoneHref}
+                />
+                <DetailRow
+                  icon={MessageCircle}
+                  label="WhatsApp"
+                  value={contact.phone || "+675 78337326"}
+                  href={whatsappHref}
+                />
+
+                {contact.hours ? (
+                  <DetailRow
+                    icon={Clock}
+                    label="Hours"
+                    value={contact.hours}
+                  />
+                ) : null}
+
+                <div className="flex flex-wrap gap-3 pt-3">
+                  <a
+                    href={`mailto:${contact.email || "info@manumaso.com"}`}
+                    className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-500/20 transition-all hover:shadow-emerald-500/40 hover:brightness-110"
+                  >
+                    Email us
+                  </a>
+                  <a
+                    href={mapHref}
+                    target={mapHref.startsWith("http") ? "_blank" : undefined}
+                    rel={
+                      mapHref.startsWith("http") ? "noreferrer" : undefined
+                    }
+                    className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-bold text-white transition hover:border-emerald-400/30 hover:bg-white/10"
+                  >
+                    Open map
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
 
-          <ContactForm />
+          <ScrollReveal direction="right" delay={150}>
+            <ContactForm />
+          </ScrollReveal>
         </div>
       </section>
     </main>

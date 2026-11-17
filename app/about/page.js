@@ -1,9 +1,21 @@
 import Link from "next/link";
-import { ArrowRight, BadgeCheck, Layers3, Sparkles, Users2 } from "lucide-react";
+import {
+  ArrowRight,
+  BadgeCheck,
+  Layers3,
+  Sparkles,
+  Users2,
+  Target,
+  Eye,
+  Heart,
+} from "lucide-react";
 import SectionTitle from "@/components/SectionTitle";
 import ServiceCard from "@/components/ServiceCard";
 import PostCard from "@/components/PostCard";
 import MediaFrame from "@/components/MediaFrame";
+import ScrollReveal from "@/components/ScrollReveal";
+import AnimatedCounter from "@/components/AnimatedCounter";
+import ParticleGrid from "@/components/ParticleGrid";
 import { getSiteAbout } from "@/lib/siteContent";
 import { connectMongoDB } from "@/lib/mongodb";
 import Project from "@/models/Project";
@@ -48,57 +60,18 @@ async function getPosts() {
   }
 }
 
-function StatCard({ icon: Icon, label, value, detail }) {
-  return (
-    <div className="rounded-[1.5rem] border border-white/10 bg-white/8 p-4 backdrop-blur-xl">
-      <div className="flex items-center gap-3">
-        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-400/15 text-emerald-200">
-          <Icon size={18} />
-        </div>
-        <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
-            {label}
-          </p>
-          <p className="mt-1 text-2xl font-black text-white">{value}</p>
-        </div>
-      </div>
-      {detail ? <p className="mt-3 text-sm leading-6 text-slate-300">{detail}</p> : null}
-    </div>
-  );
-}
-
-function SectionCard({ title, description, accent = "emerald" }) {
-  const accentStyles =
-    accent === "emerald"
-      ? "from-emerald-500/20 via-emerald-500/10 to-transparent text-emerald-700"
-      : "from-sky-500/20 via-sky-500/10 to-transparent text-sky-700";
-
-  return (
-    <div className="rounded-[1.75rem] border border-slate-200 bg-white p-7 shadow-[0_18px_50px_rgba(15,23,42,0.08)]">
-      <div className={`inline-flex rounded-full bg-gradient-to-r px-4 py-1 text-xs font-semibold uppercase tracking-[0.32em] ${accentStyles}`}>
-        {title}
-      </div>
-      <p className="mt-5 text-sm leading-7 text-slate-600 md:text-base">
-        {description}
-      </p>
-    </div>
-  );
-}
-
 function ValueChip({ value }) {
   return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700">
-      <BadgeCheck size={15} className="text-emerald-600" />
+    <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-sm font-medium text-emerald-300">
+      <BadgeCheck size={15} className="text-emerald-400" />
       {value}
     </span>
   );
 }
 
 function ProjectCard({ project }) {
-  const mediaType = project?.video ? "video" : "image";
-
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-[1.8rem] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.08)] transition duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_24px_60px_rgba(15,23,42,0.14)]">
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/8 bg-white/[0.03] transition-all duration-500 hover:-translate-y-1 hover:border-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/5">
       <MediaFrame
         image={project?.image}
         video={project?.video}
@@ -107,24 +80,21 @@ function ProjectCard({ project }) {
         sizes="(max-width: 768px) 100vw, 33vw"
         overlay
       />
-
       <div className="flex flex-1 flex-col p-6">
-        <p className="text-xs font-semibold uppercase tracking-[0.32em] text-emerald-700">
-          {mediaType === "video" ? "Video showcase" : "Featured work"}
-        </p>
-        <h3 className="mt-3 text-2xl font-bold tracking-tight text-slate-950">
+        <h3 className="text-xl font-bold text-white">
           {project?.title || "Project title"}
         </h3>
-        <p className="mt-3 text-sm leading-7 text-slate-600 md:text-base">
-          {project?.description || project?.shortDescription || "Project details will appear here."}
+        <p className="mt-3 text-sm leading-7 text-slate-400">
+          {project?.description ||
+            project?.shortDescription ||
+            "Project details will appear here."}
         </p>
-
         {project?.link ? (
           <a
             href={project.link}
             target={project.link.startsWith("http") ? "_blank" : undefined}
             rel={project.link.startsWith("http") ? "noreferrer" : undefined}
-            className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-semibold text-emerald-700 transition hover:text-emerald-800"
+            className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-semibold text-emerald-400 transition hover:text-emerald-300"
           >
             View project
             <ArrowRight size={16} />
@@ -137,7 +107,7 @@ function ProjectCard({ project }) {
 
 function TeamCard({ member }) {
   return (
-    <article className="group overflow-hidden rounded-[1.8rem] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.08)] transition duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_24px_60px_rgba(15,23,42,0.14)]">
+    <article className="group overflow-hidden rounded-2xl border border-white/8 bg-white/[0.03] transition-all duration-500 hover:-translate-y-1 hover:border-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/5">
       {member?.image || member?.video ? (
         <MediaFrame
           image={member.image}
@@ -153,15 +123,22 @@ function TeamCard({ member }) {
             <p className="text-xs uppercase tracking-[0.32em] text-emerald-200">
               Team
             </p>
-            <h3 className="mt-3 text-2xl font-bold">{member?.name || "Team member"}</h3>
-            <p className="mt-2 text-sm text-slate-300">{member?.role || "Role"}</p>
+            <h3 className="mt-3 text-2xl font-bold">
+              {member?.name || "Team member"}
+            </h3>
+            <p className="mt-2 text-sm text-slate-300">
+              {member?.role || "Role"}
+            </p>
           </div>
         </div>
       )}
-
       <div className="p-5">
-        <h3 className="text-xl font-bold text-slate-950">{member?.name || "Team member"}</h3>
-        <p className="mt-2 text-sm leading-7 text-slate-600">{member?.role || "Role"}</p>
+        <h3 className="text-xl font-bold text-white">
+          {member?.name || "Team member"}
+        </h3>
+        <p className="mt-2 text-sm leading-7 text-slate-400">
+          {member?.role || "Role"}
+        </p>
       </div>
     </article>
   );
@@ -175,14 +152,22 @@ export default async function AboutPage() {
     getPosts(),
   ]);
 
-  const projectShowcase = (about.projects && about.projects.length > 0
-    ? about.projects
-    : projects
+  const projectShowcase = (
+    about.projects && about.projects.length > 0 ? about.projects : projects
   ).slice(0, 6);
   const serviceShowcase = services.slice(0, 3);
   const postShowcase = posts.slice(0, 3);
-  const heroMedia = about.history?.video || about.history?.image || about.mvv?.video || about.mvv?.image || serviceShowcase[0]?.video || serviceShowcase[0]?.image || "/images/project1.webp";
-  const heroIsVideo = Boolean(about.history?.video || about.mvv?.video || serviceShowcase[0]?.video);
+  const heroMedia =
+    about.history?.video ||
+    about.history?.image ||
+    about.mvv?.video ||
+    about.mvv?.image ||
+    serviceShowcase[0]?.video ||
+    serviceShowcase[0]?.image ||
+    "/images/project1.webp";
+  const heroIsVideo = Boolean(
+    about.history?.video || about.mvv?.video || serviceShowcase[0]?.video
+  );
   const heroText =
     about.history?.text ||
     about.mission ||
@@ -191,40 +176,44 @@ export default async function AboutPage() {
   const contact = about.contact || {};
 
   return (
-    <main className="bg-slate-50">
+    <main className="bg-slate-950">
+      {/* ═══ HERO ═══ */}
       <section className="relative overflow-hidden bg-slate-950 text-white">
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(16,185,129,0.18),transparent_22%),radial-gradient(circle_at_80%_10%,rgba(14,165,233,0.12),transparent_18%),radial-gradient(circle_at_50%_80%,rgba(250,204,21,0.1),transparent_20%)]" />
-          <div className="absolute inset-0 bg-[linear-gradient(130deg,rgba(2,6,23,0.98)_0%,rgba(15,23,42,0.72)_50%,rgba(6,78,59,0.48)_100%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_20%,rgba(16,185,129,0.15),transparent_50%),radial-gradient(ellipse_at_80%_80%,rgba(250,204,21,0.06),transparent_40%)]" />
         </div>
+        <ParticleGrid />
 
         <div className="relative mx-auto grid max-w-7xl gap-10 px-6 py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:py-28">
           <div className="max-w-2xl">
             <span className="hero-fade-up inline-flex items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-4 py-2 text-sm font-medium text-emerald-200 backdrop-blur">
               <Sparkles size={16} />
-              About Nexus DevOps Limited
+              About Manu Maso
             </span>
 
             <h1 className="hero-fade-up-delay-1 mt-6 text-5xl font-black tracking-tight md:text-7xl">
-              We build digital systems that look premium and perform cleanly.
+              We build digital systems that{" "}
+              <span className="gradient-text">perform.</span>
             </h1>
 
-            <p className="hero-fade-up-delay-2 mt-6 max-w-2xl text-base leading-8 text-slate-200 md:text-lg">
+            <p className="hero-fade-up-delay-2 mt-6 max-w-2xl text-base leading-8 text-slate-300 md:text-lg">
               {heroText}
             </p>
 
             <div className="hero-fade-up-delay-3 mt-10 flex flex-wrap gap-4">
               <Link
                 href="/services"
-                className="inline-flex items-center gap-2 rounded-full bg-emerald-400 px-6 py-3 font-semibold text-slate-950 transition hover:bg-emerald-300"
+                className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-3 font-bold text-white shadow-xl shadow-emerald-500/25 transition-all hover:shadow-emerald-500/40 hover:brightness-110"
               >
                 View services
-                <ArrowRight size={16} />
+                <ArrowRight
+                  size={16}
+                  className="transition-transform group-hover:translate-x-1"
+                />
               </Link>
-
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 font-semibold text-white backdrop-blur transition hover:border-white/30 hover:bg-white/10"
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 font-bold text-white backdrop-blur transition hover:border-emerald-400/30 hover:bg-white/10"
               >
                 Talk to us
               </Link>
@@ -233,7 +222,7 @@ export default async function AboutPage() {
 
           <div className="hero-fade-up-delay-4 relative">
             <div className="absolute -left-8 -top-8 h-24 w-24 rounded-full bg-emerald-400/20 blur-3xl" />
-            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-2xl backdrop-blur">
+            <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 shadow-2xl backdrop-blur">
               {heroIsVideo ? (
                 <MediaFrame
                   video={heroMedia}
@@ -254,24 +243,29 @@ export default async function AboutPage() {
               )}
 
               <div className="absolute inset-x-0 bottom-0 p-5">
-                <div className="grid gap-3 rounded-[1.5rem] border border-white/10 bg-slate-950/70 p-4 backdrop-blur md:grid-cols-2">
+                <div className="grid gap-3 rounded-2xl border border-white/10 bg-slate-950/70 p-4 backdrop-blur md:grid-cols-2">
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-emerald-200">
-                      Company line
+                      Our tagline
                     </p>
                     <p className="mt-2 text-sm leading-6 text-slate-200">
-                      {contact.tagline || "Digital solutions that feel intentional and reliable."}
+                      {contact.tagline ||
+                        "Digital solutions that feel intentional and reliable."}
                     </p>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="rounded-2xl bg-white/5 p-3 text-center">
-                      <p className="text-2xl font-black">{services.length}</p>
+                    <div className="rounded-xl bg-white/8 p-3 text-center">
+                      <p className="text-2xl font-black text-emerald-400">
+                        <AnimatedCounter end={services.length} />
+                      </p>
                       <p className="mt-1 text-[11px] uppercase tracking-[0.28em] text-slate-300">
                         Services
                       </p>
                     </div>
-                    <div className="rounded-2xl bg-white/5 p-3 text-center">
-                      <p className="text-2xl font-black">{projectShowcase.length}</p>
+                    <div className="rounded-xl bg-white/8 p-3 text-center">
+                      <p className="text-2xl font-black text-emerald-400">
+                        <AnimatedCounter end={projectShowcase.length} />
+                      </p>
                       <p className="mt-1 text-[11px] uppercase tracking-[0.28em] text-slate-300">
                         Projects
                       </p>
@@ -284,220 +278,276 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-20">
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <StatCard
-            icon={Layers3}
-            label="Services"
-            value={services.length}
-            detail="Live offerings pulled from MongoDB and styled for quick scanning."
-          />
-          <StatCard
-            icon={Users2}
-            label="Team"
-            value={about.team.length}
-            detail="Add team members in the About document when you are ready to showcase them."
-          />
-          <StatCard
-            icon={Sparkles}
-            label="Projects"
-            value={projectShowcase.length}
-            detail="Project cards and media are rendered directly from stored content."
-          />
-          <StatCard
-            icon={BadgeCheck}
-            label="Updates"
-            value={posts.length}
-            detail="Fresh posts appear here without any hardcoded copy in the page."
-          />
+      {/* ═══ STATS ═══ */}
+      <section className="border-y border-white/5 bg-slate-950 py-16">
+        <div className="mx-auto grid max-w-7xl gap-4 px-6 sm:grid-cols-2 xl:grid-cols-4">
+          {[
+            {
+              icon: Layers3,
+              label: "Services",
+              value: services.length,
+              detail: "Live offerings managed from the admin dashboard.",
+            },
+            {
+              icon: Users2,
+              label: "Team",
+              value: about.team.length,
+              detail: "Team members showcased on this page.",
+            },
+            {
+              icon: Sparkles,
+              label: "Projects",
+              value: projectShowcase.length,
+              detail: "Delivered solutions for real clients.",
+            },
+            {
+              icon: BadgeCheck,
+              label: "Updates",
+              value: posts.length,
+              detail: "Published stories and announcements.",
+            },
+          ].map((stat, i) => (
+            <ScrollReveal key={stat.label} delay={i * 100}>
+              <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-5 backdrop-blur">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-500/15">
+                    <stat.icon size={18} className="text-emerald-400" />
+                  </div>
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+                      {stat.label}
+                    </p>
+                    <p className="mt-1 text-2xl font-black text-white">
+                      <AnimatedCounter end={stat.value} />
+                    </p>
+                  </div>
+                </div>
+                <p className="mt-3 text-sm leading-6 text-slate-400">
+                  {stat.detail}
+                </p>
+              </div>
+            </ScrollReveal>
+          ))}
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-10">
-        <SectionTitle
-          eyebrow="Story"
-          title="Our story and operating rhythm"
-          subtitle="Read about our journey and how we operate."
-          align="left"
-        />
+      {/* ═══ STORY + MISSION/VISION ═══ */}
+      <section className="mx-auto max-w-7xl px-6 py-20">
+        <ScrollReveal>
+          <SectionTitle
+            eyebrow="Story"
+            title="Our Journey & Operating Rhythm"
+            subtitle="Learn about our history and what drives us forward."
+            align="left"
+          />
+        </ScrollReveal>
 
         <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-[0_18px_50px_rgba(15,23,42,0.08)]">
-            <p className="text-xs font-semibold uppercase tracking-[0.32em] text-emerald-700">
-              Short history
-            </p>
-            <p className="mt-5 whitespace-pre-line text-sm leading-8 text-slate-600 md:text-base">
-              {about.history?.text ||
-                "Use the admin dashboard to add the company history. Once stored, it will appear here with the same premium layout."}
-            </p>
+          <ScrollReveal>
+            <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-8">
+              <p className="text-xs font-semibold uppercase tracking-[0.32em] text-emerald-400">
+                Short history
+              </p>
+              <p className="mt-5 whitespace-pre-line text-sm leading-8 text-slate-300 md:text-base">
+                {about.history?.text ||
+                  "Use the admin dashboard to add the company history. Once stored, it will appear here."}
+              </p>
 
-            {about.values.length > 0 ? (
-              <div className="mt-8 flex flex-wrap gap-3">
-                {about.values.map((value, index) => (
-                  <ValueChip key={`${value}-${index}`} value={value} />
-                ))}
-              </div>
-            ) : (
-              <div className="mt-8 rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-5 text-sm text-slate-500">
-                Add company values from the admin dashboard to highlight your
-                principles here.
-              </div>
-            )}
-          </div>
+              {about.values.length > 0 ? (
+                <div className="mt-8 flex flex-wrap gap-3">
+                  {about.values.map((value, index) => (
+                    <ValueChip key={`${value}-${index}`} value={value} />
+                  ))}
+                </div>
+              ) : (
+                <div className="mt-8 rounded-xl border border-dashed border-white/10 bg-white/[0.02] p-5 text-sm text-slate-500">
+                  Add company values from the admin dashboard.
+                </div>
+              )}
+            </div>
+          </ScrollReveal>
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <SectionCard
-              title="Mission"
-              description={
-                about.mission ||
-                "Define the mission in the admin dashboard to show your purpose, outcomes, and commitment here."
-              }
-              accent="emerald"
-            />
-            <SectionCard
-              title="Vision"
-              description={
-                about.vision ||
-                "Define the vision in the admin dashboard to explain where the company is heading next."
-              }
-              accent="sky"
-            />
-            <div className="sm:col-span-2 rounded-[1.75rem] border border-slate-200 bg-gradient-to-br from-slate-950 to-slate-800 p-7 text-white shadow-[0_18px_50px_rgba(15,23,42,0.08)]">
-              <p className="text-xs font-semibold uppercase tracking-[0.32em] text-emerald-200">
-                Contact profile
-              </p>
-              <div className="mt-5 grid gap-4 md:grid-cols-2">
-                <div>
-                  <p className="text-sm font-semibold text-slate-200">
-                    {contact.companyName || "Nexus DevOps Limited"}
-                  </p>
-                  <p className="mt-2 text-sm leading-7 text-slate-300">
-                    {contact.address || "Add your office address in the About document."}
-                  </p>
-                </div>
-                <div className="space-y-2 text-sm text-slate-300">
-                  {contact.email ? <p>{contact.email}</p> : null}
-                  {contact.phone ? <p>{contact.phone}</p> : null}
-                  {contact.hours ? <p>{contact.hours}</p> : null}
+            <ScrollReveal delay={100}>
+              <div className="h-full rounded-2xl border border-white/8 bg-gradient-to-br from-emerald-500/10 to-transparent p-7">
+                <Target size={24} className="text-emerald-400" />
+                <h3 className="mt-4 text-sm font-semibold uppercase tracking-[0.32em] text-emerald-400">
+                  Mission
+                </h3>
+                <p className="mt-4 text-sm leading-7 text-slate-300">
+                  {about.mission ||
+                    "Define the mission in the admin dashboard."}
+                </p>
+              </div>
+            </ScrollReveal>
+            <ScrollReveal delay={200}>
+              <div className="h-full rounded-2xl border border-white/8 bg-gradient-to-br from-sky-500/10 to-transparent p-7">
+                <Eye size={24} className="text-sky-400" />
+                <h3 className="mt-4 text-sm font-semibold uppercase tracking-[0.32em] text-sky-400">
+                  Vision
+                </h3>
+                <p className="mt-4 text-sm leading-7 text-slate-300">
+                  {about.vision ||
+                    "Define the vision in the admin dashboard."}
+                </p>
+              </div>
+            </ScrollReveal>
+            <ScrollReveal delay={300} className="sm:col-span-2">
+              <div className="rounded-2xl border border-white/8 bg-gradient-to-r from-slate-800 to-slate-900 p-7">
+                <Heart size={20} className="text-emerald-400" />
+                <p className="mt-3 text-xs font-semibold uppercase tracking-[0.32em] text-emerald-300">
+                  Contact profile
+                </p>
+                <div className="mt-5 grid gap-4 md:grid-cols-2">
+                  <div>
+                    <p className="font-semibold text-white">
+                      {contact.companyName || "Manu Maso"}
+                    </p>
+                    <p className="mt-2 text-sm leading-7 text-slate-400">
+                      {contact.address || "Port Moresby, Papua New Guinea"}
+                    </p>
+                  </div>
+                  <div className="space-y-2 text-sm text-slate-400">
+                    {contact.email ? <p>{contact.email}</p> : null}
+                    {contact.phone ? <p>{contact.phone}</p> : null}
+                    {contact.hours ? <p>{contact.hours}</p> : null}
+                  </div>
                 </div>
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
 
+      {/* ═══ TEAM ═══ */}
       {about.team.length > 0 ? (
-        <section className="bg-slate-50 px-6 py-20">
+        <section className="border-t border-white/5 px-6 py-20">
           <div className="mx-auto max-w-7xl">
-            <SectionTitle
-              eyebrow="People"
-              title="Leadership and team"
-              subtitle="When team members are stored in MongoDB, they are presented here as polished profile cards."
-            />
-
+            <ScrollReveal>
+              <SectionTitle
+                eyebrow="People"
+                title="Leadership & Team"
+                subtitle="Meet the people who make Manu Maso what it is."
+              />
+            </ScrollReveal>
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-              {about.team.map((member) => (
-                <TeamCard key={member._id || member.name} member={member} />
+              {about.team.map((member, i) => (
+                <ScrollReveal key={member._id || member.name} delay={i * 100}>
+                  <TeamCard member={member} />
+                </ScrollReveal>
               ))}
             </div>
           </div>
         </section>
       ) : null}
 
-      <section className="mx-auto max-w-7xl px-6 py-20">
-        <SectionTitle
-          eyebrow="Services"
-          title="A sample of the services currently published"
-          subtitle="Reliable services we offer for your information technology needs."
-        />
-
-        {serviceShowcase.length > 0 ? (
-          <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-            {serviceShowcase.map((service) => (
-              <ServiceCard key={service._id} service={service}/>
-            ))}
-          </div>
-        ) : (
-          <div className="rounded-[1.75rem] border border-dashed border-slate-300 bg-white p-8 text-center text-slate-500">
-            No services are published yet.
-          </div>
-        )}
-      </section>
-
-      <section className="bg-white px-6 py-20">
+      {/* ═══ SERVICES ═══ */}
+      <section className="border-t border-white/5 px-6 py-20">
         <div className="mx-auto max-w-7xl">
-          <SectionTitle
-            eyebrow="Projects"
-            title="Selected work and delivered ideas"
-            subtitle="Delivered solutions that have made a real impact for our clients."
-          />
-
-          {projectShowcase.length > 0 ? (
+          <ScrollReveal>
+            <SectionTitle
+              eyebrow="Services"
+              title="What We Offer"
+              subtitle="Reliable digital services for your technology needs."
+            />
+          </ScrollReveal>
+          {serviceShowcase.length > 0 ? (
             <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-              {projectShowcase.slice(0, 3).map((project) => (
-                <ProjectCard key={project._id || project.title} project={project} />
+              {serviceShowcase.map((service, i) => (
+                <ScrollReveal key={service._id} delay={i * 100}>
+                  <ServiceCard service={service} />
+                </ScrollReveal>
               ))}
             </div>
           ) : (
-            <div className="rounded-[1.75rem] border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-slate-500">
-              No project showcases are available yet.
+            <div className="rounded-2xl border border-dashed border-white/10 p-8 text-center text-slate-500">
+              No services are published yet.
             </div>
           )}
         </div>
       </section>
 
-      <section className="bg-slate-50 px-6 py-20">
+      {/* ═══ PROJECTS ═══ */}
+      <section className="border-t border-white/5 px-6 py-20">
         <div className="mx-auto max-w-7xl">
-          <SectionTitle
-            eyebrow="Updates"
-            title="Recent updates and published stories"
-            subtitle="The latest posts from the updates collection are displayed here in a more editorial format."
-          />
-
-          {postShowcase.length > 0 ? (
+          <ScrollReveal>
+            <SectionTitle
+              eyebrow="Projects"
+              title="Selected Work"
+              subtitle="Solutions that have made a real impact for our clients."
+            />
+          </ScrollReveal>
+          {projectShowcase.length > 0 ? (
             <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-              {postShowcase.map((post) => (
-                <PostCard key={post._id} post={post} />
+              {projectShowcase.slice(0, 3).map((project, i) => (
+                <ScrollReveal
+                  key={project._id || project.title}
+                  delay={i * 100}
+                >
+                  <ProjectCard project={project} />
+                </ScrollReveal>
               ))}
             </div>
           ) : (
-            <div className="rounded-[1.75rem] border border-dashed border-slate-300 bg-white p-8 text-center text-slate-500">
+            <div className="rounded-2xl border border-dashed border-white/10 p-8 text-center text-slate-500">
+              No project showcases available yet.
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ═══ UPDATES ═══ */}
+      <section className="border-t border-white/5 px-6 py-20">
+        <div className="mx-auto max-w-7xl">
+          <ScrollReveal>
+            <SectionTitle
+              eyebrow="Updates"
+              title="Latest News & Stories"
+              subtitle="Stay informed with our most recent posts and announcements."
+            />
+          </ScrollReveal>
+          {postShowcase.length > 0 ? (
+            <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+              {postShowcase.map((post, i) => (
+                <ScrollReveal key={post._id} delay={i * 100}>
+                  <PostCard post={post} />
+                </ScrollReveal>
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-2xl border border-dashed border-white/10 p-8 text-center text-slate-500">
               No updates have been published yet.
             </div>
           )}
         </div>
       </section>
 
+      {/* ═══ CTA ═══ */}
       <section className="px-6 py-20">
-        <div className="mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-slate-200 bg-gradient-to-r from-slate-950 via-slate-900 to-emerald-950 p-8 text-white shadow-[0_18px_50px_rgba(15,23,42,0.12)] md:p-12">
-          <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.32em] text-emerald-200">
-                Contact us
-              </p>
-              <h2 className="mt-4 text-3xl font-black tracking-tight md:text-5xl">
-                Need a polished digital presence next?
-              </h2>
-              <p className="mt-5 max-w-2xl text-sm leading-8 text-slate-300 md:text-lg">
-                Reach out through the contact page and we will use the information
-                stored in MongoDB to keep your support and office details current.
-              </p>
-            </div>
-
-            <div className="grid gap-3 text-sm text-slate-300">
-              {contact.email ? <p>{contact.email}</p> : null}
-              {contact.phone ? <p>{contact.phone}</p> : null}
-              <p>{contact.address || "Add your contact address in the admin dashboard."}</p>
+        <ScrollReveal>
+          <div className="mx-auto max-w-5xl overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-r from-emerald-900/40 via-slate-900 to-slate-950 p-8 text-center shadow-2xl shadow-emerald-500/10 md:p-12">
+            <h2 className="text-3xl font-black tracking-tight text-white md:text-5xl">
+              Need a polished digital{" "}
+              <span className="gradient-text">presence?</span>
+            </h2>
+            <p className="mx-auto mt-5 max-w-2xl text-sm leading-8 text-slate-300 md:text-lg">
+              Reach out through the contact page and let us build something
+              extraordinary together.
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center gap-4">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 rounded-full bg-emerald-400 px-6 py-3 font-semibold text-slate-950 transition hover:bg-emerald-300"
+                className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-3 font-bold text-white shadow-xl shadow-emerald-500/25 transition-all hover:shadow-emerald-500/40 hover:brightness-110"
               >
-                Open contact page
-                <ArrowRight size={16} />
+                Contact Us
+                <ArrowRight
+                  size={16}
+                  className="transition-transform group-hover:translate-x-1"
+                />
               </Link>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
     </main>
   );

@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Search } from "lucide-react";
+import { Search, ArrowLeft } from "lucide-react";
 import LoadingState from "@/components/LoadingState";
 
 function matchesQuery(item, query) {
@@ -42,16 +42,19 @@ export default function SearchPage() {
   useEffect(() => {
     async function loadData() {
       try {
-        const [servicesRes, projectsRes, postsRes, aboutRes] = await Promise.all([
-          fetch("/api/services", { cache: "no-store" }),
-          fetch("/api/projects", { cache: "no-store" }),
-          fetch("/api/posts", { cache: "no-store" }),
-          fetch("/api/about", { cache: "no-store" }),
-        ]);
+        const [servicesRes, projectsRes, postsRes, aboutRes] =
+          await Promise.all([
+            fetch("/api/services", { cache: "no-store" }),
+            fetch("/api/projects", { cache: "no-store" }),
+            fetch("/api/posts", { cache: "no-store" }),
+            fetch("/api/about", { cache: "no-store" }),
+          ]);
 
         const servicesData = servicesRes.ok ? await servicesRes.json() : [];
         const projectsData = projectsRes.ok ? await projectsRes.json() : [];
-        const postsData = postsRes.ok ? await postsRes.json() : { posts: [] };
+        const postsData = postsRes.ok
+          ? await postsRes.json()
+          : { posts: [] };
         const aboutData = aboutRes.ok ? await aboutRes.json() : null;
 
         setServices(servicesData);
@@ -81,35 +84,44 @@ export default function SearchPage() {
 
   const filteredServices = useMemo(() => {
     return services.filter((item) =>
-      matchesQuery({
-        title: item.title,
-        description: item.description,
-        shortDescription: item.shortDescription,
-        link: item.link,
-        video: item.video,
-      }, searchTerm)
+      matchesQuery(
+        {
+          title: item.title,
+          description: item.description,
+          shortDescription: item.shortDescription,
+          link: item.link,
+          video: item.video,
+        },
+        searchTerm
+      )
     );
   }, [services, searchTerm]);
 
   const filteredProjects = useMemo(() => {
     return projects.filter((item) =>
-      matchesQuery({
-        title: item.title,
-        description: item.description,
-        shortDescription: item.shortDescription,
-        link: item.link,
-        video: item.video,
-      }, searchTerm)
+      matchesQuery(
+        {
+          title: item.title,
+          description: item.description,
+          shortDescription: item.shortDescription,
+          link: item.link,
+          video: item.video,
+        },
+        searchTerm
+      )
     );
   }, [projects, searchTerm]);
 
   const filteredPosts = useMemo(() => {
     return posts.filter((item) =>
-      matchesQuery({
-        title: item.title,
-        summary: item.summary,
-        content: item.content,
-      }, searchTerm)
+      matchesQuery(
+        {
+          title: item.title,
+          summary: item.summary,
+          content: item.content,
+        },
+        searchTerm
+      )
     );
   }, [posts, searchTerm]);
 
@@ -122,58 +134,71 @@ export default function SearchPage() {
         vision: about.vision,
         values: about.values,
         team: about.team?.map((member) => `${member.name} ${member.role}`),
-        projects: about.projects?.map((project) => `${project.title} ${project.description}`),
+        projects: about.projects?.map(
+          (project) => `${project.title} ${project.description}`
+        ),
       },
       searchTerm
     );
   }, [about, searchTerm]);
 
   return (
-    <section className="min-h-screen bg-slate-50 py-12 px-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+    <section className="min-h-screen bg-slate-950 px-6 py-12">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">Search</h1>
-            <p className="text-slate-600 mt-2">
+            <h1 className="text-3xl font-black text-white">Search</h1>
+            <p className="mt-2 text-slate-400">
               Search across services, projects, posts, and about content.
             </p>
           </div>
-
           <Link
             href="/"
-            className="text-emerald-600 font-medium hover:underline"
+            className="inline-flex items-center gap-2 text-sm font-medium text-emerald-400 transition hover:text-emerald-300"
           >
+            <ArrowLeft size={16} />
             Back to Home
           </Link>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 mb-10 flex flex-col md:flex-row items-center gap-3">
-          <div className="flex items-center gap-3 flex-1 w-full">
-            <Search className="text-slate-400" size={20} />
+        <div className="mb-10 flex flex-col items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.03] p-4 backdrop-blur md:flex-row">
+          <div className="flex w-full flex-1 items-center gap-3">
+            <Search className="text-slate-500" size={20} />
             <input
               type="text"
               placeholder="Search for any word or phrase..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="w-full outline-none text-slate-800"
+              className="w-full bg-transparent text-white outline-none placeholder:text-slate-600"
             />
           </div>
           <button
             type="button"
             onClick={handleSearch}
-            className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition"
+            className="rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 px-5 py-2.5 font-bold text-white transition-all hover:brightness-110"
           >
             Search
           </button>
         </div>
+
         {!loading ? (
-          searchTerm && filteredServices.length === 0 && filteredProjects.length === 0 && filteredPosts.length === 0 && !aboutMatches ? (
-            <p className="text-slate-500 mb-6">No matches found for &quot;{searchTerm}&quot;.</p>
+          searchTerm &&
+          filteredServices.length === 0 &&
+          filteredProjects.length === 0 &&
+          filteredPosts.length === 0 &&
+          !aboutMatches ? (
+            <p className="mb-6 text-slate-500">
+              No matches found for &quot;{searchTerm}&quot;.
+            </p>
           ) : searchTerm ? (
-            <p className="text-slate-500 mb-6">Search results for &quot;{searchTerm}&quot;</p>
+            <p className="mb-6 text-slate-400">
+              Search results for &quot;{searchTerm}&quot;
+            </p>
           ) : (
-            <p className="text-slate-500 mb-6">Enter a word or phrase and click Search.</p>
+            <p className="mb-6 text-slate-500">
+              Enter a word or phrase and click Search.
+            </p>
           )
         ) : null}
 
@@ -181,94 +206,103 @@ export default function SearchPage() {
           <LoadingState
             eyebrow="Search"
             title="Loading search data"
-            subtitle="We are pulling services, projects, posts, and about content from MongoDB."
+            subtitle="Pulling data from the database."
           />
         ) : (
           <>
             <section className="mb-12">
-              <h2 className="text-2xl font-semibold mb-4 text-slate-900">Services</h2>
-              <div className="grid md:grid-cols-3 gap-6">
+              <h2 className="mb-4 text-xl font-bold text-white">Services</h2>
+              <div className="grid gap-6 md:grid-cols-3">
                 {filteredServices.length > 0 ? (
                   filteredServices.map((service) => (
                     <div
                       key={service._id}
-                      className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6"
+                      className="rounded-2xl border border-white/8 bg-white/[0.03] p-6"
                     >
-                      <h3 className="text-lg font-semibold">{service.title}</h3>
-                      <p className="text-slate-600 mt-2 text-sm">
+                      <h3 className="text-lg font-bold text-white">
+                        {service.title}
+                      </h3>
+                      <p className="mt-2 text-sm text-slate-400">
                         {service.description || service.shortDescription}
                       </p>
                     </div>
                   ))
                 ) : (
-                  <p className="text-slate-500">No matching services found.</p>
+                  <p className="text-slate-500">No matching services.</p>
                 )}
               </div>
             </section>
 
             <section className="mb-12">
-              <h2 className="text-2xl font-semibold mb-4 text-slate-900">Projects</h2>
-              <div className="grid md:grid-cols-3 gap-6">
+              <h2 className="mb-4 text-xl font-bold text-white">Projects</h2>
+              <div className="grid gap-6 md:grid-cols-3">
                 {filteredProjects.length > 0 ? (
                   filteredProjects.map((project) => (
                     <div
                       key={project._id}
-                      className="bg-white rounded-2xl shadow-sm border border-slate-200 p-4"
+                      className="overflow-hidden rounded-2xl border border-white/8 bg-white/[0.03] p-4"
                     >
                       <Image
                         src={project.image || "/images/project1.webp"}
                         width={400}
                         height={250}
                         alt={project.title || "Project"}
-                        className="rounded-xl w-full h-[220px] object-cover"
+                        className="h-[220px] w-full rounded-xl object-cover"
                       />
-                      <h3 className="mt-4 text-lg font-semibold">{project.title}</h3>
-                      <p className="text-slate-600 mt-2 text-sm">
+                      <h3 className="mt-4 text-lg font-bold text-white">
+                        {project.title}
+                      </h3>
+                      <p className="mt-2 text-sm text-slate-400">
                         {project.description || project.shortDescription}
                       </p>
                     </div>
                   ))
                 ) : (
-                  <p className="text-slate-500">No matching projects found.</p>
+                  <p className="text-slate-500">No matching projects.</p>
                 )}
               </div>
             </section>
 
             <section className="mb-12">
-              <h2 className="text-2xl font-semibold mb-4 text-slate-900">Posts</h2>
-              <div className="grid md:grid-cols-3 gap-6">
+              <h2 className="mb-4 text-xl font-bold text-white">Posts</h2>
+              <div className="grid gap-6 md:grid-cols-3">
                 {filteredPosts.length > 0 ? (
                   filteredPosts.map((post) => (
                     <div
                       key={post._id}
-                      className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6"
+                      className="rounded-2xl border border-white/8 bg-white/[0.03] p-6"
                     >
-                      <h3 className="text-lg font-semibold">{post.title}</h3>
-                      <p className="text-slate-600 mt-2 text-sm">
+                      <h3 className="text-lg font-bold text-white">
+                        {post.title}
+                      </h3>
+                      <p className="mt-2 text-sm text-slate-400">
                         {post.summary}
                       </p>
                     </div>
                   ))
                 ) : (
-                  <p className="text-slate-500">No matching posts found.</p>
+                  <p className="text-slate-500">No matching posts.</p>
                 )}
               </div>
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold mb-4 text-slate-900">About</h2>
-              <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+              <h2 className="mb-4 text-xl font-bold text-white">About</h2>
+              <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-6">
                 {aboutMatches ? (
                   <div>
-                    <p className="text-slate-600">
+                    <p className="text-slate-300">
                       Your search matches content from the About page.
                     </p>
-                    <p className="text-slate-500 mt-2">
-                      Try searching company mission, team names, project titles, or values.
+                    <p className="mt-2 text-slate-500">
+                      Try searching company mission, team names, project titles,
+                      or values.
                     </p>
                   </div>
                 ) : (
-                  <p className="text-slate-500">No matching About content found.</p>
+                  <p className="text-slate-500">
+                    No matching About content found.
+                  </p>
                 )}
               </div>
             </section>

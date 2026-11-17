@@ -1,8 +1,11 @@
 import Link from "next/link";
-import { ArrowRight, Layers3, Sparkles, ShieldCheck } from "lucide-react";
+import { ArrowRight, Layers3, Sparkles, ShieldCheck, Zap } from "lucide-react";
 import SectionTitle from "@/components/SectionTitle";
 import ServiceCard from "@/components/ServiceCard";
 import MediaFrame from "@/components/MediaFrame";
+import ScrollReveal from "@/components/ScrollReveal";
+import AnimatedCounter from "@/components/AnimatedCounter";
+import ParticleGrid from "@/components/ParticleGrid";
 import { connectMongoDB } from "@/lib/mongodb";
 import Service from "@/models/Service";
 
@@ -20,36 +23,20 @@ async function getServices() {
   }
 }
 
-function MetricCard({ icon: Icon, label, value, detail }) {
-  return (
-    <div className="rounded-[1.5rem] border border-white/10 bg-white/8 p-4 backdrop-blur-xl">
-      <div className="flex items-center gap-3">
-        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-400/15 text-emerald-200">
-          <Icon size={18} />
-        </div>
-        <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-400">{label}</p>
-          <p className="mt-1 text-2xl font-black text-white">{value}</p>
-        </div>
-      </div>
-      {detail ? <p className="mt-3 text-sm leading-6 text-slate-300">{detail}</p> : null}
-    </div>
-  );
-}
-
 export default async function ServicesPage() {
   const services = await getServices();
   const featuredService = services[0];
-  const videoCount = services.filter((service) => service.video).length;
-  const imageCount = services.filter((service) => service.image && !service.video).length;
+  const videoCount = services.filter((s) => s.video).length;
+  const imageCount = services.filter((s) => s.image && !s.video).length;
 
   return (
-    <main className="bg-slate-50">
+    <main className="bg-slate-950">
+      {/* ═══ HERO ═══ */}
       <section className="relative overflow-hidden bg-slate-950 text-white">
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(16,185,129,0.18),transparent_22%),radial-gradient(circle_at_80%_10%,rgba(14,165,233,0.12),transparent_18%),radial-gradient(circle_at_50%_80%,rgba(250,204,21,0.08),transparent_20%)]" />
-          <div className="absolute inset-0 bg-[linear-gradient(130deg,rgba(2,6,23,0.98)_0%,rgba(15,23,42,0.72)_50%,rgba(6,78,59,0.48)_100%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_20%,rgba(16,185,129,0.15),transparent_50%),radial-gradient(ellipse_at_80%_80%,rgba(250,204,21,0.06),transparent_40%)]" />
         </div>
+        <ParticleGrid />
 
         <div className="relative mx-auto grid max-w-7xl gap-10 px-6 py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:py-28">
           <div className="max-w-2xl">
@@ -59,25 +46,29 @@ export default async function ServicesPage() {
             </span>
 
             <h1 className="hero-fade-up-delay-1 mt-6 text-5xl font-black tracking-tight md:text-7xl">
-              Premium digital services built to ship with confidence.
+              Premium digital services built to{" "}
+              <span className="gradient-text">ship.</span>
             </h1>
 
-            <p className="hero-fade-up-delay-2 mt-6 max-w-2xl text-base leading-8 text-slate-200 md:text-lg">
-              We deliver tailored digital solutions that drive growth and innovation for businesses of all sizes.
+            <p className="hero-fade-up-delay-2 mt-6 max-w-2xl text-base leading-8 text-slate-300 md:text-lg">
+              We deliver tailored digital solutions that drive growth and
+              innovation for businesses of all sizes.
             </p>
 
             <div className="hero-fade-up-delay-3 mt-10 flex flex-wrap gap-4">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 rounded-full bg-emerald-400 px-6 py-3 font-semibold text-slate-950 transition hover:bg-emerald-300"
+                className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-3 font-bold text-white shadow-xl shadow-emerald-500/25 transition-all hover:shadow-emerald-500/40 hover:brightness-110"
               >
                 Start a project
-                <ArrowRight size={16} />
+                <ArrowRight
+                  size={16}
+                  className="transition-transform group-hover:translate-x-1"
+                />
               </Link>
-
               <Link
                 href="/updates"
-                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 font-semibold text-white backdrop-blur transition hover:border-white/30 hover:bg-white/10"
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 font-bold text-white backdrop-blur transition hover:border-emerald-400/30 hover:bg-white/10"
               >
                 View updates
               </Link>
@@ -86,7 +77,7 @@ export default async function ServicesPage() {
 
           <div className="hero-fade-up-delay-4 relative">
             <div className="absolute -left-8 -top-8 h-24 w-24 rounded-full bg-emerald-400/20 blur-3xl" />
-            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-2xl backdrop-blur">
+            <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 shadow-2xl backdrop-blur">
               <MediaFrame
                 image={featuredService?.image || "/images/project1.webp"}
                 video={featuredService?.video}
@@ -98,25 +89,34 @@ export default async function ServicesPage() {
               />
 
               <div className="absolute inset-x-0 bottom-0 p-5">
-                <div className="grid gap-3 rounded-[1.5rem] border border-white/10 bg-slate-950/70 p-4 backdrop-blur md:grid-cols-3">
-                  <MetricCard
-                    icon={Layers3}
-                    label="Services"
-                    value={services.length}
-                    detail="Live records from the services collection."
-                  />
-                  <MetricCard
-                    icon={Sparkles}
-                    label="Videos"
-                    value={videoCount}
-                    detail="Entries with motion content or video demos."
-                  />
-                  <MetricCard
-                    icon={ShieldCheck}
-                    label="Images"
-                    value={imageCount}
-                    detail="Visual showcases ready for the front page."
-                  />
+                <div className="grid gap-3 rounded-2xl border border-white/10 bg-slate-950/70 p-4 backdrop-blur sm:grid-cols-3">
+                  {[
+                    {
+                      icon: Layers3,
+                      label: "Services",
+                      value: services.length,
+                    },
+                    { icon: Zap, label: "Videos", value: videoCount },
+                    {
+                      icon: ShieldCheck,
+                      label: "Images",
+                      value: imageCount,
+                    },
+                  ].map((m) => (
+                    <div key={m.label} className="flex items-center gap-3 p-2">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/15">
+                        <m.icon size={16} className="text-emerald-400" />
+                      </div>
+                      <div>
+                        <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+                          {m.label}
+                        </p>
+                        <p className="text-xl font-black text-white">
+                          <AnimatedCounter end={m.value} />
+                        </p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -124,51 +124,59 @@ export default async function ServicesPage() {
         </div>
       </section>
 
+      {/* ═══ SERVICE CARDS ═══ */}
       <section className="mx-auto max-w-7xl px-6 py-20">
-        <SectionTitle
-          eyebrow="Portfolio"
-          title="Browse the service library"
-          subtitle="The cards below use the improved media treatment, hover motion, and editorial spacing."
-        />
+        <ScrollReveal>
+          <SectionTitle
+            eyebrow="Portfolio"
+            title="Browse Our Service Library"
+            subtitle="Each service is carefully crafted to deliver real value and measurable results."
+          />
+        </ScrollReveal>
 
         {services.length > 0 ? (
           <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-            {services.map((service) => (
-              <ServiceCard key={service._id} service={service} />
+            {services.map((service, i) => (
+              <ScrollReveal key={service._id} delay={i * 100}>
+                <ServiceCard service={service} />
+              </ScrollReveal>
             ))}
           </div>
         ) : (
-          <div className="rounded-[1.75rem] border border-dashed border-slate-300 bg-white p-8 text-center text-slate-500">
+          <div className="rounded-2xl border border-dashed border-white/10 p-12 text-center text-slate-500">
             No services available in the database yet.
           </div>
         )}
       </section>
 
+      {/* ═══ CTA ═══ */}
       <section className="px-6 pb-20">
-        <div className="mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-slate-200 bg-gradient-to-r from-slate-950 via-slate-900 to-emerald-950 p-8 text-white shadow-[0_18px_50px_rgba(15,23,42,0.12)] md:p-12">
-          <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.32em] text-emerald-200">
-                Ready to move
-              </p>
-              <h2 className="mt-4 text-3xl font-black tracking-tight md:text-5xl">
-                Let us shape a cleaner digital experience for your team.
-              </h2>
-              <p className="mt-5 max-w-2xl text-sm leading-8 text-slate-300 md:text-lg">
-                Bring your idea, your existing system, or your support request.
-                We will match it with the right service from the dashboard.
-              </p>
+        <ScrollReveal>
+          <div className="mx-auto max-w-5xl overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-r from-emerald-900/40 via-slate-900 to-slate-950 p-8 text-white shadow-2xl shadow-emerald-500/10 md:p-12">
+            <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+              <div>
+                <h2 className="text-3xl font-black tracking-tight md:text-5xl">
+                  Let us shape your{" "}
+                  <span className="gradient-text">digital future.</span>
+                </h2>
+                <p className="mt-5 max-w-2xl text-sm leading-8 text-slate-300 md:text-lg">
+                  Bring your idea, your existing system, or your support request.
+                  We will match it with the right service and deliver excellence.
+                </p>
+              </div>
+              <Link
+                href="/contact"
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-3 font-bold text-white shadow-xl shadow-emerald-500/25 transition-all hover:shadow-emerald-500/40 hover:brightness-110"
+              >
+                Contact us
+                <ArrowRight
+                  size={16}
+                  className="transition-transform group-hover:translate-x-1"
+                />
+              </Link>
             </div>
-
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-emerald-400 px-6 py-3 font-semibold text-slate-950 transition hover:bg-emerald-300"
-            >
-              Contact us
-              <ArrowRight size={16} />
-            </Link>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
     </main>
   );

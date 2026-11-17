@@ -53,23 +53,24 @@ export default function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-[1.75rem] border border-slate-200 bg-white/95 p-6 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur md:p-8"
+      className="rounded-2xl border border-white/8 bg-white/[0.03] p-6 backdrop-blur md:p-8"
     >
       <div className="mb-6">
-        <p className="text-xs font-semibold uppercase tracking-[0.32em] text-emerald-700">
+        <p className="text-xs font-semibold uppercase tracking-[0.32em] text-emerald-400">
           Start a conversation
         </p>
-        <h3 className="mt-3 text-2xl font-black tracking-tight text-slate-950 md:text-3xl">
-          Tell us what you are building.
+        <h3 className="mt-3 text-2xl font-black tracking-tight text-white md:text-3xl">
+          Tell us what you&apos;re building.
         </h3>
-        <p className="mt-3 text-sm leading-7 text-slate-600 md:text-base">
-          We read every message carefully and usually respond within one business day.
+        <p className="mt-3 text-sm leading-7 text-slate-400">
+          We read every message carefully and usually respond within one business
+          day.
         </p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
         <label className="block">
-          <span className="mb-2 block text-sm font-medium text-slate-700">
+          <span className="mb-2 block text-sm font-medium text-slate-300">
             Your name
           </span>
           <input
@@ -78,13 +79,13 @@ export default function ContactForm() {
             placeholder="Jane Doe"
             value={form.name}
             onChange={handleChange}
-            className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10"
+            className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-500/50 focus:bg-white/[0.08] focus:ring-2 focus:ring-emerald-500/20"
             required
           />
         </label>
 
         <label className="block">
-          <span className="mb-2 block text-sm font-medium text-slate-700">
+          <span className="mb-2 block text-sm font-medium text-slate-300">
             Email address
           </span>
           <input
@@ -93,14 +94,14 @@ export default function ContactForm() {
             placeholder="jane@company.com"
             value={form.email}
             onChange={handleChange}
-            className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10"
+            className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-500/50 focus:bg-white/[0.08] focus:ring-2 focus:ring-emerald-500/20"
             required
           />
         </label>
       </div>
 
       <label className="mt-4 block">
-        <span className="mb-2 block text-sm font-medium text-slate-700">
+        <span className="mb-2 block text-sm font-medium text-slate-300">
           Subject
         </span>
         <input
@@ -109,13 +110,13 @@ export default function ContactForm() {
           placeholder="Project inquiry, support request, partnership..."
           value={form.subject}
           onChange={handleChange}
-          className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10"
+          className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-500/50 focus:bg-white/[0.08] focus:ring-2 focus:ring-emerald-500/20"
           required
         />
       </label>
 
       <label className="mt-4 block">
-        <span className="mb-2 block text-sm font-medium text-slate-700">
+        <span className="mb-2 block text-sm font-medium text-slate-300">
           Message
         </span>
         <textarea
@@ -123,7 +124,7 @@ export default function ContactForm() {
           placeholder="Describe your goals, timeline, and any important details."
           value={form.message}
           onChange={handleChange}
-          className="min-h-[170px] w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10"
+          className="min-h-[170px] w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-500/50 focus:bg-white/[0.08] focus:ring-2 focus:ring-emerald-500/20"
           required
         />
       </label>
@@ -132,7 +133,7 @@ export default function ContactForm() {
         <button
           type="submit"
           disabled={loading}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-500/20 transition-all hover:shadow-emerald-500/40 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70"
         >
           {loading ? "Sending..." : "Send Message"}
           <SendHorizonal size={16} />
@@ -142,8 +143,8 @@ export default function ContactForm() {
           <p
             className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium ${
               status.type === "success"
-                ? "bg-emerald-50 text-emerald-700"
-                : "bg-rose-50 text-rose-700"
+                ? "bg-emerald-500/15 text-emerald-400"
+                : "bg-rose-500/15 text-rose-400"
             }`}
             aria-live="polite"
           >
@@ -156,7 +157,7 @@ export default function ContactForm() {
           </p>
         ) : (
           <p className="text-sm text-slate-500">
-            All messages are saved securely and handled by our team.
+            All messages are saved securely.
           </p>
         )}
       </div>

@@ -3,55 +3,51 @@ import Image from "next/image";
 
 export default function Hero() {
   return (
-    <section className="bg-gradient-to-r from-slate-950 via-slate-900 to-emerald-900 text-white">
-      <div className="max-w-7xl mx-auto px-6 py-20 md:py-24 grid md:grid-cols-2 gap-12 items-center">
-        
-        {/* ✅ LEFT CONTENT */}
+    <section className="relative overflow-hidden bg-slate-950 text-white">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_20%,rgba(16,185,129,0.15),transparent_50%),radial-gradient(ellipse_at_80%_80%,rgba(250,204,21,0.06),transparent_40%)]" />
+
+      <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 md:grid-cols-2 md:py-24">
         <div>
-          <span className="inline-block bg-yellow-400/20 text-yellow-300 px-4 py-2 rounded-full text-sm mb-6 border border-yellow-400/30">
-            Web Development • IT Support • Digital Solutions
+          <span className="mb-6 inline-block rounded-full border border-emerald-400/25 bg-emerald-400/10 px-4 py-2 text-sm font-semibold text-emerald-200">
+            Web Development &bull; IT Support &bull; Digital Solutions
           </span>
 
-          <h1 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight">
-            Building Smart Technology Solutions for PNG Businesses
+          <h1 className="text-4xl font-black leading-tight tracking-tight md:text-6xl">
+            Building Smart Technology Solutions for{" "}
+            <span className="gradient-text">PNG Businesses</span>
           </h1>
 
-          <p className="mt-6 text-lg text-slate-300 max-w-xl leading-relaxed">
-            Nexus DevOps Limited delivers professional websites, digital systems,
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-300">
+            Manu Maso delivers professional websites, digital systems,
             database-driven platforms, and IT support for modern organizations.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4">
             <Link
               href="/services"
-              className="bg-emerald-600 hover:bg-emerald-700 px-6 py-3 rounded-full font-medium transition shadow-lg hover:scale-105"
+              className="rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-3 font-bold text-white shadow-lg shadow-emerald-500/25 transition-all hover:shadow-emerald-500/40 hover:brightness-110"
             >
               Explore Services
             </Link>
-
             <Link
               href="/contact"
-              className="border border-yellow-400 text-yellow-300 hover:bg-yellow-400 hover:text-black px-6 py-3 rounded-full font-medium transition"
+              className="rounded-full border border-white/15 bg-white/5 px-6 py-3 font-bold text-white backdrop-blur transition hover:border-emerald-400/30 hover:bg-white/10"
             >
               Contact Us
             </Link>
           </div>
         </div>
 
-        {/* ✅ RIGHT IMAGE */}
         <div className="relative">
           <Image
-            src="/images/hero-tech.jpg"
-            alt="Nexus DevOps Technology"
-            width={700}
+            src="/images/manu-maso-logo.png"
+            alt="Manu Maso"
+            width={600}
             height={500}
-            className="rounded-2xl shadow-2xl w-full h-auto object-cover border border-yellow-400/30"
+            className="h-auto w-full rounded-2xl object-contain p-8"
           />
-
-          {/* ✅ GLOW EFFECT */}
-          <div className="absolute -inset-1 bg-yellow-400/10 blur-2xl rounded-2xl -z-10"></div>
+          <div className="absolute -inset-1 -z-10 rounded-2xl bg-emerald-400/10 blur-2xl" />
         </div>
-
       </div>
     </section>
   );

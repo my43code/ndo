@@ -32,7 +32,7 @@ export default function MediaFrame({
           alt={alt}
           fill
           sizes={sizes}
-          preload={priority}
+          priority={priority}
           className={imageClassName}
         />
       )}

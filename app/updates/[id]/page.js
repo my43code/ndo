@@ -3,6 +3,7 @@ import Link from "next/link";
 import { connectMongoDB } from "@/lib/mongodb";
 import Post from "@/models/Post";
 import Image from "next/image";
+import { ArrowLeft, Calendar } from "lucide-react";
 
 export const revalidate = 60;
 
@@ -28,13 +29,14 @@ export default async function PostDetailPage({ params }) {
   }
 
   return (
-    <main className="bg-slate-50">
-      <div className="border-b border-slate-200 bg-white/80 px-6 py-4 backdrop-blur">
+    <main className="bg-slate-950">
+      <div className="border-b border-white/5 px-6 py-4">
         <div className="mx-auto max-w-5xl">
           <Link
             href="/updates"
-            className="inline-flex items-center gap-2 text-sm font-medium text-emerald-600 transition hover:text-emerald-700 hover:underline"
+            className="inline-flex items-center gap-2 text-sm font-medium text-emerald-400 transition hover:text-emerald-300"
           >
+            <ArrowLeft size={16} />
             Back to Updates
           </Link>
         </div>
@@ -42,13 +44,14 @@ export default async function PostDetailPage({ params }) {
 
       <article className="mx-auto max-w-5xl px-6 py-16">
         <div className="mb-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.32em] text-emerald-700">
+          <p className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.3em] text-emerald-400">
             Company update
           </p>
-          <h1 className="mt-4 text-4xl font-black tracking-tight text-slate-950 md:text-5xl">
+          <h1 className="mt-4 text-4xl font-black tracking-tight text-white md:text-5xl">
             {post.title || "Update"}
           </h1>
-          <p className="mt-4 text-base text-slate-600 md:text-lg">
+          <p className="mt-4 flex items-center gap-2 text-base text-slate-500">
+            <Calendar size={16} />
             {new Date(post.createdAt).toLocaleDateString("en-US", {
               year: "numeric",
               month: "long",
@@ -58,7 +61,7 @@ export default async function PostDetailPage({ params }) {
         </div>
 
         {post.image ? (
-          <div className="relative mb-12 h-[320px] overflow-hidden rounded-[2rem] border border-slate-200 shadow-[0_18px_50px_rgba(15,23,42,0.08)] md:h-[480px]">
+          <div className="relative mb-12 h-[320px] overflow-hidden rounded-2xl border border-white/8 md:h-[480px]">
             <Image
               src={post.image}
               alt={post.title || "Post image"}
@@ -70,16 +73,16 @@ export default async function PostDetailPage({ params }) {
         ) : null}
 
         {post.summary ? (
-          <div className="mb-12 rounded-[1.5rem] border border-emerald-100 bg-emerald-50 px-6 py-5">
-            <p className="text-lg italic leading-relaxed text-slate-700 md:text-xl">
+          <div className="mb-12 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 px-6 py-5">
+            <p className="text-lg italic leading-relaxed text-slate-300 md:text-xl">
               {post.summary}
             </p>
           </div>
         ) : null}
 
-        <div className="prose prose-slate max-w-none">
+        <div className="max-w-none">
           {post.content ? (
-            <div className="whitespace-pre-wrap break-words text-lg leading-8 text-slate-800">
+            <div className="whitespace-pre-wrap break-words text-lg leading-8 text-slate-300">
               {post.content}
             </div>
           ) : null}

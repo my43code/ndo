@@ -5,11 +5,23 @@ import AuthProvider from "@/components/AuthProvider";
 import { connection } from "next/server";
 
 export const metadata = {
-  title: "Nexus DevOps Limited",
+  title: {
+    default: "Manu Maso | Digital Solutions",
+    template: "%s | Manu Maso",
+  },
   description:
-    "Professional Nexus DevOps Limited website built with Next.js, MongoDB, and Tailwind CSS. Showcasing our services, projects, and company information with dynamic content management.",
+    "Manu Maso delivers cutting-edge websites, digital systems, and technology services for businesses and organizations in Papua New Guinea and beyond.",
+  keywords: [
+    "web development",
+    "digital solutions",
+    "IT support",
+    "Papua New Guinea",
+    "Manu Maso",
+    "software development",
+    "cloud solutions",
+  ],
   icons: {
-    icon: "/images/logo.jpg",
+    icon: "/images/manu-maso-logo.png",
   },
 };
 
@@ -17,8 +29,8 @@ export default async function RootLayout({ children }) {
   await connection();
 
   return (
-    <html lang="en">
-      <body className="flex min-h-screen flex-col overflow-x-hidden bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.08),transparent_34%),linear-gradient(180deg,#f8fafc_0%,#f8fafc_65%,#eef2ff_100%)] text-slate-800 antialiased selection:bg-emerald-300 selection:text-slate-950">
+    <html lang="en" className="dark">
+      <body className="flex min-h-screen flex-col overflow-x-hidden bg-slate-950 text-slate-200 antialiased selection:bg-emerald-400/30 selection:text-white">
         <AuthProvider>
           <Navbar />
           <main className="flex-grow">{children}</main>

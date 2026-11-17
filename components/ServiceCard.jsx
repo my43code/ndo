@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 export default function ServiceCard({ service }) {
   const {
@@ -17,7 +18,7 @@ export default function ServiceCard({ service }) {
   const isExternalLink = hasLink && /^https?:\/\//i.test(link);
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-[1.8rem] border border-slate-200 bg-white/95 shadow-[0_18px_50px_rgba(15,23,42,0.08)] transition duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_24px_60px_rgba(15,23,42,0.14)]">
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/8 bg-white/[0.03] transition-all duration-500 hover:-translate-y-2 hover:border-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/5">
       <div className="relative aspect-[16/10] overflow-hidden bg-slate-950">
         {isVideo ? (
           <video
@@ -25,7 +26,7 @@ export default function ServiceCard({ service }) {
             loop
             muted
             playsInline
-            className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+            className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
           >
             <source src={mediaSrc} type="video/mp4" />
           </video>
@@ -35,26 +36,23 @@ export default function ServiceCard({ service }) {
             alt={title}
             fill
             sizes="(max-width: 768px) 100vw, 33vw"
-            className="object-cover transition duration-700 group-hover:scale-105"
+            className="object-cover transition duration-700 group-hover:scale-110"
           />
         )}
 
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/88 via-slate-950/20 to-transparent" />
-        <div className="absolute left-4 top-4 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-white backdrop-blur">
-          {isVideo ? "Video" : "Visual"}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent" />
+        <div className="absolute left-4 top-4 rounded-full border border-emerald-400/25 bg-emerald-400/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-emerald-300 backdrop-blur">
+          {isVideo ? "Video" : "Service"}
         </div>
         <div className="absolute inset-x-4 bottom-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.32em] text-emerald-200">
-            Service
-          </p>
-          <h3 className="mt-2 text-2xl font-bold tracking-tight text-white">
+          <h3 className="text-2xl font-bold tracking-tight text-white">
             {title}
           </h3>
         </div>
       </div>
 
       <div className="flex flex-1 flex-col p-6">
-        <p className="text-sm leading-7 text-slate-600 md:text-base">
+        <p className="text-sm leading-7 text-slate-400">
           {shortDescription || description || "No description available."}
         </p>
 
@@ -65,18 +63,18 @@ export default function ServiceCard({ service }) {
                 href={link}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 transition hover:text-emerald-800"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-400 transition hover:text-emerald-300"
               >
                 Explore this service
-                <span aria-hidden="true">&rarr;</span>
+                <ArrowRight size={14} />
               </a>
             ) : (
               <Link
                 href={link}
-                className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 transition hover:text-emerald-800"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-400 transition hover:text-emerald-300"
               >
                 Explore this service
-                <span aria-hidden="true">&rarr;</span>
+                <ArrowRight size={14} />
               </Link>
             )}
           </div>

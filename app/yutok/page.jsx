@@ -1,23 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { Send, Bot, User } from "lucide-react";
+import { Send, Bot, User, ArrowLeft, Sparkles } from "lucide-react";
 
 export default function YuTokPage() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const messagesEndRef = useRef(null);
   const [messages, setMessages] = useState([
     {
       role: "assistant",
       content:
-        "Hello, I am YuTok. Ask me about Nexus DevOps Limited, services, projects, or general technology questions.",
+        "Hello! I'm YuTok, your AI assistant. Ask me about Manu Maso, our services, projects, or any technology questions.",
     },
   ]);
 
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   async function handleSend(e) {
     e.preventDefault();
-
     if (!input.trim()) return;
 
     const userMessage = { role: "user", content: input };
@@ -30,9 +34,7 @@ export default function YuTokPage() {
     try {
       const res = await fetch("/api/yutok", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: input }),
       });
 
@@ -61,25 +63,35 @@ export default function YuTokPage() {
 
   return (
     <section className="min-h-screen bg-slate-950 text-white">
-      <div className="max-w-5xl mx-auto px-6 py-8">
-        <div className="flex items-center justify-between mb-8">
+      <div className="mx-auto max-w-5xl px-6 py-8">
+        <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">YuTok AI Assistant</h1>
-            <p className="text-slate-400 mt-2">
-              A smart assistant experience for Nexus DevOps Limited.
-            </p>
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600">
+                <Sparkles size={20} className="text-white" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-black tracking-tight">
+                  YuTok <span className="text-emerald-400">AI</span>
+                </h1>
+                <p className="text-sm text-slate-500">
+                  Manu Maso&apos;s smart assistant
+                </p>
+              </div>
+            </div>
           </div>
 
           <Link
             href="/"
-            className="text-emerald-400 hover:text-emerald-300 font-medium"
+            className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-300 transition hover:border-emerald-500/30 hover:bg-white/10 hover:text-white"
           >
-            Back to Home
+            <ArrowLeft size={16} />
+            Back
           </Link>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl h-[70vh] flex flex-col overflow-hidden">
-          <div className="flex-1 overflow-y-auto p-6 space-y-4">
+        <div className="flex h-[75vh] flex-col overflow-hidden rounded-2xl border border-white/8 bg-white/[0.02]">
+          <div className="flex-1 space-y-4 overflow-y-auto p-6">
             {messages.map((message, index) => (
               <div
                 key={index}
@@ -88,47 +100,53 @@ export default function YuTokPage() {
                 }`}
               >
                 <div
-                  className={`max-w-[80%] rounded-2xl px-4 py-3 flex gap-3 ${
+                  className={`flex max-w-[80%] gap-3 rounded-2xl px-5 py-4 ${
                     message.role === "user"
-                      ? "bg-emerald-600 text-white"
-                      : "bg-slate-800 text-slate-100"
+                      ? "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-500/20"
+                      : "border border-white/8 bg-white/[0.04] text-slate-200"
                   }`}
                 >
-                  <div className="mt-1">
+                  <div className="mt-0.5 shrink-0">
                     {message.role === "user" ? (
                       <User size={18} />
                     ) : (
-                      <Bot size={18} />
+                      <Bot size={18} className="text-emerald-400" />
                     )}
                   </div>
-                  <p className="text-sm leading-6">{message.content}</p>
+                  <p className="text-sm leading-7">{message.content}</p>
                 </div>
               </div>
             ))}
 
             {loading && (
               <div className="flex justify-start">
-                <div className="bg-slate-800 text-slate-100 rounded-2xl px-4 py-3">
-                  YuTok is typing...
+                <div className="flex items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.04] px-5 py-4 text-sm text-slate-400">
+                  <Bot size={18} className="animate-pulse text-emerald-400" />
+                  <span className="flex items-center gap-1">
+                    YuTok is thinking
+                    <span className="animate-blink">...</span>
+                  </span>
                 </div>
               </div>
             )}
+            <div ref={messagesEndRef} />
           </div>
 
           <form
             onSubmit={handleSend}
-            className="border-t border-slate-800 p-4 flex gap-3"
+            className="flex gap-3 border-t border-white/8 p-4"
           >
             <input
               type="text"
               placeholder="Ask YuTok something..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              className="flex-1 bg-slate-800 text-white rounded-xl px-4 py-3 outline-none border border-slate-700"
+              className="flex-1 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-500/50 focus:bg-white/[0.08] focus:ring-2 focus:ring-emerald-500/20"
             />
             <button
               type="submit"
-              className="bg-emerald-600 hover:bg-emerald-700 transition rounded-xl px-5 py-3 flex items-center gap-2 font-medium"
+              disabled={loading}
+              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 px-5 py-3 font-bold text-white shadow-lg shadow-emerald-500/20 transition-all hover:shadow-emerald-500/40 hover:brightness-110 disabled:opacity-50"
             >
               <Send size={18} />
               Send
