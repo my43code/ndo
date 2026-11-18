@@ -13,6 +13,12 @@ export default function ForgotPasswordPage() {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState({ type: "", message: "" });
 
+  function useExistingCode(event) {
+    if (!event.currentTarget.form?.reportValidity()) return;
+    setStatus({ type: "", message: "" });
+    setStep(2);
+  }
+
   const handleSendCode = async (e) => {
     e.preventDefault();
     setStatus({ type: "", message: "" });
@@ -100,7 +106,7 @@ export default function ForgotPasswordPage() {
             <div>
               <h1 className="text-2xl font-bold">Reset Password</h1>
               <p className="text-sm text-slate-400">
-                {step === 1 && "We'll send a code to your email"}
+                {step === 1 && "Request a code by email or enter one you already have."}
                 {step === 2 && "Enter the code and your new password"}
                 {step === 3 && "Password reset complete"}
               </p>
@@ -164,6 +170,14 @@ export default function ForgotPasswordPage() {
               >
                 {loading ? "Sending..." : "Send Reset Code"}
               </button>
+              <button
+                type="button"
+                disabled={loading}
+                onClick={useExistingCode}
+                className="w-full rounded-xl px-4 py-2 text-sm font-medium text-emerald-300 hover:text-white disabled:opacity-50"
+              >
+                Use a reset code
+              </button>
             </form>
           )}
 
@@ -188,7 +202,7 @@ export default function ForgotPasswordPage() {
                   required
                 />
                 <p className="mt-1.5 text-xs text-slate-500">
-                  Check your email at {email}
+                  Enter the six-digit code issued for {email}.
                 </p>
               </label>
 
@@ -237,7 +251,7 @@ export default function ForgotPasswordPage() {
                 onClick={() => { setStep(1); setStatus({ type: "", message: "" }); }}
                 className="w-full text-center text-sm text-slate-400 transition hover:text-white"
               >
-                Didn&apos;t receive the code? Go back
+                Change email or request another code
               </button>
             </form>
           )}

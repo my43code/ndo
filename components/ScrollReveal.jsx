@@ -46,12 +46,11 @@ export default function ScrollReveal({
   return (
     <div
       ref={ref}
-      className={className}
+      className={`motion-reduce:opacity-100! motion-reduce:transform-none! motion-reduce:transition-none! ${className}`}
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? "none" : transforms[direction],
         transition: `opacity ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
-        willChange: "opacity, transform",
       }}
     >
       {children}

@@ -13,7 +13,7 @@ export async function POST(req) {
   }
 
   if (!isResetEmailConfigured() || !getAuthSecret()) {
-    return NextResponse.json({ error: "Password reset email is currently unavailable. Contact your site administrator." }, { status: 503 });
+    return NextResponse.json({ error: "Email delivery is unavailable. If you have a reset code from the site operator, select Use a reset code." }, { status: 503 });
   }
 
   const response = NextResponse.json({

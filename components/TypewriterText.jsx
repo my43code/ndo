@@ -5,52 +5,54 @@ import { useEffect, useState } from "react";
 export default function TypewriterText({
   words = [],
   className = "",
-  typingSpeed = 100,
-  deletingSpeed = 50,
-  pauseDuration = 2000,
+  typingSpeed = 56,
+  deletingSpeed = 28,
+  pauseDuration = 2300,
 }) {
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [displayText, setDisplayText] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [{ wordIndex, length, deleting }, setAnimation] = useState(() => ({
+    wordIndex: 0,
+    length: words[0]?.length ?? 0,
+    deleting: false,
+  }));
+  const word = words[wordIndex] || words[0] || "";
 
   useEffect(() => {
-    if (words.length === 0) return;
+    if (words.length < 2) return;
 
-    const currentWord = words[currentWordIndex];
-
-    const timeout = setTimeout(
-      () => {
-        if (!isDeleting) {
-          setDisplayText(currentWord.slice(0, displayText.length + 1));
-          if (displayText.length + 1 === currentWord.length) {
-            setTimeout(() => setIsDeleting(true), pauseDuration);
-          }
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let timer;
+    function schedule() {
+      clearTimeout(timer);
+      if (motion.matches || document.hidden) return;
+      const complete = !deleting && length >= word.length;
+      const delay = complete ? pauseDuration : deleting ? deletingSpeed : typingSpeed;
+      timer = setTimeout(() => {
+        if (complete) {
+          setAnimation({ wordIndex, length, deleting: true });
+        } else if (deleting && length <= 1) {
+          setAnimation({ wordIndex: (wordIndex + 1) % words.length, length: 1, deleting: false });
         } else {
-          setDisplayText(currentWord.slice(0, displayText.length - 1));
-          if (displayText.length === 0) {
-            setIsDeleting(false);
-            setCurrentWordIndex((prev) => (prev + 1) % words.length);
-          }
+          setAnimation({ wordIndex, length: length + (deleting ? -1 : 1), deleting });
         }
-      },
-      isDeleting ? deletingSpeed : typingSpeed
-    );
-
-    return () => clearTimeout(timeout);
-  }, [
-    displayText,
-    isDeleting,
-    currentWordIndex,
-    words,
-    typingSpeed,
-    deletingSpeed,
-    pauseDuration,
-  ]);
+      }, delay);
+    }
+    schedule();
+    motion.addEventListener("change", schedule);
+    document.addEventListener("visibilitychange", schedule);
+    return () => {
+      clearTimeout(timer);
+      motion.removeEventListener("change", schedule);
+      document.removeEventListener("visibilitychange", schedule);
+    };
+  }, [wordIndex, word, length, deleting, words.length, typingSpeed, deletingSpeed, pauseDuration]);
 
   return (
     <span className={className}>
-      {displayText}
-      <span className="animate-blink">|</span>
+      <span className="sr-only motion-reduce:not-sr-only">{words[0]}</span>
+      <span className="typewriter-words motion-reduce:hidden" aria-hidden="true">
+        {words.map((label) => <span key={label} className="invisible">{label}</span>)}
+        <span>{word.slice(0, length)}<span className="animate-blink">|</span></span>
+      </span>
     </span>
   );
 }

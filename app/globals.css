@@ -15,12 +15,12 @@ body {
   color: #020617;
 }
 
-/* ═══ Hero entrance animations ═══ */
+/* ═══ Hero entrance animations — staggered cascade ═══ */
 
 @keyframes hero-fade-up {
   0% {
-    opacity: 0.85;
-    transform: translateY(8px);
+    opacity: 0;
+    transform: translateY(24px);
   }
   100% {
     opacity: 1;
@@ -121,26 +121,84 @@ body {
   }
 }
 
-/* ═══ Utility classes ═══ */
+@keyframes marquee-reverse {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes border-glow {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+  66% {
+    transform: translateY(4px) rotate(-1deg);
+  }
+}
+
+@keyframes dash-draw {
+  0% {
+    stroke-dashoffset: 100;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes count-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* ═══ Staggered hero entrance — real cascade ═══ */
 
 .hero-fade-up {
-  animation: hero-fade-up 0.24s ease-out both;
+  animation: hero-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.1s;
 }
 .hero-fade-up-delay-1 {
-  animation: hero-fade-up 0.24s ease-out both;
+  animation: hero-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.25s;
 }
 .hero-fade-up-delay-2 {
-  animation: hero-fade-up 0.24s ease-out both;
+  animation: hero-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.4s;
 }
 .hero-fade-up-delay-3 {
-  animation: hero-fade-up 0.24s ease-out both;
+  animation: hero-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.55s;
 }
 .hero-fade-up-delay-4 {
-  animation: hero-fade-up 0.24s ease-out both;
+  animation: hero-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.7s;
 }
 .hero-fade-up-delay-5 {
-  animation: hero-fade-up 0.24s ease-out both;
+  animation: hero-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.85s;
 }
+
 .hero-float {
   animation: hero-float 9s ease-in-out infinite;
 }
@@ -169,6 +227,15 @@ body {
 }
 .animate-marquee {
   animation: marquee 30s linear infinite;
+}
+.animate-marquee-reverse {
+  animation: marquee-reverse 35s linear infinite;
+}
+.animate-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
+}
+.animate-border-glow {
+  animation: border-glow 3s ease-in-out infinite;
 }
 
 /* ═══ Glowing card effect ═══ */
@@ -225,6 +292,13 @@ body {
   animation: hero-shimmer 4s linear infinite;
 }
 
+.gradient-text-static {
+  background: linear-gradient(135deg, #10b981, #34d399, #fbbf24);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 /* ═══ Glass morphism ═══ */
 
 .glass {
@@ -241,6 +315,43 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+/* ═══ Gradient border card ═══ */
+
+.gradient-border {
+  position: relative;
+  border-radius: 1.5rem;
+  overflow: hidden;
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0) 0%,
+    rgba(16, 185, 129, 0) 40%,
+    rgba(16, 185, 129, 0.3) 50%,
+    rgba(16, 185, 129, 0) 60%,
+    rgba(16, 185, 129, 0) 100%
+  );
+  background-size: 300% 300%;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.gradient-border:hover::before {
+  opacity: 1;
+  animation: gradient-shift 3s ease infinite;
+}
+
 /* ═══ Hover lift ═══ */
 
 .hover-lift {
@@ -254,19 +365,55 @@ body {
     0 0 30px rgba(16, 185, 129, 0.08);
 }
 
+/* ═══ Process step connector line ═══ */
+
+.process-connector {
+  position: relative;
+}
+
+.process-connector::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -24px;
+  width: 48px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(16, 185, 129, 0.4), transparent);
+}
+
+@media (max-width: 1024px) {
+  .process-connector::after {
+    display: none;
+  }
+}
+
+/* ═══ Noise texture overlay for premium feel ═══ */
+
+.noise-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
 /* ═══ Scrollbar ═══ */
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #020617;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 4px;
+  background: #1e293b;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -292,11 +439,35 @@ body {
   .animate-slide-in-right,
   .animate-scale-in,
   .animate-orbit,
-  .animate-marquee {
+  .animate-marquee,
+  .animate-marquee-reverse,
+  .animate-float-slow,
+  .animate-border-glow {
     animation: none;
   }
 
   .hover-lift:hover {
     transform: none;
   }
+
+  .gradient-border::before {
+    display: none;
+  }
+}
+
+.hero-grid {
+  pointer-events: none;
+  background-image: linear-gradient(to right, rgb(52 211 153 / 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(52 211 153 / 0.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at 68% 32%, black 12%, transparent 70%);
+}
+
+.typewriter-words {
+  display: inline-grid;
+  vertical-align: top;
+}
+
+.typewriter-words > span {
+  grid-area: 1 / 1;
 }

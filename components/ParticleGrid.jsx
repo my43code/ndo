@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-export default function ParticleGrid({ className = "" }) {
+export default function ParticleGrid({ className = "", interactive = false }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -16,6 +16,19 @@ export default function ParticleGrid({ className = "" }) {
     let width;
     let height;
     let particles = [];
+    let pointer;
+    const area = canvas.parentElement;
+    const finePointer = window.matchMedia("(pointer: fine)");
+
+    function trackPointer(event) {
+      if (!finePointer.matches || motion.matches || !inView) return;
+      const rect = canvas.getBoundingClientRect();
+      pointer = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+    }
+
+    function clearPointer() {
+      pointer = undefined;
+    }
 
     function resize() {
       width = canvas.offsetWidth;
@@ -50,6 +63,14 @@ export default function ParticleGrid({ className = "" }) {
 
       ctx.clearRect(0, 0, w, h);
 
+      if (pointer) {
+        const light = ctx.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, 210);
+        light.addColorStop(0, "rgba(52, 211, 153, 0.16)");
+        light.addColorStop(1, "rgba(52, 211, 153, 0)");
+        ctx.fillStyle = light;
+        ctx.fillRect(pointer.x - 210, pointer.y - 210, 420, 420);
+      }
+
       for (const p of particles) {
         p.x += p.vx;
         p.y += p.vy;
@@ -60,7 +81,8 @@ export default function ParticleGrid({ className = "" }) {
         if (p.y > h) p.y = 0;
 
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        const nearby = pointer && (pointer.x - p.x) ** 2 + (pointer.y - p.y) ** 2 < 160 ** 2;
+        ctx.arc(p.x, p.y, nearby ? p.radius * 1.7 : p.radius, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(16, 185, 129, ${p.opacity})`;
         ctx.fill();
       }
@@ -113,6 +135,10 @@ export default function ParticleGrid({ className = "" }) {
       updateAnimation();
     });
     visibilityObserver.observe(canvas);
+    if (interactive) {
+      area?.addEventListener("pointermove", trackPointer, { passive: true });
+      area?.addEventListener("pointerleave", clearPointer);
+    }
     motion.addEventListener("change", updateAnimation);
     document.addEventListener("visibilitychange", updateAnimation);
 
@@ -120,10 +146,12 @@ export default function ParticleGrid({ className = "" }) {
       stop();
       sizeObserver.disconnect();
       visibilityObserver.disconnect();
+      area?.removeEventListener("pointermove", trackPointer);
+      area?.removeEventListener("pointerleave", clearPointer);
       motion.removeEventListener("change", updateAnimation);
       document.removeEventListener("visibilitychange", updateAnimation);
     };
-  }, []);
+  }, [interactive]);
 
   return (
     <canvas

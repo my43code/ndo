@@ -1,3 +1,4 @@
+import { isObjectIdOrHexString } from "mongoose";
 
 import { readContentList } from "@/lib/contentImages";
 import { connectMongoDB } from "@/lib/mongodb";
@@ -17,7 +18,7 @@ export async function GET(request) {
 		const projects = summary
 		  ? await readContentList("projects", { includeContent: true, includeVideo: false })
 		  : await readFullList();
-		return NextResponse.json(projects);
+		return NextResponse.json(projects, { headers: { "Cache-Control": "no-store" } });
 	} catch (error) {
 		console.error("GET /api/projects error:", error);
 		return NextResponse.json({ message: "Failed to fetch projects" }, { status: 500 });
@@ -46,9 +47,11 @@ export async function DELETE(request) {
 
 	try {
 		const { id } = await request.json();
-		if (!id) return NextResponse.json({ message: "Missing id" }, { status: 400 });
+		if (!isObjectIdOrHexString(id)) {
+			return NextResponse.json({ message: "Invalid project ID" }, { status: 400 });
+		}
 		await connectMongoDB();
-		await Project.findByIdAndDelete(id);
+		await Project.deleteOne({ _id: id });
 		revalidateSite();
 		return NextResponse.json({ message: "Project deleted" });
 	} catch (error) {

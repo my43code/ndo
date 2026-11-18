@@ -40,3 +40,11 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 Set `NEXTAUTH_URL` to the URL used to open the app (for example, `http://localhost:3000` locally or the live HTTPS origin in production). Set `NEXTAUTH_SECRET`, `MONGODB_URI`, and the approved email in `ADMIN_EMAIL` or `ADMIN_EMAILS`. `ADMIN_PASSWORD` supplies the initial password until that account sets a password through the reset flow.
 
 To enable email password recovery, set `SMTP_USER` and `SMTP_PASS` on the application host. The default SMTP endpoint is Gmail on port 465. Set `SMTP_HOST` and `SMTP_PORT` for a different provider, and set `SMTP_FROM` if the provider uses a separate verified sender address.
+
+If SMTP is unavailable, an operator with the site's `MONGODB_URI` and `NEXTAUTH_SECRET` can issue a single-use, 15-minute code from a private terminal:
+
+```shell
+node --env-file-if-exists=.env.local scripts/create-admin-reset-code.mjs
+```
+
+If multiple admin emails are configured, pass the intended email as the final argument. On the reset page, enter that email and choose **Use a reset code**. Run the command with the same database and signing secret as the running website.

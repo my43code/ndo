@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronRight } from "lucide-react";
+import { Menu, X, ChevronRight, Sparkles } from "lucide-react";
 import Logo from "./Logo";
 
 const navLinks = [
@@ -54,7 +54,7 @@ export default function Navbar() {
               >
                 {link.name}
                 {isActive && (
-                  <span className="absolute -bottom-[13px] left-1/2 h-[2px] w-6 -translate-x-1/2 rounded-full bg-emerald-400" />
+                  <span className="absolute -bottom-[13px] left-1/2 h-[2px] w-8 -translate-x-1/2 rounded-full bg-gradient-to-r from-transparent via-emerald-400 to-transparent" />
                 )}
               </Link>
             );
@@ -62,8 +62,9 @@ export default function Navbar() {
 
           <Link
             href="/yutok"
-            className="ml-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 px-5 py-2 text-sm font-bold text-white shadow-lg shadow-emerald-500/20 transition-all duration-300 hover:shadow-emerald-500/40 hover:brightness-110"
+            className="ml-3 inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 px-5 py-2 text-sm font-bold text-white shadow-lg shadow-emerald-500/20 transition-all duration-300 hover:shadow-emerald-500/40 hover:brightness-110"
           >
+            <Sparkles size={14} />
             YuTok AI
           </Link>
         </nav>
@@ -114,6 +115,7 @@ export default function Navbar() {
               className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-500/20"
               onClick={() => setMenuPath(null)}
             >
+              <Sparkles size={14} />
               Try YuTok AI Assistant
             </Link>
           </div>

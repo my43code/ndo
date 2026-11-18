@@ -45,7 +45,7 @@ export default function SearchPage() {
         const [servicesRes, projectsRes, postsRes, aboutRes] =
           await Promise.all([
             fetch("/api/services?summary=1"),
-            fetch("/api/projects?summary=1"),
+            fetch("/api/projects?summary=1", { cache: "no-store" }),
             fetch("/api/posts?summary=1"),
             fetch("/api/about", { cache: "no-store" }),
           ]);
@@ -132,9 +132,6 @@ export default function SearchPage() {
         vision: about.vision,
         values: about.values,
         team: about.team?.map((member) => `${member.name} ${member.role}`),
-        projects: about.projects?.map(
-          (project) => `${project.title} ${project.description}`
-        ),
       },
       searchTerm
     );
@@ -293,7 +290,7 @@ export default function SearchPage() {
                       Your search matches content from the About page.
                     </p>
                     <p className="mt-2 text-slate-500">
-                      Try searching company mission, team names, project titles,
+                      Try searching company mission, team names,
                       or values.
                     </p>
                   </div>

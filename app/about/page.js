@@ -117,9 +117,7 @@ export default async function AboutPage() {
     getPosts(),
   ]);
 
-  const projectShowcase = (
-    about.projects && about.projects.length > 0 ? about.projects : projects
-  ).slice(0, 6);
+  const projectShowcase = projects.slice(0, 3);
   const serviceShowcase = services.slice(0, 3);
   const postShowcase = posts.slice(0, 3);
   const heroMedia =
@@ -229,7 +227,7 @@ export default async function AboutPage() {
                     </div>
                     <div className="rounded-xl bg-white/8 p-3 text-center">
                       <p className="text-2xl font-black text-emerald-400">
-                        <AnimatedCounter end={projectShowcase.length} />
+                        <AnimatedCounter end={projects.length} />
                       </p>
                       <p className="mt-1 text-[11px] uppercase tracking-[0.28em] text-slate-300">
                         Projects
@@ -262,7 +260,7 @@ export default async function AboutPage() {
             {
               icon: Sparkles,
               label: "Projects",
-              value: projectShowcase.length,
+              value: projects.length,
               detail: "Delivered solutions for real clients.",
             },
             {
@@ -444,7 +442,7 @@ export default async function AboutPage() {
           </ScrollReveal>
           {projectShowcase.length > 0 ? (
             <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-              {projectShowcase.slice(0, 3).map((project, i) => (
+              {projectShowcase.map((project, i) => (
                 <ScrollReveal
                   key={project._id || project.title}
                   delay={i * 100}
@@ -455,7 +453,7 @@ export default async function AboutPage() {
             </div>
           ) : (
             <div className="rounded-2xl border border-dashed border-white/10 p-8 text-center text-slate-500">
-              No project showcases available yet.
+              No projects published yet.
             </div>
           )}
         </div>

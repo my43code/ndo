@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-export default function ServiceCard({ service }) {
+export default function ServiceCard({ service, index }) {
   const {
     title = "Service",
     description = "",
@@ -18,8 +18,8 @@ export default function ServiceCard({ service }) {
   const isExternalLink = hasLink && /^https?:\/\//i.test(link);
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/8 bg-white/[0.03] transition-all duration-500 hover:-translate-y-2 hover:border-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/5">
-      <div className="relative aspect-[16/10] overflow-hidden bg-slate-950">
+    <article className="gradient-border group flex h-full flex-col overflow-hidden rounded-2xl border border-white/8 bg-white/[0.03] transition-all duration-500 hover:-translate-y-2 hover:border-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/5">
+      <div className="relative aspect-[16/10] overflow-hidden bg-slate-900">
         {isVideo ? (
           <video
             autoPlay
@@ -63,18 +63,18 @@ export default function ServiceCard({ service }) {
                 href={link}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-400 transition hover:text-emerald-300"
+                className="group/link inline-flex items-center gap-2 text-sm font-semibold text-emerald-400 transition hover:text-emerald-300"
               >
                 Explore this service
-                <ArrowRight size={14} />
+                <ArrowRight size={14} className="transition-transform group-hover/link:translate-x-1" />
               </a>
             ) : (
               <Link
                 href={link}
-                className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-400 transition hover:text-emerald-300"
+                className="group/link inline-flex items-center gap-2 text-sm font-semibold text-emerald-400 transition hover:text-emerald-300"
               >
                 Explore this service
-                <ArrowRight size={14} />
+                <ArrowRight size={14} className="transition-transform group-hover/link:translate-x-1" />
               </Link>
             )}
           </div>

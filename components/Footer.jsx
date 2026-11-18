@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ArrowRight } from "lucide-react";
 import { publicPages } from "@/lib/publicPages";
 import {
   FaFacebookF,
@@ -20,7 +20,7 @@ function SocialLink({ href, label, children }) {
       target={href?.startsWith("http") ? "_blank" : undefined}
       rel={href?.startsWith("http") ? "noreferrer" : undefined}
       aria-label={label}
-      className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/8 bg-white/[0.03] text-slate-400 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-500/30 hover:bg-emerald-500/15 hover:text-emerald-400 hover:shadow-lg hover:shadow-emerald-500/10"
+      className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/8 bg-white/[0.03] text-slate-400 transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-500/30 hover:bg-emerald-500/15 hover:text-emerald-400"
     >
       {children}
     </a>
@@ -36,7 +36,31 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-white/5 bg-slate-950 text-white">
-      <div className="mx-auto max-w-7xl px-6 py-16">
+      {/* CTA strip */}
+      <div className="border-b border-white/5">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-8 sm:flex-row">
+          <div>
+            <h3 className="text-lg font-bold text-white">
+              Ready to start your project?
+            </h3>
+            <p className="mt-1 text-sm text-slate-400">
+              Get in touch and let&apos;s build something great.
+            </p>
+          </div>
+          <Link
+            href="/contact"
+            className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-500/20 transition-all hover:shadow-emerald-500/40 hover:brightness-110"
+          >
+            Contact Us
+            <ArrowRight
+              size={14}
+              className="transition-transform group-hover:translate-x-1"
+            />
+          </Link>
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-7xl px-6 py-14">
         <div className="grid gap-12 md:grid-cols-[1.3fr_0.7fr_0.9fr]">
           {/* Brand column */}
           <div>
@@ -62,28 +86,28 @@ export default function Footer() {
               {tagline}
             </p>
 
-            <div className="mt-6 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap gap-2">
               <SocialLink href={contact.facebook} label="Facebook">
-                <FaFacebookF size={16} />
+                <FaFacebookF size={14} />
               </SocialLink>
               <SocialLink href={contact.linkedin} label="LinkedIn">
-                <FaLinkedinIn size={16} />
+                <FaLinkedinIn size={14} />
               </SocialLink>
               <SocialLink href={whatsappHref} label="WhatsApp">
-                <FaWhatsapp size={16} />
+                <FaWhatsapp size={14} />
               </SocialLink>
               <SocialLink
                 href={`mailto:${contact.email}`}
                 label="Email"
               >
-                <FaEnvelope size={16} />
+                <FaEnvelope size={14} />
               </SocialLink>
             </div>
           </div>
 
           <nav aria-label="Footer site map">
             <h4 className="text-xs font-bold uppercase tracking-[0.3em] text-emerald-400">
-              Site map
+              Navigation
             </h4>
             <div className="mt-5 flex flex-col gap-3 text-sm">
               {publicPages.map((link) => (
@@ -110,12 +134,12 @@ export default function Footer() {
               <p className="font-bold text-white">{companyName}</p>
 
               <div className="flex gap-3 text-slate-400">
-                <FaMapMarkerAlt className="mt-1 shrink-0 text-emerald-400/60" />
+                <FaMapMarkerAlt className="mt-1 shrink-0 text-emerald-400/60" size={12} />
                 <p>{contact.address}</p>
               </div>
 
               <div className="flex gap-3 text-slate-400">
-                <FaEnvelope className="mt-1 shrink-0 text-emerald-400/60" />
+                <FaEnvelope className="mt-1 shrink-0 text-emerald-400/60" size={12} />
                 <a
                   className="transition hover:text-white"
                   href={`mailto:${contact.email}`}
@@ -125,7 +149,7 @@ export default function Footer() {
               </div>
 
               <div className="flex gap-3 text-slate-400">
-                <FaPhoneAlt className="mt-1 shrink-0 text-emerald-400/60" />
+                <FaPhoneAlt className="mt-1 shrink-0 text-emerald-400/60" size={12} />
                 <a className="transition hover:text-white" href={phoneHref}>
                   {contact.phone}
                 </a>
@@ -138,11 +162,11 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-white/5 px-6 py-5">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 text-sm text-slate-500 sm:flex-row">
-          <p>&copy; 2026 Manu Maso. All rights reserved.</p>
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 text-xs text-slate-500 sm:flex-row">
+          <p>&copy; {new Date().getFullYear()} Manu Maso. All rights reserved.</p>
           <div className="flex gap-4">
-            <a href="/sitemap.xml" className="hover:text-white">XML sitemap</a>
-            <Link href="/login" prefetch={false} className="hover:text-white">Admin sign-in</Link>
+            <a href="/sitemap.xml" className="transition hover:text-white">XML sitemap</a>
+            <Link href="/login" prefetch={false} className="transition hover:text-white">Admin</Link>
           </div>
         </div>
       </div>

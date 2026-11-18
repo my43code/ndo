@@ -348,7 +348,9 @@ export default function AdminPage() {
       setStatus("Project deleted.");
       setEditingProjectId(null);
       setProjectForm(emptyProject);
-      await loadData();
+      setProjects((current) => current.filter((project) => project._id !== id));
+    } else {
+      setStatus("Failed to delete project. Try again.");
     }
   }
 
