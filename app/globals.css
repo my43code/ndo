@@ -19,14 +19,12 @@ body {
 
 @keyframes hero-fade-up {
   0% {
-    opacity: 0;
-    transform: translateY(28px);
-    filter: blur(10px);
+    opacity: 0.85;
+    transform: translateY(8px);
   }
   100% {
     opacity: 1;
     transform: translateY(0);
-    filter: blur(0);
   }
 }
 
@@ -126,22 +124,22 @@ body {
 /* ═══ Utility classes ═══ */
 
 .hero-fade-up {
-  animation: hero-fade-up 0.9s ease both;
+  animation: hero-fade-up 0.24s ease-out both;
 }
 .hero-fade-up-delay-1 {
-  animation: hero-fade-up 0.9s ease 0.14s both;
+  animation: hero-fade-up 0.24s ease-out both;
 }
 .hero-fade-up-delay-2 {
-  animation: hero-fade-up 0.9s ease 0.28s both;
+  animation: hero-fade-up 0.24s ease-out both;
 }
 .hero-fade-up-delay-3 {
-  animation: hero-fade-up 0.9s ease 0.42s both;
+  animation: hero-fade-up 0.24s ease-out both;
 }
 .hero-fade-up-delay-4 {
-  animation: hero-fade-up 0.9s ease 0.56s both;
+  animation: hero-fade-up 0.24s ease-out both;
 }
 .hero-fade-up-delay-5 {
-  animation: hero-fade-up 0.9s ease 0.7s both;
+  animation: hero-fade-up 0.24s ease-out both;
 }
 .hero-float {
   animation: hero-float 9s ease-in-out infinite;

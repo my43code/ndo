@@ -30,7 +30,7 @@ export default function ForgotPasswordPage() {
       if (!res.ok) {
         setStatus({ type: "error", message: data.error || "Failed to send code." });
       } else {
-        setStatus({ type: "success", message: "Reset code sent to your email. Check your inbox." });
+        setStatus({ type: "success", message: data.message });
         setStep(2);
       }
     } catch {
@@ -49,8 +49,8 @@ export default function ForgotPasswordPage() {
       return;
     }
 
-    if (newPassword.length < 6) {
-      setStatus({ type: "error", message: "Password must be at least 6 characters." });
+    if (newPassword.length < 12 || new TextEncoder().encode(newPassword).length > 72) {
+      setStatus({ type: "error", message: "Use at least 12 characters and at most 72 UTF-8 bytes." });
       return;
     }
 
@@ -122,6 +122,7 @@ export default function ForgotPasswordPage() {
           {/* Status */}
           {status.message && (
             <div
+              role={status.type === "error" ? "alert" : "status"}
               className={`mb-6 flex items-start gap-3 rounded-xl border px-4 py-3 text-sm ${
                 status.type === "success"
                   ? "border-emerald-400/30 bg-emerald-500/10 text-emerald-200"
@@ -151,6 +152,7 @@ export default function ForgotPasswordPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20"
                   placeholder="Enter your admin email"
+                  autoComplete="email"
                   required
                 />
               </label>
@@ -180,6 +182,9 @@ export default function ForgotPasswordPage() {
                   className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-center text-xl font-bold tracking-[0.5em] text-white outline-none transition placeholder:text-slate-600 placeholder:tracking-normal placeholder:text-sm placeholder:font-normal focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20"
                   placeholder="Enter 6-digit code"
                   maxLength={6}
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  pattern="[0-9]{6}"
                   required
                 />
                 <p className="mt-1.5 text-xs text-slate-500">
@@ -196,8 +201,9 @@ export default function ForgotPasswordPage() {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20"
-                  placeholder="At least 6 characters"
-                  minLength={6}
+                  placeholder="At least 12 characters"
+                  minLength={12}
+                  autoComplete="new-password"
                   required
                 />
               </label>
@@ -212,7 +218,8 @@ export default function ForgotPasswordPage() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20"
                   placeholder="Re-enter new password"
-                  minLength={6}
+                  minLength={12}
+                  autoComplete="new-password"
                   required
                 />
               </label>

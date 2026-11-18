@@ -3,7 +3,11 @@ import mongoose from "mongoose";
 const AdminPasswordSchema = new mongoose.Schema(
   {
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
-    passwordHash: { type: String, required: true },
+    passwordHash: String,
+    resetDigest: String,
+    resetExpiresAt: Date,
+    resetRequestedAt: Date,
+    resetAttempts: Number,
   },
   { timestamps: true }
 );

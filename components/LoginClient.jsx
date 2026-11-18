@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { getProviders, signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { FaGithub, FaGoogle } from "react-icons/fa";
 
 const errorMessages = {
   AccessDenied: "That account is not allowed to administer this site.",
   CredentialsSignin: "Invalid admin email or password.",
+  AdminSignInUnavailable: "Admin sign-in is temporarily unavailable. Please try again shortly.",
   Configuration: "Authentication is not configured yet.",
   OAuthAccountNotLinked:
     "Please sign in with the same provider you used before.",
@@ -32,10 +32,7 @@ function ProviderIcon({ id }) {
   return <span className="inline-block h-3 w-3 rounded-full bg-white" />;
 }
 
-export default function LoginClient({ initialErrorCode = "" }) {
-  const router = useRouter();
-  const { status } = useSession();
-  const [providers, setProviders] = useState(null);
+export default function LoginClient({ initialErrorCode = "", providers }) {
   const [loadingProvider, setLoadingProvider] = useState("");
   const [error, setError] = useState("");
   const [credentials, setCredentials] = useState({
@@ -43,39 +40,18 @@ export default function LoginClient({ initialErrorCode = "" }) {
     password: "",
   });
 
-  useEffect(() => {
-    if (status === "authenticated") {
-      router.replace("/admin");
-    }
-  }, [router, status]);
-
-  useEffect(() => {
-    let mounted = true;
-
-    async function loadProviders() {
-      const response = await getProviders();
-      if (mounted) {
-        setProviders(response || {});
-      }
-    }
-
-    loadProviders();
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  const providerList = providers
-    ? Object.values(providers).filter((provider) => provider.id !== "credentials")
-    : [];
   const urlError = getErrorMessage(initialErrorCode);
   const activeError = error || urlError;
 
   async function handleOAuthSignIn(providerId) {
     setLoadingProvider(providerId);
     setError("");
-    await signIn(providerId, { callbackUrl: "/admin" });
+    try {
+      await signIn(providerId, { callbackUrl: "/admin" });
+    } catch {
+      setError(errorMessages.default);
+      setLoadingProvider("");
+    }
   }
 
   async function handleCredentialsSubmit(event) {
@@ -83,30 +59,25 @@ export default function LoginClient({ initialErrorCode = "" }) {
     setLoadingProvider("credentials");
     setError("");
 
-    const result = await signIn("credentials", {
-      redirect: false,
-      callbackUrl: "/admin",
-      email: credentials.email,
-      password: credentials.password,
-    });
+    try {
+      const result = await signIn("credentials", {
+        redirect: false,
+        callbackUrl: "/admin",
+        email: credentials.email,
+        password: credentials.password,
+      });
 
-    if (result?.error) {
-      setError(getErrorMessage(result.error));
+      if (!result?.ok || result.error) {
+        setError(getErrorMessage(result?.error || "default"));
+        setLoadingProvider("");
+        return;
+      }
+
+      window.location.assign("/admin");
+    } catch {
+      setError(errorMessages.default);
       setLoadingProvider("");
-      return;
     }
-
-    router.push(result?.url || "/admin");
-  }
-
-  if (status === "loading") {
-    return (
-      <section className="min-h-[70vh] flex items-center justify-center bg-slate-950 px-6 text-white">
-        <div className="rounded-3xl border border-white/10 bg-white/5 px-6 py-4 backdrop-blur">
-          Checking your session...
-        </div>
-      </section>
-    );
   }
 
   return (
@@ -121,26 +92,12 @@ export default function LoginClient({ initialErrorCode = "" }) {
           </span>
 
           <h1 className="mt-6 text-4xl font-bold tracking-tight text-white md:text-6xl">
-            Sign in with Google, GitHub, or your admin password.
+            Admin sign-in
           </h1>
 
           <p className="mt-6 max-w-xl text-base leading-7 text-slate-300 md:text-lg">
-            Only approved admin accounts can enter the dashboard. Use the
-            provider buttons below, or sign in with your shared admin email and
-            password if that is how your team works.
+            Sign in to manage the Manu Maso website.
           </p>
-
-          <div className="mt-8 flex flex-wrap gap-3 text-sm text-slate-300">
-            <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">
-              OAuth protected
-            </span>
-            <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">
-              JWT session
-            </span>
-            <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">
-              Admin allowlist
-            </span>
-          </div>
 
           <div className="mt-10 flex items-center gap-4 text-sm text-slate-400">
             <Link
@@ -157,27 +114,23 @@ export default function LoginClient({ initialErrorCode = "" }) {
         <div className="rounded-[2rem] border border-white/10 bg-slate-900/70 p-6 shadow-2xl shadow-black/30 backdrop-blur-xl">
           <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-6">
             <h2 className="text-2xl font-semibold text-white">
-              Choose a sign-in method
+              Sign in
             </h2>
-            <p className="mt-2 text-sm leading-6 text-slate-300">
-              Use whichever provider your account belongs to. Unauthorized
-              accounts are blocked automatically.
-            </p>
 
             {activeError ? (
-              <div className="mt-5 rounded-2xl border border-rose-400/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+              <div role="alert" className="mt-5 rounded-2xl border border-rose-400/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
                 {activeError}
               </div>
             ) : null}
 
             <div className="mt-6 space-y-3">
-              {providerList.length > 0 ? (
-                providerList.map((provider) => (
+              {providers.length > 0 ? (
+                providers.map((provider) => (
                   <button
                     key={provider.id}
                     type="button"
                     onClick={() => handleOAuthSignIn(provider.id)}
-                    disabled={loadingProvider === provider.id}
+                    disabled={Boolean(loadingProvider)}
                     className="flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-left text-sm font-medium text-white transition hover:border-emerald-400/40 hover:bg-emerald-400/10 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     <span className="flex items-center gap-3">
@@ -196,27 +149,24 @@ export default function LoginClient({ initialErrorCode = "" }) {
                     </span>
                   </button>
                 ))
-              ) : (
-                <p className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-sm text-slate-300">
-                  No OAuth providers are configured yet.
-                </p>
-              )}
+              ) : null}
             </div>
 
-            <div className="my-6 flex items-center gap-4">
+            {providers.length > 0 && <div className="my-6 flex items-center gap-4">
               <span className="h-px flex-1 bg-white/10" />
               <span className="text-xs uppercase tracking-[0.3em] text-slate-400">
                 or
               </span>
               <span className="h-px flex-1 bg-white/10" />
-            </div>
+            </div>}
 
             <form onSubmit={handleCredentialsSubmit} className="space-y-4">
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-200">
+                <label className="mb-2 block text-sm font-medium text-slate-200" htmlFor="admin-email">
                   Admin email
                 </label>
                 <input
+                  id="admin-email"
                   type="email"
                   value={credentials.email}
                   onChange={(event) =>
@@ -233,10 +183,11 @@ export default function LoginClient({ initialErrorCode = "" }) {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-200">
+                <label className="mb-2 block text-sm font-medium text-slate-200" htmlFor="admin-password">
                   Password
                 </label>
                 <input
+                  id="admin-password"
                   type="password"
                   value={credentials.password}
                   onChange={(event) =>
@@ -254,7 +205,7 @@ export default function LoginClient({ initialErrorCode = "" }) {
 
               <button
                 type="submit"
-                disabled={loadingProvider === "credentials"}
+                disabled={Boolean(loadingProvider)}
                 className="flex w-full items-center justify-center rounded-2xl bg-emerald-500 px-4 py-3 font-semibold text-slate-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {loadingProvider === "credentials"

@@ -1,53 +1,45 @@
 import { NextResponse } from "next/server";
-import crypto from "crypto";
-import { connectMongoDB } from "@/lib/mongodb";
-import ResetToken from "@/models/ResetToken";
-import { isAdminEmail } from "@/lib/auth";
-import { sendResetCodeEmail } from "@/lib/email";
+import { randomInt } from "node:crypto";
+import { reservePasswordReset, clearPasswordReset } from "@/lib/adminPasswordStore";
+import { getAuthSecret, isAdminEmail, normalizeEmail } from "@/lib/adminAccess";
+import { digestResetCode, resetLifetimeMs } from "@/lib/passwordReset";
+import { isResetEmailConfigured, sendResetCodeEmail } from "@/lib/email";
 
 export async function POST(req) {
+  const body = await req.json().catch(() => null);
+  const email = typeof body?.email === "string" ? normalizeEmail(body.email) : "";
+  if (!email || email.length > 254 || !/^[^\s@]+@[^\s@]+$/.test(email)) {
+    return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
+  }
+
+  if (!isResetEmailConfigured() || !getAuthSecret()) {
+    return NextResponse.json({ error: "Password reset email is currently unavailable. Contact your site administrator." }, { status: 503 });
+  }
+
+  const response = NextResponse.json({
+    message: "If this is an admin account, a reset code will arrive by email.",
+  });
+  if (!isAdminEmail(email)) return response;
+
+  const code = String(randomInt(0, 1000000)).padStart(6, "0");
+  const resetDigest = digestResetCode(email, code);
+  const now = Date.now();
+
   try {
-    const { email } = await req.json();
-    const normalizedEmail = (email || "").trim().toLowerCase();
-
-    if (!normalizedEmail) {
-      return NextResponse.json({ error: "Email is required." }, { status: 400 });
-    }
-
-    if (!isAdminEmail(normalizedEmail)) {
-      return NextResponse.json(
-        { message: "If that email is an admin account, a reset code has been sent." },
-        { status: 200 }
-      );
-    }
-
-    await connectMongoDB();
-
-    const code = crypto.randomInt(100000, 999999).toString();
-    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
-
-    await ResetToken.deleteMany({ email: normalizedEmail, used: false });
-
-    await ResetToken.create({ email: normalizedEmail, code, expiresAt });
+    const requestedAt = new Date(now).toISOString();
+    const expiresAt = new Date(now + resetLifetimeMs).toISOString();
+    if (!await reservePasswordReset(email, resetDigest, requestedAt, expiresAt)) return response;
 
     try {
-      await sendResetCodeEmail(normalizedEmail, code);
-    } catch (emailError) {
-      console.error("Failed to send reset email:", emailError);
-      return NextResponse.json(
-        { error: "Failed to send email. Check SMTP settings." },
-        { status: 503 }
-      );
+      await sendResetCodeEmail(email, code);
+    } catch (error) {
+      await clearPasswordReset(email, resetDigest, requestedAt);
+      throw error;
     }
 
-    return NextResponse.json({
-      message: "If that email is an admin account, a reset code has been sent.",
-    });
+    return response;
   } catch (error) {
-    console.error("Forgot password error:", error);
-    return NextResponse.json(
-      { error: "Something went wrong. Please try again." },
-      { status: 500 }
-    );
+    console.error("Reset code delivery failed:", error.code || error.name);
+    return NextResponse.json({ error: "Password reset is temporarily unavailable. Try again in a minute." }, { status: 503 });
   }
 }

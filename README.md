@@ -34,3 +34,9 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Admin configuration
+
+Set `NEXTAUTH_URL` to the URL used to open the app (for example, `http://localhost:3000` locally or the live HTTPS origin in production). Set `NEXTAUTH_SECRET`, `MONGODB_URI`, and the approved email in `ADMIN_EMAIL` or `ADMIN_EMAILS`. `ADMIN_PASSWORD` supplies the initial password until that account sets a password through the reset flow.
+
+To enable email password recovery, set `SMTP_USER` and `SMTP_PASS` on the application host. The default SMTP endpoint is Gmail on port 465. Set `SMTP_HOST` and `SMTP_PORT` for a different provider, and set `SMTP_FROM` if the provider uses a separate verified sender address.

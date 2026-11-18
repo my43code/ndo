@@ -15,9 +15,10 @@ const navLinks = [
 ];
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [menuPath, setMenuPath] = useState(null);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const isOpen = menuPath === pathname;
 
   useEffect(() => {
     function handleScroll() {
@@ -26,10 +27,6 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  useEffect(() => {
-    setIsOpen(false);
-  }, [pathname]);
 
   return (
     <header
@@ -73,7 +70,7 @@ export default function Navbar() {
 
         <button
           className="rounded-xl border border-slate-700/50 bg-slate-800/50 p-2.5 text-slate-300 backdrop-blur transition hover:border-emerald-500/30 hover:bg-slate-800 hover:text-white md:hidden"
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => setMenuPath(isOpen ? null : pathname)}
           aria-expanded={isOpen}
           aria-label="Toggle navigation menu"
         >
@@ -99,7 +96,7 @@ export default function Navbar() {
                       ? "bg-emerald-500/10 text-emerald-400"
                       : "text-slate-300 hover:bg-white/5 hover:text-white"
                   }`}
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => setMenuPath(null)}
                 >
                   {link.name}
                   <ChevronRight
@@ -115,7 +112,7 @@ export default function Navbar() {
             <Link
               href="/yutok"
               className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-500/20"
-              onClick={() => setIsOpen(false)}
+              onClick={() => setMenuPath(null)}
             >
               Try YuTok AI Assistant
             </Link>

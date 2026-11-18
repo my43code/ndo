@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import LoadingState from "@/components/LoadingState";
 
@@ -141,9 +141,9 @@ function readFileAsDataUrl(file) {
 
 async function fetchDashboardData() {
   const [servicesRes, projectsRes, postsRes, aboutRes] = await Promise.all([
-    fetch("/api/services", { cache: "no-store" }),
-    fetch("/api/projects", { cache: "no-store" }),
-    fetch("/api/posts", { cache: "no-store" }),
+    fetch("/api/services?summary=1", { cache: "no-store" }),
+    fetch("/api/projects?summary=1", { cache: "no-store" }),
+    fetch("/api/posts?summary=1", { cache: "no-store" }),
     fetch("/api/about", { cache: "no-store" }),
   ]);
 
@@ -177,6 +177,26 @@ export default function AdminPage() {
   const [editingServiceId, setEditingServiceId] = useState(null);
   const [editingProjectId, setEditingProjectId] = useState(null);
   const [editingPostId, setEditingPostId] = useState(null);
+  const editRequest = useRef(null);
+
+  async function loadEditItem(collection, id) {
+    editRequest.current?.abort();
+    const controller = new AbortController();
+    editRequest.current = controller;
+    setStatus("Loading item?");
+    try {
+      const response = await fetch(`/api/${collection}/${id}`, {
+        cache: "no-store",
+        signal: controller.signal,
+      });
+      if (!response.ok) throw new Error("Could not load item");
+      const item = await response.json();
+      return controller.signal.aborted ? null : item;
+    } catch {
+      if (!controller.signal.aborted) setStatus("Could not load the item for editing.");
+      return null;
+    }
+  }
 
   function applyDashboardData({ services, projects, posts, about }) {
     setServices(services);
@@ -257,7 +277,9 @@ export default function AdminPage() {
     }
   }
 
-  function editService(item) {
+  async function editService(entry) {
+    const item = await loadEditItem("services", entry._id);
+    if (!item) return;
     setEditingServiceId(item._id);
     setServiceForm({
       title: item.title || "",
@@ -271,6 +293,7 @@ export default function AdminPage() {
   }
 
   function cancelServiceEdit() {
+    editRequest.current?.abort();
     setEditingServiceId(null);
     setServiceForm(emptyService);
   }
@@ -329,7 +352,9 @@ export default function AdminPage() {
     }
   }
 
-  function editProject(item) {
+  async function editProject(entry) {
+    const item = await loadEditItem("projects", entry._id);
+    if (!item) return;
     setEditingProjectId(item._id);
     setProjectForm({
       title: item.title || "",
@@ -343,6 +368,7 @@ export default function AdminPage() {
   }
 
   function cancelProjectEdit() {
+    editRequest.current?.abort();
     setEditingProjectId(null);
     setProjectForm(emptyProject);
   }
@@ -400,7 +426,9 @@ export default function AdminPage() {
     }
   }
 
-  function editPost(item) {
+  async function editPost(entry) {
+    const item = await loadEditItem("posts", entry._id);
+    if (!item) return;
     setEditingPostId(item._id);
     setPostForm({
       title: item.title || "",
@@ -412,6 +440,7 @@ export default function AdminPage() {
   }
 
   function cancelPostEdit() {
+    editRequest.current?.abort();
     setEditingPostId(null);
     setPostForm(emptyPost);
   }

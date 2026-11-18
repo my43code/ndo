@@ -1,14 +1,22 @@
 
+import { readContentList } from "@/lib/contentImages";
 import { connectMongoDB } from "@/lib/mongodb";
 import Project from "@/models/Project";
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/requireAdmin";
 import { revalidateSite } from "@/lib/revalidateSite";
 
-export async function GET() {
+async function readFullList() {
+  await connectMongoDB();
+  return Project.find().sort({ createdAt: -1 }).lean();
+}
+
+export async function GET(request) {
 	try {
-		await connectMongoDB();
-		const projects = await Project.find().sort({ createdAt: -1 });
+		const summary = request.nextUrl.searchParams.get("summary") === "1";
+		const projects = summary
+		  ? await readContentList("projects", { includeContent: true, includeVideo: false })
+		  : await readFullList();
 		return NextResponse.json(projects);
 	} catch (error) {
 		console.error("GET /api/projects error:", error);

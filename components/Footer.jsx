@@ -1,5 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
+import { publicPages } from "@/lib/publicPages";
 import {
   FaFacebookF,
   FaLinkedinIn,
@@ -79,30 +81,25 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Navigation column */}
-          <div>
+          <nav aria-label="Footer site map">
             <h4 className="text-xs font-bold uppercase tracking-[0.3em] text-emerald-400">
-              Explore
+              Site map
             </h4>
             <div className="mt-5 flex flex-col gap-3 text-sm">
-              {[
-                { name: "About Us", href: "/about" },
-                { name: "Services", href: "/services" },
-                { name: "Updates", href: "/updates" },
-                { name: "Contact Us", href: "/contact" },
-                { name: "YuTok AI", href: "/yutok" },
-                { name: "Admin", href: "/login" },
-              ].map((link) => (
+              {publicPages.map((link) => (
                 <Link
-                  key={link.name}
+                  key={link.title}
                   href={link.href}
                   className="text-slate-400 transition-colors hover:text-white"
                 >
-                  {link.name}
+                  {link.title}
                 </Link>
               ))}
+              <Link href="/site-map" className="inline-flex items-center gap-1 font-semibold text-emerald-300 hover:text-white">
+                Full site map <ArrowUpRight size={14} aria-hidden="true" />
+              </Link>
             </div>
-          </div>
+          </nav>
 
           {/* Contact column */}
           <div>
@@ -143,9 +140,10 @@ export default function Footer() {
       <div className="border-t border-white/5 px-6 py-5">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 text-sm text-slate-500 sm:flex-row">
           <p>&copy; 2026 Manu Maso. All rights reserved.</p>
-          <p className="text-xs text-slate-600">
-            Powered by Next.js, React & MongoDB
-          </p>
+          <div className="flex gap-4">
+            <a href="/sitemap.xml" className="hover:text-white">XML sitemap</a>
+            <Link href="/login" prefetch={false} className="hover:text-white">Admin sign-in</Link>
+          </div>
         </div>
       </div>
     </footer>

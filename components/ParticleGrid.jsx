@@ -7,23 +7,30 @@ export default function ParticleGrid({ className = "" }) {
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (!canvas) return;
 
     const ctx = canvas.getContext("2d");
+    if (!ctx) return;
     let animationId;
+    let width;
+    let height;
     let particles = [];
 
     function resize() {
-      canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-      canvas.height = canvas.offsetHeight * window.devicePixelRatio;
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      width = canvas.offsetWidth;
+      height = canvas.offsetHeight;
+      const pixelRatio = Math.min(window.devicePixelRatio, 1.5);
+      canvas.width = width * pixelRatio;
+      canvas.height = height * pixelRatio;
+      ctx.scale(pixelRatio, pixelRatio);
     }
 
     function createParticles() {
       particles = [];
-      const w = canvas.offsetWidth;
-      const h = canvas.offsetHeight;
-      const count = Math.min(80, Math.floor((w * h) / 12000));
+      const w = width;
+      const h = height;
+      const count = Math.min(55, Math.floor((w * h) / 12000));
 
       for (let i = 0; i < count; i++) {
         particles.push({
@@ -38,8 +45,8 @@ export default function ParticleGrid({ className = "" }) {
     }
 
     function draw() {
-      const w = canvas.offsetWidth;
-      const h = canvas.offsetHeight;
+      const w = width;
+      const h = height;
 
       ctx.clearRect(0, 0, w, h);
 
@@ -78,18 +85,43 @@ export default function ParticleGrid({ className = "" }) {
       animationId = requestAnimationFrame(draw);
     }
 
-    resize();
-    createParticles();
-    draw();
+    function stop() {
+      cancelAnimationFrame(animationId);
+      animationId = undefined;
+    }
 
-    window.addEventListener("resize", () => {
+    let inView = false;
+    function updateAnimation() {
+      if (inView && !motion.matches && !document.hidden) {
+        if (animationId === undefined) draw();
+      } else {
+        stop();
+        if (motion.matches) ctx.clearRect(0, 0, width, height);
+      }
+    }
+
+    function handleResize() {
       resize();
       createParticles();
+    }
+
+    handleResize();
+    const sizeObserver = new ResizeObserver(handleResize);
+    sizeObserver.observe(canvas);
+    const visibilityObserver = new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      updateAnimation();
     });
+    visibilityObserver.observe(canvas);
+    motion.addEventListener("change", updateAnimation);
+    document.addEventListener("visibilitychange", updateAnimation);
 
     return () => {
-      cancelAnimationFrame(animationId);
-      window.removeEventListener("resize", resize);
+      stop();
+      sizeObserver.disconnect();
+      visibilityObserver.disconnect();
+      motion.removeEventListener("change", updateAnimation);
+      document.removeEventListener("visibilitychange", updateAnimation);
     };
   }, []);
 

@@ -4,6 +4,23 @@ import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/requireAdmin";
 import { revalidateSite } from "@/lib/revalidateSite";
 
+export async function GET(request, { params }) {
+  const authError = await requireAdmin(request);
+  if (authError) return authError;
+
+  try {
+    const { id } = await params;
+    await connectMongoDB();
+    const item = await Project.findById(id).lean();
+    return item
+      ? NextResponse.json(item)
+      : NextResponse.json({ message: "Item not found" }, { status: 404 });
+  } catch (error) {
+    console.error("Could not load item:", error.name);
+    return NextResponse.json({ message: "Failed to load item" }, { status: 500 });
+  }
+}
+
 export async function PUT(request, { params }) {
   const authError = await requireAdmin(request);
   if (authError) return authError;

@@ -9,6 +9,7 @@ export default function AnimatedCounter({
   prefix = "",
   className = "",
 }) {
+  const target = typeof end === "number" ? end : parseInt(end, 10) || 0;
   const [count, setCount] = useState(0);
   const [started, setStarted] = useState(false);
   const ref = useRef(null);
@@ -34,11 +35,7 @@ export default function AnimatedCounter({
   useEffect(() => {
     if (!started) return;
 
-    const target = typeof end === "number" ? end : parseInt(end, 10) || 0;
-    if (target === 0) {
-      setCount(0);
-      return;
-    }
+    if (target === 0) return;
 
     const steps = 60;
     const increment = target / steps;
@@ -47,7 +44,7 @@ export default function AnimatedCounter({
 
     const timer = setInterval(() => {
       current += increment;
-      if (current >= target) {
+      if (Math.abs(current) >= Math.abs(target)) {
         setCount(target);
         clearInterval(timer);
       } else {
@@ -56,12 +53,12 @@ export default function AnimatedCounter({
     }, stepDuration);
 
     return () => clearInterval(timer);
-  }, [started, end, duration]);
+  }, [started, target, duration]);
 
   return (
     <span ref={ref} className={className}>
       {prefix}
-      {count}
+      {target === 0 ? 0 : count}
       {suffix}
     </span>
   );

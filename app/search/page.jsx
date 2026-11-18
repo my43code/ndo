@@ -44,9 +44,9 @@ export default function SearchPage() {
       try {
         const [servicesRes, projectsRes, postsRes, aboutRes] =
           await Promise.all([
-            fetch("/api/services", { cache: "no-store" }),
-            fetch("/api/projects", { cache: "no-store" }),
-            fetch("/api/posts", { cache: "no-store" }),
+            fetch("/api/services?summary=1"),
+            fetch("/api/projects?summary=1"),
+            fetch("/api/posts?summary=1"),
             fetch("/api/about", { cache: "no-store" }),
           ]);
 
@@ -90,7 +90,6 @@ export default function SearchPage() {
           description: item.description,
           shortDescription: item.shortDescription,
           link: item.link,
-          video: item.video,
         },
         searchTerm
       )
@@ -105,7 +104,6 @@ export default function SearchPage() {
           description: item.description,
           shortDescription: item.shortDescription,
           link: item.link,
-          video: item.video,
         },
         searchTerm
       )

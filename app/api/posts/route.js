@@ -1,13 +1,21 @@
+import { readContentList } from "@/lib/contentImages";
 import { connectMongoDB } from "@/lib/mongodb";
 import Post from "@/models/Post";
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/requireAdmin";
 import { revalidateSite } from "@/lib/revalidateSite";
 
-export async function GET() {
+async function readFullList() {
+  await connectMongoDB();
+  return Post.find().sort({ createdAt: -1 }).lean();
+}
+
+export async function GET(request) {
   try {
-    await connectMongoDB();
-    const posts = await Post.find().sort({ createdAt: -1 });
+    const summary = request.nextUrl.searchParams.get("summary") === "1";
+    const posts = summary
+      ? await readContentList("posts", { includeContent: true, includeVideo: false })
+      : await readFullList();
     return NextResponse.json({ posts }, { status: 200 });
   } catch (error) {
     console.error("GET /api/posts error:", error);

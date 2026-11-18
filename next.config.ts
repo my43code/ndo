@@ -5,7 +5,11 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    formats: ["image/avif", "image/webp"],
+    formats: ["image/webp"],
+    localPatterns: [
+      { pathname: "/api/media/**" },
+      { pathname: "/**", search: "" },
+    ],
   },
   compress: true,
   poweredByHeader: false,

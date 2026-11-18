@@ -1,13 +1,21 @@
+import { readContentList } from "@/lib/contentImages";
 import { connectMongoDB } from "@/lib/mongodb";
 import Service from "@/models/Service";
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/requireAdmin";
 import { revalidateSite } from "@/lib/revalidateSite";
 
-export async function GET() {
+async function readFullList() {
+  await connectMongoDB();
+  return Service.find().sort({ createdAt: -1 }).lean();
+}
+
+export async function GET(request) {
   try {
-    await connectMongoDB();
-    const services = await Service.find().sort({ createdAt: -1 });
+    const summary = request.nextUrl.searchParams.get("summary") === "1";
+    const services = summary
+      ? await readContentList("services", { includeContent: true, includeVideo: false })
+      : await readFullList();
     return NextResponse.json(services);
   } catch (error) {
     console.error("GET /api/services error:", error);

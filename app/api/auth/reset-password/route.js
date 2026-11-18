@@ -1,71 +1,47 @@
 import { NextResponse } from "next/server";
+import { timingSafeEqual } from "node:crypto";
 import bcrypt from "bcryptjs";
-import { connectMongoDB } from "@/lib/mongodb";
-import AdminPassword from "@/models/AdminPassword";
-import ResetToken from "@/models/ResetToken";
-import { isAdminEmail } from "@/lib/auth";
+import { countPasswordResetAttempt, clearPasswordReset } from "@/lib/adminPasswordStore";
+import { getAuthSecret, isAdminEmail, normalizeEmail } from "@/lib/adminAccess";
+import { digestResetCode } from "@/lib/passwordReset";
 
 export async function POST(req) {
+  const body = await req.json().catch(() => null);
+  const email = typeof body?.email === "string" ? normalizeEmail(body.email) : "";
+  const code = typeof body?.code === "string" ? body.code.trim() : "";
+  const newPassword = body?.newPassword;
+
+  if (!email || email.length > 254 || !/^\d{6}$/.test(code)) {
+    return NextResponse.json({ error: "Enter your email and six-digit reset code." }, { status: 400 });
+  }
+
+  if (typeof newPassword !== "string" || newPassword.length < 12 || Buffer.byteLength(newPassword, "utf8") > 72) {
+    return NextResponse.json({ error: "Use at least 12 characters and at most 72 UTF-8 bytes." }, { status: 400 });
+  }
+
+  const invalidCode = () => NextResponse.json(
+    { error: "That reset code is invalid, expired or out of attempts. Request a new code if needed." },
+    { status: 403 }
+  );
+  if (!isAdminEmail(email) || !getAuthSecret()) return invalidCode();
+
   try {
-    const { email, code, newPassword } = await req.json();
-    const normalizedEmail = (email || "").trim().toLowerCase();
+    const pending = await countPasswordResetAttempt(email);
 
-    if (!normalizedEmail || !code || !newPassword) {
-      return NextResponse.json(
-        { error: "All fields are required." },
-        { status: 400 }
-      );
-    }
-
-    if (!isAdminEmail(normalizedEmail)) {
-      return NextResponse.json(
-        { error: "This email is not an authorized admin account." },
-        { status: 403 }
-      );
-    }
-
-    if (newPassword.length < 6) {
-      return NextResponse.json(
-        { error: "Password must be at least 6 characters." },
-        { status: 400 }
-      );
-    }
-
-    await connectMongoDB();
-
-    const token = await ResetToken.findOne({
-      email: normalizedEmail,
-      code: code.trim(),
-      used: false,
-      expiresAt: { $gt: new Date() },
-    });
-
-    if (!token) {
-      return NextResponse.json(
-        { error: "Invalid or expired reset code. Request a new one." },
-        { status: 403 }
-      );
+    const resetDigest = digestResetCode(email, code);
+    if (pending?.resetDigest?.length !== resetDigest.length ||
+        !timingSafeEqual(Buffer.from(pending.resetDigest, "ascii"), Buffer.from(resetDigest, "ascii"))) {
+      return invalidCode();
     }
 
     const passwordHash = await bcrypt.hash(newPassword, 12);
+    if (!await clearPasswordReset(email, resetDigest, pending.resetRequestedAt, passwordHash)) {
+      return invalidCode();
+    }
 
-    await AdminPassword.findOneAndUpdate(
-      { email: normalizedEmail },
-      { email: normalizedEmail, passwordHash },
-      { upsert: true, new: true }
-    );
-
-    token.used = true;
-    await token.save();
-
-    return NextResponse.json({
-      message: "Password reset successfully. You can now sign in.",
-    });
+    return NextResponse.json({ message: "Password reset successfully. You can now sign in." });
   } catch (error) {
-    console.error("Password reset error:", error);
-    return NextResponse.json(
-      { error: "Something went wrong. Please try again." },
-      { status: 500 }
-    );
+    console.error("Password reset failed:", error.code || error.name);
+    return NextResponse.json({ error: "Password reset is temporarily unavailable. Please try again." }, { status: 503 });
   }
 }
