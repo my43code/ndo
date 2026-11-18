@@ -1,3 +1,4 @@
+import { getServices } from "@/lib/siteContent";
 import Link from "next/link";
 import { ArrowRight, Layers3, Sparkles, ShieldCheck, Zap } from "lucide-react";
 import SectionTitle from "@/components/SectionTitle";
@@ -6,9 +7,6 @@ import MediaFrame from "@/components/MediaFrame";
 import ScrollReveal from "@/components/ScrollReveal";
 import AnimatedCounter from "@/components/AnimatedCounter";
 import ParticleGrid from "@/components/ParticleGrid";
-import { unstable_cache } from "next/cache";
-import { connectMongoDB } from "@/lib/mongodb";
-import Service from "@/models/Service";
 
 export const revalidate = 3600;
 
@@ -16,22 +14,6 @@ export const metadata = {
   title: "Services",
   description: "Explore Manu Maso's professional services — web development, mobile apps, database systems, cloud solutions, cybersecurity, and IT support.",
 };
-
-const getServices = unstable_cache(
-  async () => {
-    try {
-      await connectMongoDB();
-      return JSON.parse(JSON.stringify(await Service.find().sort({ createdAt: -1 }).lean()));
-    } catch (error) {
-    if (process.env.npm_lifecycle_event !== "build") {
-      console.error("Failed to load services:", error);
-    }
-    return [];
-  }
-  },
-  ["services-list"],
-  { revalidate: 3600 }
-);
 
 export default async function ServicesPage() {
   const services = await getServices();

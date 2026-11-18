@@ -1,3 +1,4 @@
+import { getServices, getProjects } from "@/lib/siteContent";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -13,10 +14,6 @@ import {
   Cloud,
   Headphones,
 } from "lucide-react";
-import { unstable_cache } from "next/cache";
-import { connectMongoDB } from "@/lib/mongodb";
-import Service from "@/models/Service";
-import Project from "@/models/Project";
 import SectionTitle from "@/components/SectionTitle";
 import ScrollReveal from "@/components/ScrollReveal";
 import AnimatedCounter from "@/components/AnimatedCounter";
@@ -26,32 +23,6 @@ import GlowingCard from "@/components/GlowingCard";
 import FloatingActions from "@/components/FloatingActions";
 
 export const revalidate = 3600;
-
-const getServices = unstable_cache(
-  async () => {
-    try {
-      await connectMongoDB();
-      return JSON.parse(JSON.stringify(await Service.find().sort({ createdAt: -1 }).lean()));
-    } catch {
-      return [];
-    }
-  },
-  ["home-services"],
-  { revalidate: 3600 }
-);
-
-const getProjects = unstable_cache(
-  async () => {
-    try {
-      await connectMongoDB();
-      return JSON.parse(JSON.stringify(await Project.find().sort({ createdAt: -1 }).lean()));
-    } catch {
-      return [];
-    }
-  },
-  ["home-projects"],
-  { revalidate: 3600 }
-);
 
 const capabilities = [
   {
@@ -120,17 +91,6 @@ export default async function HomePage() {
       {/* ═══ HERO ═══ */}
       <section className="relative min-h-screen overflow-hidden bg-slate-950">
         <div className="absolute inset-0">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="h-full w-full object-cover opacity-40"
-            preload="auto"
-            aria-hidden="true"
-          >
-            <source src="/video/tech-video.mp4" type="video/mp4" />
-          </video>
           <div className="absolute inset-0 bg-[linear-gradient(130deg,rgba(2,6,23,0.97)_0%,rgba(15,23,42,0.75)_48%,rgba(6,78,59,0.5)_100%)]" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_20%,rgba(16,185,129,0.2),transparent_50%),radial-gradient(ellipse_at_80%_80%,rgba(250,204,21,0.08),transparent_40%)]" />
         </div>
@@ -217,7 +177,7 @@ export default async function HomePage() {
                     width={600}
                     height={500}
                     className="h-auto w-full object-contain p-8"
-                    priority
+                    sizes="(min-width: 1280px) 576px, (min-width: 1024px) 45vw, 1px"
                   />
                 </div>
 
@@ -330,6 +290,7 @@ export default async function HomePage() {
                           src={service.image || "/images/project1.webp"}
                           alt={service.title || "Service"}
                           fill
+                          sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
                           className="object-cover transition duration-700 group-hover:scale-110"
                         />
                       )}
@@ -448,6 +409,7 @@ export default async function HomePage() {
                           src={project.image || "/images/project1.webp"}
                           alt={project.title || "Project"}
                           fill
+                          sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
                           className="object-cover transition duration-700 group-hover:scale-110"
                         />
                       )}

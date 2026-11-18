@@ -1,17 +1,14 @@
 import { notFound } from "next/navigation";
+import { readPublicPost } from "@/lib/contentImages";
 import Link from "next/link";
-import { connectMongoDB } from "@/lib/mongodb";
-import Post from "@/models/Post";
 import Image from "next/image";
 import { ArrowLeft, Calendar } from "lucide-react";
 
-export const revalidate = 60;
+export const revalidate = 300;
 
 async function getPost(id) {
   try {
-    await connectMongoDB();
-    const post = await Post.findById(id).lean();
-    return post;
+    return await readPublicPost(id);
   } catch (error) {
     if (process.env.npm_lifecycle_event !== "build") {
       console.error("Failed to load post:", error);
@@ -67,7 +64,8 @@ export default async function PostDetailPage({ params }) {
               alt={post.title || "Post image"}
               fill
               className="object-cover"
-              priority
+              sizes="(max-width: 1024px) 100vw, 976px"
+              fetchPriority="high"
             />
           </div>
         ) : null}

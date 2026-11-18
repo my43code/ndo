@@ -7,6 +7,8 @@ import { getSiteAbout } from "@/lib/siteContent";
 import { getTelHref, getWhatsAppHref } from "@/lib/contactLinks";
 import { Mail, MapPin, Phone, Clock, MessageCircle } from "lucide-react";
 
+export const revalidate = 3600;
+
 export const metadata = {
   title: "Contact Us",
   description: "Get in touch with Manu Maso. Reach us by email at info@manumaso.com or call +675 78337326. Located in Port Moresby, Papua New Guinea.",

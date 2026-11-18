@@ -1,4 +1,5 @@
-export const revalidate = 60;
+import { getPosts } from "@/lib/siteContent";
+export const revalidate = 300;
 
 export const metadata = {
   title: "Updates",
@@ -10,28 +11,10 @@ import SectionTitle from "@/components/SectionTitle";
 import PostCard from "@/components/PostCard";
 import ScrollReveal from "@/components/ScrollReveal";
 import ParticleGrid from "@/components/ParticleGrid";
-import { unstable_cache } from "next/cache";
-import { connectMongoDB } from "@/lib/mongodb";
-import Post from "@/models/Post";
 import { Newspaper, ArrowRight } from "lucide-react";
 
-const getPosts = unstable_cache(
-  async () => {
-    try {
-      await connectMongoDB();
-      const posts = await Post.find().sort({ createdAt: -1 }).lean();
-      return { posts: JSON.parse(JSON.stringify(posts)) };
-    } catch {
-      return { posts: [] };
-    }
-  },
-  ["updates-posts"],
-  { revalidate: 60 }
-);
-
 export default async function UpdatesPage() {
-  const data = await getPosts();
-  const posts = data?.posts || [];
+  const posts = await getPosts();
   const latestPost = posts[0];
 
   return (

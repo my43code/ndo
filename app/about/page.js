@@ -1,3 +1,4 @@
+import { getSiteAbout, getServices, getProjects, getPosts } from "@/lib/siteContent";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -16,12 +17,6 @@ import MediaFrame from "@/components/MediaFrame";
 import ScrollReveal from "@/components/ScrollReveal";
 import AnimatedCounter from "@/components/AnimatedCounter";
 import ParticleGrid from "@/components/ParticleGrid";
-import { unstable_cache } from "next/cache";
-import { getSiteAbout } from "@/lib/siteContent";
-import { connectMongoDB } from "@/lib/mongodb";
-import Project from "@/models/Project";
-import Post from "@/models/Post";
-import Service from "@/models/Service";
 
 export const revalidate = 3600;
 
@@ -29,39 +24,6 @@ export const metadata = {
   title: "About Us",
   description: "Learn about Manu Maso — our mission, vision, team, and the digital solutions we build for businesses in Papua New Guinea.",
 };
-
-const getServices = unstable_cache(
-  async () => {
-    try {
-      await connectMongoDB();
-      return JSON.parse(JSON.stringify(await Service.find().sort({ createdAt: -1 }).lean()));
-    } catch { return []; }
-  },
-  ["about-services"],
-  { revalidate: 3600 }
-);
-
-const getProjects = unstable_cache(
-  async () => {
-    try {
-      await connectMongoDB();
-      return JSON.parse(JSON.stringify(await Project.find().sort({ createdAt: -1 }).lean()));
-    } catch { return []; }
-  },
-  ["about-projects"],
-  { revalidate: 3600 }
-);
-
-const getPosts = unstable_cache(
-  async () => {
-    try {
-      await connectMongoDB();
-      return JSON.parse(JSON.stringify(await Post.find().sort({ createdAt: -1 }).lean()));
-    } catch { return []; }
-  },
-  ["about-posts"],
-  { revalidate: 3600 }
-);
 
 function ValueChip({ value }) {
   return (
