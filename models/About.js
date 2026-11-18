@@ -13,6 +13,7 @@ const TeamMemberSchema = new mongoose.Schema(
   {
     name: String,
     role: String,
+    bio: String,
     image: String,
     video: String,
   },

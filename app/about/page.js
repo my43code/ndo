@@ -104,6 +104,7 @@ function TeamCard({ member }) {
         <p className="mt-2 text-sm leading-7 text-slate-400">
           {member?.role || "Role"}
         </p>
+        {member?.bio && <p className="mt-3 whitespace-pre-line text-sm leading-6 text-slate-300">{member.bio}</p>}
       </div>
     </article>
   );
@@ -384,7 +385,7 @@ export default async function AboutPage() {
 
       {/* ═══ TEAM ═══ */}
       {about.team.length > 0 ? (
-        <section className="border-t border-white/5 px-6 py-20">
+        <section id="team" className="scroll-mt-24 border-t border-white/5 px-6 py-20">
           <div className="mx-auto max-w-7xl">
             <ScrollReveal>
               <SectionTitle

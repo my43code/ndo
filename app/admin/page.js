@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
+import TeamEditor from "@/components/TeamEditor";
 import LoadingState from "@/components/LoadingState";
 
 const emptyService = {
@@ -472,7 +473,9 @@ export default function AdminPage() {
   async function saveAbout(e) {
     e.preventDefault();
     const payload = {
-      ...about,
+      history: about.history,
+      mission: about.mission,
+      vision: about.vision,
       values: about.values.filter((v) => v.trim() !== ""),
     };
     const res = await fetch("/api/about", {
@@ -494,6 +497,7 @@ export default function AdminPage() {
     { id: "projects", label: "Projects" },
     { id: "posts", label: "Posts" },
     { id: "about", label: "About" },
+    { id: "team", label: "Team" },
   ];
 
   return (
@@ -878,6 +882,12 @@ export default function AdminPage() {
                 )}
               </div>
             </div>
+          )}
+
+          {tab === "team" && (
+            <TeamEditor about={about} onPublished={(saved) => setAbout((current) => ({
+              ...current, team: saved.team, updatedAt: saved.updatedAt,
+            }))} />
           )}
 
           {tab === "about" && (
