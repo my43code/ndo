@@ -4,14 +4,17 @@ import ScrollReveal from "@/components/ScrollReveal";
 import ParticleGrid from "@/components/ParticleGrid";
 import Image from "next/image";
 import { getSiteAbout } from "@/lib/siteContent";
+import { createDefaultContact } from "@/lib/siteDefaults";
 import { getTelHref, getWhatsAppHref } from "@/lib/contactLinks";
 import { Mail, MapPin, Phone, Clock, MessageCircle } from "lucide-react";
 
 export const revalidate = 3600;
 
+const contactEmail = createDefaultContact().email;
+
 export const metadata = {
   title: "Contact Us",
-  description: "Get in touch with Manu Maso. Reach us by email at info@manumaso.com or call +675 78337326. Located in Port Moresby, Papua New Guinea.",
+  description: `Get in touch with Manu Maso. Reach us by email at ${contactEmail} or call +675 78337326. Located in Port Moresby, Papua New Guinea.`,
 };
 
 function DetailRow({ icon: Icon, label, value, href }) {
@@ -139,8 +142,8 @@ export default async function ContactPage() {
                 <DetailRow
                   icon={Mail}
                   label="Email"
-                  value={contact.email || "info@manumaso.com"}
-                  href={`mailto:${contact.email || "info@manumaso.com"}`}
+                  value={contactEmail}
+                  href={`mailto:${contactEmail}`}
                 />
                 <DetailRow
                   icon={Phone}
@@ -165,7 +168,7 @@ export default async function ContactPage() {
 
                 <div className="flex flex-wrap gap-3 pt-3">
                   <a
-                    href={`mailto:${contact.email || "info@manumaso.com"}`}
+                    href={`mailto:${contactEmail}`}
                     className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-500/20 transition-all hover:shadow-emerald-500/40 hover:brightness-110"
                   >
                     Email us

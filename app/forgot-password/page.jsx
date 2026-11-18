@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { KeyRound, ArrowLeft, CheckCircle2, AlertCircle, Mail, ShieldCheck } from "lucide-react";
 
 export default function ForgotPasswordPage() {
@@ -89,13 +88,13 @@ export default function ForgotPasswordPage() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(16,185,129,0.2),_transparent_30%),radial-gradient(circle_at_bottom_left,_rgba(250,204,21,0.1),_transparent_26%)]" />
 
       <div className="relative mx-auto flex min-h-screen max-w-lg flex-col justify-center px-6 py-16">
-        <Link
+        <a
           href="/login"
           className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-emerald-400 transition hover:text-emerald-300"
         >
           <ArrowLeft size={16} />
           Back to Login
-        </Link>
+        </a>
 
         <div className="rounded-2xl border border-white/10 bg-slate-900/70 p-8 shadow-2xl backdrop-blur-xl">
           {/* Header */}
@@ -266,12 +265,12 @@ export default function ForgotPasswordPage() {
               <p className="mt-2 text-sm text-slate-400">
                 Your admin password has been updated. You can now sign in.
               </p>
-              <Link
+              <a
                 href="/login"
                 className="mt-6 inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-3 font-bold text-white shadow-lg shadow-emerald-500/20 transition-all hover:shadow-emerald-500/40 hover:brightness-110"
               >
                 Go to Login
-              </Link>
+              </a>
             </div>
           )}
         </div>

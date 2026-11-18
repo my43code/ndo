@@ -166,7 +166,7 @@ export default function Footer() {
           <p>&copy; {new Date().getFullYear()} Manu Maso. All rights reserved.</p>
           <div className="flex gap-4">
             <a href="/sitemap.xml" className="transition hover:text-white">XML sitemap</a>
-            <Link href="/login" prefetch={false} className="transition hover:text-white">Admin</Link>
+            <a href="/login" className="transition hover:text-white">Admin</a>
           </div>
         </div>
       </div>

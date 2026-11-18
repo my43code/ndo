@@ -34,14 +34,13 @@ function ProviderIcon({ id }) {
 
 export default function LoginClient({ initialErrorCode = "", providers }) {
   const [loadingProvider, setLoadingProvider] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
   });
 
-  const urlError = getErrorMessage(initialErrorCode);
-  const activeError = error || urlError;
+  const activeError = error ?? getErrorMessage(initialErrorCode);
 
   async function handleOAuthSignIn(providerId) {
     setLoadingProvider(providerId);
@@ -73,7 +72,13 @@ export default function LoginClient({ initialErrorCode = "", providers }) {
         return;
       }
 
-      window.location.assign("/admin");
+      const destination = result.url && new URL(result.url, window.location.origin);
+      if (destination?.pathname !== "/admin" || destination.origin !== window.location.origin) {
+        setError(getErrorMessage(destination?.searchParams.get("error") || "default"));
+        setLoadingProvider("");
+        return;
+      }
+      window.location.assign(destination.href);
     } catch {
       setError(errorMessages.default);
       setLoadingProvider("");
@@ -214,12 +219,12 @@ export default function LoginClient({ initialErrorCode = "", providers }) {
               </button>
 
               <div className="mt-3 text-center">
-                <Link
+                <a
                   href="/forgot-password"
                   className="text-sm font-medium text-emerald-400 transition hover:text-emerald-300"
                 >
                   Forgot your password?
-                </Link>
+                </a>
               </div>
             </form>
           </div>

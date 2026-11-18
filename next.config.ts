@@ -1,5 +1,10 @@
 import type { NextConfig } from "next";
 
+const privateAuthHeaders = [
+  { key: "Cache-Control", value: "private, no-store, max-age=0, must-revalidate" },
+  { key: "CDN-Cache-Control", value: "no-store" },
+];
+
 const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
@@ -15,6 +20,10 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   async headers() {
     return [
+      ...["/admin/:path*", "/login", "/forgot-password", "/api/auth/:path*"].map((source) => ({
+        source,
+        headers: privateAuthHeaders,
+      })),
       {
         source: "/:path*",
         headers: [

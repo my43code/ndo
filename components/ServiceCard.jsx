@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-export default function ServiceCard({ service, index }) {
+export default function ServiceCard({ service }) {
   const {
     title = "Service",
     description = "",
