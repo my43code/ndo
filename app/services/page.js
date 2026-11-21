@@ -144,7 +144,8 @@ export default async function ServicesPage() {
       </section>
 
       {/* ═══ CTA ═══ */}
-      <section className="px-6 pb-20">
+      <section className="relative px-6 pb-20">
+        <div className="absolute right-10 top-10 h-3 w-3 rounded-full bg-emerald-400/40 animate-pulse-ring" />
         <ScrollReveal scale blur>
           <div className="mx-auto max-w-5xl overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-r from-emerald-900/40 via-slate-900 to-slate-950 p-8 text-white shadow-2xl shadow-emerald-500/10 md:p-12">
             <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">

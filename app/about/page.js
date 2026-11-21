@@ -409,8 +409,10 @@ export default async function AboutPage() {
       ) : null}
 
       {/* ═══ SERVICES ═══ */}
-      <section className="border-t border-white/5 px-6 py-20">
-        <div className="mx-auto max-w-7xl">
+      <section className="relative border-t border-white/5 px-6 py-20">
+        <div className="absolute -right-16 top-20 h-48 w-48 rounded-full bg-sky-500/3 blur-[80px] animate-float-slow" />
+        <div className="absolute left-[25%] bottom-10 h-2 w-2 rounded-full bg-emerald-400/30 animate-pulse-ring" />
+        <div className="relative mx-auto max-w-7xl">
           <ScrollReveal blur>
             <SectionTitle
               eyebrow="Services"
@@ -435,8 +437,9 @@ export default async function AboutPage() {
       </section>
 
       {/* ═══ PROJECTS ═══ */}
-      <section className="border-t border-white/5 px-6 py-20">
-        <div className="mx-auto max-w-7xl">
+      <section className="relative border-t border-white/5 px-6 py-20">
+        <div className="absolute -left-16 bottom-20 h-56 w-56 rounded-full bg-violet-500/3 blur-[80px] animate-float-gentle" />
+        <div className="relative mx-auto max-w-7xl">
           <ScrollReveal blur>
             <SectionTitle
               eyebrow="Projects"
@@ -466,8 +469,9 @@ export default async function AboutPage() {
       </section>
 
       {/* ═══ UPDATES ═══ */}
-      <section className="border-t border-white/5 px-6 py-20">
-        <div className="mx-auto max-w-7xl">
+      <section className="relative border-t border-white/5 px-6 py-20">
+        <div className="absolute right-10 top-16 h-40 w-40 rounded-full bg-emerald-500/3 blur-[60px] animate-float-slow" />
+        <div className="relative mx-auto max-w-7xl">
           <ScrollReveal blur>
             <SectionTitle
               eyebrow="Updates"
@@ -492,7 +496,8 @@ export default async function AboutPage() {
       </section>
 
       {/* ═══ CTA ═══ */}
-      <section className="px-6 py-20">
+      <section className="relative overflow-hidden px-6 py-20">
+        <div className="absolute -left-16 top-10 h-48 w-48 rounded-full bg-emerald-500/4 blur-[80px] animate-float-gentle" />
         <ScrollReveal scale blur>
           <div className="mx-auto max-w-5xl overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-r from-emerald-900/40 via-slate-900 to-slate-950 p-8 text-center shadow-2xl shadow-emerald-500/10 md:p-12">
             <h2 className="text-3xl font-black tracking-tight text-white md:text-5xl">

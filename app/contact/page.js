@@ -95,6 +95,8 @@ export default async function ContactPage() {
       {/* ═══ CONTACT DETAILS + FORM ═══ */}
       <section className="relative mx-auto max-w-7xl px-6 py-16">
         <div className="absolute -right-20 top-40 h-64 w-64 rounded-full bg-emerald-500/4 blur-[100px] animate-float-gentle" />
+        <div className="absolute left-10 bottom-32 h-48 w-48 rounded-full bg-sky-500/3 blur-[80px] animate-float-slow" />
+        <div className="absolute right-[15%] top-16 h-2 w-2 rounded-full bg-emerald-400/40 animate-pulse-ring" />
         <ScrollReveal blur>
           <SectionTitle
             eyebrow="Get in touch"
@@ -130,7 +132,7 @@ export default async function ContactPage() {
                 </div>
               </div>
 
-              <div className="space-y-3 p-6">
+              <div className="stagger-children space-y-3 p-6">
                 <DetailRow
                   icon={MapPin}
                   label="Address"

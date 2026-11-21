@@ -67,19 +67,22 @@ export default function YuTokPage() {
   }
 
   return (
-    <section className="page-hero min-h-screen bg-slate-950 text-white">
-      <div className="mx-auto max-w-5xl px-6 py-8">
-        <div className="mb-8 flex items-center justify-between">
+    <section className="page-hero relative min-h-screen overflow-hidden bg-slate-950 text-white">
+      <div className="absolute -left-20 top-32 h-64 w-64 rounded-full bg-emerald-500/4 blur-[100px] animate-float-gentle" />
+      <div className="absolute -right-16 bottom-20 h-48 w-48 rounded-full bg-sky-500/3 blur-[80px] animate-float-slow" />
+
+      <div className="relative mx-auto max-w-5xl px-6 py-8">
+        <div className="hero-fade-up mb-8 flex items-center justify-between">
           <div>
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600">
+              <div className="animate-scale-bounce flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 shadow-lg shadow-emerald-500/20">
                 <Sparkles size={20} className="text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-black tracking-tight">
+                <h1 className="hero-text-float text-2xl font-black tracking-tight">
                   YuTok <span className="text-emerald-400">AI</span>
                 </h1>
-                <p className="text-sm text-slate-500">
+                <p className="hero-fade-up-delay-2 text-sm text-slate-500">
                   Manu Maso Digital Solutions&apos;s smart assistant
                 </p>
               </div>
@@ -88,14 +91,14 @@ export default function YuTokPage() {
 
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-300 transition hover:border-emerald-500/30 hover:bg-white/10 hover:text-white"
+            className="hero-fade-up-delay-2 inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-300 transition hover:border-emerald-500/30 hover:bg-white/10 hover:text-white"
           >
             <ArrowLeft size={16} />
             Back
           </Link>
         </div>
 
-        <div className="flex h-[75vh] flex-col overflow-hidden rounded-2xl border border-white/8 bg-white/[0.02]">
+        <div className="hero-fade-up-delay-3 flex h-[75vh] flex-col overflow-hidden rounded-2xl border border-white/8 bg-white/[0.02] shadow-2xl shadow-black/20">
           <div className="flex-1 space-y-4 overflow-y-auto p-6">
             {messages.map((message, index) => (
               <div

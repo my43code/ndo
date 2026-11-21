@@ -138,25 +138,28 @@ export default function SearchPage() {
   }, [about, searchTerm]);
 
   return (
-    <section className="page-hero min-h-screen bg-slate-950 px-6 py-12">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+    <section className="page-hero relative min-h-screen overflow-hidden bg-slate-950 px-6 py-12">
+      <div className="absolute -right-20 top-32 h-64 w-64 rounded-full bg-emerald-500/4 blur-[100px] animate-float-gentle" />
+      <div className="absolute left-10 bottom-20 h-40 w-40 rounded-full bg-sky-500/3 blur-[60px] animate-float-slow" />
+
+      <div className="relative mx-auto max-w-6xl">
+        <div className="hero-fade-up mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <h1 className="text-3xl font-black text-white">Search</h1>
-            <p className="mt-2 text-slate-400">
+            <h1 className="hero-text-float text-3xl font-black text-white">Search</h1>
+            <p className="hero-fade-up-delay-2 mt-2 text-slate-400">
               Search across services, projects, posts, and about content.
             </p>
           </div>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-sm font-medium text-emerald-400 transition hover:text-emerald-300"
+            className="hero-fade-up-delay-2 inline-flex items-center gap-2 text-sm font-medium text-emerald-400 transition hover:text-emerald-300"
           >
             <ArrowLeft size={16} />
             Back to Home
           </Link>
         </div>
 
-        <div className="mb-10 flex flex-col items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.03] p-4 backdrop-blur md:flex-row">
+        <div className="hero-fade-up-delay-3 mb-10 flex flex-col items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.03] p-4 shadow-xl shadow-black/10 backdrop-blur md:flex-row">
           <div className="flex w-full flex-1 items-center gap-3">
             <Search className="text-slate-500" size={20} />
             <input
@@ -212,7 +215,7 @@ export default function SearchPage() {
                   filteredServices.map((service) => (
                     <div
                       key={service._id}
-                      className="rounded-2xl border border-white/8 bg-white/[0.03] p-6"
+                      className="rounded-2xl border border-white/8 bg-white/[0.03] p-6 transition-all duration-500 hover:-translate-y-1 hover:border-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/5"
                     >
                       <h3 className="text-lg font-bold text-white">
                         {service.title}
@@ -235,7 +238,7 @@ export default function SearchPage() {
                   filteredProjects.map((project) => (
                     <div
                       key={project._id}
-                      className="overflow-hidden rounded-2xl border border-white/8 bg-white/[0.03] p-4"
+                      className="overflow-hidden rounded-2xl border border-white/8 bg-white/[0.03] p-4 transition-all duration-500 hover:-translate-y-1 hover:border-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/5"
                     >
                       <Image
                         src={project.image || "/images/project1.webp"}

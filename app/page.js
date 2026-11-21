@@ -149,7 +149,7 @@ export default async function HomePage() {
               We build websites and business software and provide ongoing IT support for organisations across Papua New Guinea.
             </p>
             <div className="hero-fade-up-delay-3 mt-8 flex flex-wrap gap-3">
-              <Link href="/services" className="brand-button">Explore services</Link>
+              <Link href="/services" className="brand-button animate-shine-sweep">Explore services</Link>
               <Link href="/contact" className="brand-button brand-button-secondary">Get a quote</Link>
             </div>
           </div>
@@ -381,6 +381,8 @@ export default async function HomePage() {
       {/* ═══ PROJECTS ═══ */}
       <section className="relative bg-slate-950 py-28">
         <div className="absolute right-0 top-1/4 h-72 w-72 rounded-full bg-violet-500/3 blur-[100px] animate-float-gentle" />
+        <div className="absolute left-10 bottom-20 h-40 w-40 rounded-full bg-emerald-500/3 blur-[80px] animate-float-slow" />
+        <div className="absolute right-[20%] top-12 h-2 w-2 rounded-full bg-violet-400/40 animate-pulse-ring" />
         <div className="relative mx-auto max-w-7xl px-6">
           <ScrollReveal blur>
             <SectionTitle
@@ -483,8 +485,10 @@ export default async function HomePage() {
       </section>
 
       {/* ═══ WHY CHOOSE US ═══ */}
-      <section className="relative bg-slate-950 py-28">
+      <section className="relative overflow-hidden bg-slate-950 py-28">
         <div className="absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent" />
+        <div className="absolute -left-20 bottom-32 h-56 w-56 rounded-full bg-emerald-500/4 blur-[80px] animate-float-gentle" />
+        <div className="absolute right-10 top-20 h-2 w-2 rounded-full bg-emerald-400/30 animate-pulse-ring" />
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
             <ScrollReveal direction="left" blur>
@@ -525,7 +529,7 @@ export default async function HomePage() {
                   ].map((item) => (
                     <div
                       key={item.text}
-                      className="group flex items-start gap-4 rounded-xl border border-transparent p-3 transition-all hover:border-white/5 hover:bg-white/[0.02]"
+                      className="group flex items-start gap-4 rounded-xl border border-transparent p-3 transition-all duration-500 hover:border-white/5 hover:bg-white/[0.02] hover:-translate-x-1"
                     >
                       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/15 transition group-hover:bg-emerald-500/25">
                         <item.icon size={18} className="text-emerald-400" />
@@ -570,7 +574,8 @@ export default async function HomePage() {
       </section>
 
       {/* ═══ CTA ═══ */}
-      <section className="bg-slate-950 px-6 py-28">
+      <section className="relative overflow-hidden bg-slate-950 px-6 py-28">
+        <div className="absolute -right-16 top-16 h-48 w-48 rounded-full bg-emerald-500/4 blur-[80px] animate-float-slow" />
         <ScrollReveal scale blur>
           <div className="gradient-border mx-auto max-w-5xl overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-emerald-900/40 via-slate-900 to-slate-950 p-10 text-center shadow-2xl shadow-emerald-500/10 md:p-16">
             <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300">

@@ -27,12 +27,15 @@ export default async function PostDetailPage({ params }) {
   }
 
   return (
-    <div className="page-hero bg-slate-950">
+    <div className="page-hero relative bg-slate-950">
+      <div className="absolute -right-24 top-40 h-72 w-72 rounded-full bg-emerald-500/4 blur-[100px] animate-float-gentle" />
+      <div className="absolute left-10 bottom-32 h-48 w-48 rounded-full bg-sky-500/3 blur-[80px] animate-float-slow" />
+
       <div className="border-b border-white/5 px-6 py-4">
         <div className="mx-auto max-w-5xl">
           <Link
             href="/updates"
-            className="inline-flex items-center gap-2 text-sm font-medium text-emerald-400 transition hover:text-emerald-300"
+            className="hero-fade-up inline-flex items-center gap-2 text-sm font-medium text-emerald-400 transition hover:text-emerald-300"
           >
             <ArrowLeft size={16} />
             Back to Updates
@@ -40,7 +43,7 @@ export default async function PostDetailPage({ params }) {
         </div>
       </div>
 
-      <article className="mx-auto max-w-5xl px-6 py-16">
+      <article className="relative mx-auto max-w-5xl px-6 py-16">
         <ScrollReveal blur>
           <div className="mb-8">
             <p className="hero-fade-up inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.3em] text-emerald-400">

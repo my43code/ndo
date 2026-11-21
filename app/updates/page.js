@@ -63,6 +63,8 @@ export default async function UpdatesPage() {
 
       <section className="relative mx-auto max-w-7xl px-6 py-16">
         <div className="absolute -left-16 top-20 h-56 w-56 rounded-full bg-emerald-500/4 blur-[80px] animate-float-gentle" />
+        <div className="absolute right-10 bottom-32 h-40 w-40 rounded-full bg-sky-500/3 blur-[60px] animate-float-slow" />
+        <div className="absolute left-[30%] top-10 h-2 w-2 rounded-full bg-emerald-400/40 animate-pulse-ring" />
         <ScrollReveal blur>
           <SectionTitle
             eyebrow="Editorial"

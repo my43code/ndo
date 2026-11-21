@@ -39,8 +39,9 @@ export default function Footer() {
     <footer className="site-footer border-t border-white/10 text-white">
       {/* CTA strip */}
       <ScrollReveal blur>
-        <div className="border-b border-white/10 bg-emerald-950/35">
-          <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-8 sm:flex-row">
+        <div className="relative border-b border-white/10 bg-emerald-950/35 overflow-hidden">
+          <div className="absolute right-10 top-1/2 h-24 w-24 -translate-y-1/2 rounded-full bg-emerald-500/8 blur-[40px]" />
+          <div className="relative mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-8 sm:flex-row">
             <div>
               <h3 className="text-lg font-bold text-white">
                 Ready to start your project?

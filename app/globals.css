@@ -20,11 +20,29 @@ body {
 @keyframes hero-fade-up {
   0% {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(28px);
+    filter: blur(8px);
   }
   100% {
     opacity: 1;
     transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes hero-text-float {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.97);
+    filter: blur(12px);
+  }
+  60% {
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
   }
 }
 
@@ -292,27 +310,27 @@ body {
 /* ═══ Staggered hero entrance — real cascade ═══ */
 
 .hero-fade-up {
-  animation: hero-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: hero-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: 0.1s;
 }
 .hero-fade-up-delay-1 {
-  animation: hero-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 0.25s;
+  animation: hero-text-float 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.2s;
 }
 .hero-fade-up-delay-2 {
-  animation: hero-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: hero-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: 0.4s;
 }
 .hero-fade-up-delay-3 {
-  animation: hero-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: hero-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: 0.55s;
 }
 .hero-fade-up-delay-4 {
-  animation: hero-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: hero-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: 0.7s;
 }
 .hero-fade-up-delay-5 {
-  animation: hero-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: hero-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: 0.85s;
 }
 
@@ -378,6 +396,9 @@ body {
 }
 .animate-rotate-slow {
   animation: rotate-slow 30s linear infinite;
+}
+.hero-text-float {
+  animation: hero-text-float 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* ═══ Glowing card effect ═══ */
@@ -662,7 +683,8 @@ body {
   .animate-scale-bounce,
   .animate-float-gentle,
   .animate-pulse-ring,
-  .animate-rotate-slow {
+  .animate-rotate-slow,
+  .hero-text-float {
     animation: none;
   }
 
