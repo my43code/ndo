@@ -22,7 +22,7 @@ export const revalidate = 3600;
 
 export const metadata = {
   title: "About Us",
-  description: "Learn about Manu Maso — our mission, vision, team, and the digital solutions we build for businesses in Papua New Guinea.",
+  description: "Learn about Manu Maso Digital Solutions — our mission, vision, team, and the digital solutions we build for businesses in Papua New Guinea.",
 };
 
 function ValueChip({ value }) {
@@ -140,9 +140,9 @@ export default async function AboutPage() {
   const contact = about.contact || {};
 
   return (
-    <main className="bg-slate-950">
+    <div className="bg-slate-950">
       {/* ═══ HERO ═══ */}
-      <section className="relative overflow-hidden bg-slate-950 text-white">
+      <section className="page-hero relative overflow-hidden bg-slate-950 text-white">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_20%,rgba(16,185,129,0.15),transparent_50%),radial-gradient(ellipse_at_80%_80%,rgba(250,204,21,0.06),transparent_40%)]" />
         </div>
@@ -152,7 +152,7 @@ export default async function AboutPage() {
           <div className="max-w-2xl">
             <span className="hero-fade-up inline-flex items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-4 py-2 text-sm font-medium text-emerald-200 backdrop-blur">
               <Sparkles size={16} />
-              About Manu Maso
+              About Manu Maso Digital Solutions
             </span>
 
             <h1 className="hero-fade-up-delay-1 mt-6 text-5xl font-black tracking-tight md:text-7xl">
@@ -365,7 +365,7 @@ export default async function AboutPage() {
                 <div className="mt-5 grid gap-4 md:grid-cols-2">
                   <div>
                     <p className="font-semibold text-white">
-                      {contact.companyName || "Manu Maso"}
+                      {contact.companyName || "Manu Maso Digital Solutions"}
                     </p>
                     <p className="mt-2 text-sm leading-7 text-slate-400">
                       {contact.address || "Port Moresby, Papua New Guinea"}
@@ -391,7 +391,7 @@ export default async function AboutPage() {
               <SectionTitle
                 eyebrow="People"
                 title="Leadership & Team"
-                subtitle="Meet the people who make Manu Maso what it is."
+                subtitle="Meet the people who make Manu Maso Digital Solutions what it is."
               />
             </ScrollReveal>
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
@@ -513,6 +513,6 @@ export default async function AboutPage() {
           </div>
         </ScrollReveal>
       </section>
-    </main>
+    </div>
   );
 }

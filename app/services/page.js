@@ -12,7 +12,7 @@ export const revalidate = 3600;
 
 export const metadata = {
   title: "Services",
-  description: "Explore Manu Maso's professional services — web development, mobile apps, database systems, cloud solutions, cybersecurity, and IT support.",
+  description: "Explore Manu Maso Digital Solutions's professional services — web development, mobile apps, database systems, cloud solutions, cybersecurity, and IT support.",
 };
 
 export default async function ServicesPage() {
@@ -22,9 +22,9 @@ export default async function ServicesPage() {
   const imageCount = services.filter((s) => s.image && !s.video).length;
 
   return (
-    <main className="bg-slate-950">
+    <div className="bg-slate-950">
       {/* ═══ HERO ═══ */}
-      <section className="relative overflow-hidden bg-slate-950 text-white">
+      <section className="page-hero relative overflow-hidden bg-slate-950 text-white">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_20%,rgba(16,185,129,0.15),transparent_50%),radial-gradient(ellipse_at_80%_80%,rgba(250,204,21,0.06),transparent_40%)]" />
         </div>
@@ -170,6 +170,6 @@ export default async function ServicesPage() {
           </div>
         </ScrollReveal>
       </section>
-    </main>
+    </div>
   );
 }

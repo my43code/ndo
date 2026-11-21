@@ -7,14 +7,14 @@ export const revalidate = 3600;
 
 export const metadata = {
   title: "Site map",
-  description: "Browse the Manu Maso website and all published updates.",
+  description: "Browse the Manu Maso Digital Solutions website and all published updates.",
   alternates: { canonical: "/site-map" },
 };
 
 export default async function SiteMapPage() {
   const posts = await getPosts();
   return (
-    <div className="relative bg-slate-950">
+    <div className="page-hero relative bg-slate-950">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-96 bg-[radial-gradient(ellipse_at_top_left,rgba(16,185,129,0.18),transparent_65%)]" />
       <div className="relative mx-auto max-w-6xl px-6 py-20 sm:py-28">
         <div className="flex flex-wrap items-end justify-between gap-5">

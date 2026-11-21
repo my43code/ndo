@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { createDefaultContact } from "@/lib/siteDefaults";
 
 const MediaSchema = new mongoose.Schema(
   {
@@ -59,19 +60,7 @@ const AboutSchema = new mongoose.Schema(
     projects: [AboutProjectSchema],
     contact: {
       type: ContactSchema,
-      default: () => ({
-        companyName: "Manu Maso",
-        tagline: "Digital systems, modern websites, and dependable support.",
-        address: "Port Moresby, Papua New Guinea",
-        email: "info@manumaso.com",
-        phone: "+675 78337326",
-        whatsapp: "+675 78337326",
-        hours: "Monday to Friday, 8:00 AM to 5:00 PM",
-        mapUrl: "https://www.google.com/maps?q=Port+Moresby+Papua+New+Guinea",
-        facebook: "https://www.facebook.com/",
-        linkedin: "https://www.linkedin.com/",
-        x: "https://x.com/",
-      }),
+      default: createDefaultContact,
     },
   },
   { timestamps: true }

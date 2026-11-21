@@ -1,6 +1,7 @@
 import { getServices, getProjects } from "@/lib/siteContent";
 import Link from "next/link";
 import Image from "next/image";
+import { COMPANY_NAME } from "@/lib/siteDefaults";
 import {
   ArrowRight,
   Code2,
@@ -24,8 +25,6 @@ import {
 import SectionTitle from "@/components/SectionTitle";
 import ScrollReveal from "@/components/ScrollReveal";
 import AnimatedCounter from "@/components/AnimatedCounter";
-import TypewriterText from "@/components/TypewriterText";
-import ParticleGrid from "@/components/ParticleGrid";
 import GlowingCard from "@/components/GlowingCard";
 import FloatingActions from "@/components/FloatingActions";
 
@@ -134,141 +133,41 @@ export default async function HomePage() {
   }
 
   return (
-    <main>
+    <div>
       <FloatingActions />
 
       {/* ═══ HERO ═══ */}
-      <section className="relative min-h-screen overflow-hidden bg-slate-950">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[linear-gradient(130deg,rgba(2,6,23,0.97)_0%,rgba(15,23,42,0.75)_48%,rgba(6,78,59,0.5)_100%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_20%,rgba(16,185,129,0.2),transparent_50%),radial-gradient(ellipse_at_80%_80%,rgba(250,204,21,0.08),transparent_40%)]" />
-        </div>
-
+      <section className="page-hero home-hero relative isolate overflow-hidden">
         <div className="hero-grid absolute inset-0" aria-hidden="true" />
-        <ParticleGrid interactive />
-
-        <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 py-24">
-          <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-            <div>
-              <span className="hero-fade-up inline-flex items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-5 py-2.5 text-sm font-semibold text-emerald-200 backdrop-blur-sm">
-                <Zap size={14} className="text-yellow-400" />
-                Papua New Guinea&apos;s Digital Partner
-              </span>
-
-              <h1 className="hero-fade-up-delay-1 mt-8 text-5xl font-black leading-[1.08] tracking-tight text-white md:text-7xl lg:text-8xl">
-                We build
-                <span className="block">
-                  <TypewriterText
-                    words={[
-                      "powerful websites",
-                      "smart systems",
-                      "digital solutions",
-                      "mobile apps",
-                      "cloud platforms",
-                    ]}
-                    className="gradient-text"
-                  />
-                </span>
-              </h1>
-
-              <p className="hero-fade-up-delay-2 mt-8 max-w-xl text-lg leading-8 text-slate-300">
-                Manu Maso delivers cutting-edge web development, IT systems, and
-                digital transformation services that make your business stand out
-                and perform at its best.
-              </p>
-
-              <div className="hero-fade-up-delay-3 mt-10 flex flex-wrap gap-4">
-                <Link
-                  href="/services"
-                  className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 px-7 py-4 text-base font-bold text-white shadow-xl shadow-emerald-500/25 transition-all duration-300 hover:shadow-emerald-500/40 hover:brightness-110"
-                >
-                  Explore Services
-                  <ArrowRight
-                    size={18}
-                    className="transition-transform group-hover:translate-x-1"
-                  />
-                </Link>
-
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-7 py-4 text-base font-bold text-white backdrop-blur-sm transition-all duration-300 hover:border-emerald-400/30 hover:bg-white/10"
-                >
-                  Get a Quote
-                </Link>
-              </div>
-
-              <div className="hero-fade-up-delay-4 mt-12 flex flex-wrap items-center gap-6 text-sm text-slate-400">
-                <span className="flex items-center gap-2">
-                  <CheckCircle2 size={16} className="text-emerald-400" />
-                  5+ Years Experience
-                </span>
-                <span className="flex items-center gap-2">
-                  <CheckCircle2 size={16} className="text-emerald-400" />
-                  PNG Based
-                </span>
-                <span className="flex items-center gap-2">
-                  <CheckCircle2 size={16} className="text-emerald-400" />
-                  24/7 Support
-                </span>
-              </div>
-            </div>
-
-            {/* Hero visual */}
-            <div className="hero-fade-up-delay-4 relative hidden lg:block">
-              <div className="absolute -left-10 -top-10 h-72 w-72 rounded-full bg-emerald-500/10 blur-[100px]" />
-              <div className="absolute -bottom-10 -right-10 h-56 w-56 rounded-full bg-yellow-400/8 blur-[80px]" />
-
-              <div className="animate-pulse-glow relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-1 backdrop-blur-sm">
-                <div className="overflow-hidden rounded-[1.25rem]">
-                  <Image
-                    src="/images/manu-maso-logo.png"
-                    alt="Manu Maso Digital Solutions"
-                    width={600}
-                    height={500}
-                    className="h-auto w-full object-contain p-8"
-                    sizes="(min-width: 1280px) 576px, (min-width: 1024px) 45vw, 1px"
-                  />
-                </div>
-
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent p-6">
-                  <div className="grid grid-cols-3 gap-3">
-                    <div className="rounded-xl bg-white/8 p-3 text-center backdrop-blur">
-                      <p className="text-2xl font-black text-emerald-400">
-                        <AnimatedCounter end={projects.length} suffix="+" />
-                      </p>
-                      <p className="mt-1 text-[11px] uppercase tracking-widest text-slate-400">
-                        Projects
-                      </p>
-                    </div>
-                    <div className="rounded-xl bg-white/8 p-3 text-center backdrop-blur">
-                      <p className="text-2xl font-black text-emerald-400">
-                        <AnimatedCounter end={30} suffix="+" />
-                      </p>
-                      <p className="mt-1 text-[11px] uppercase tracking-widest text-slate-400">
-                        Clients
-                      </p>
-                    </div>
-                    <div className="rounded-xl bg-white/8 p-3 text-center backdrop-blur">
-                      <p className="text-2xl font-black text-emerald-400">
-                        <AnimatedCounter end={5} suffix="+" />
-                      </p>
-                      <p className="mt-1 text-[11px] uppercase tracking-widest text-slate-400">
-                        Years
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-6 py-16 sm:py-24 lg:grid-cols-[1fr_0.9fr] lg:gap-16 lg:py-28">
+          <div>
+            <p className="page-kicker hero-fade-up">{COMPANY_NAME}</p>
+            <h1 className="hero-fade-up-delay-1 mt-6 max-w-[14ch] text-[clamp(2.7rem,6vw,5.5rem)] font-extrabold leading-[1.02] tracking-[-0.055em] text-white">
+              Better websites. <span className="gradient-text">Smarter systems.</span>
+            </h1>
+            <p className="hero-fade-up-delay-2 mt-6 max-w-[48ch] text-lg leading-8 text-slate-300">
+              We build websites and business software and provide ongoing IT support for organisations across Papua New Guinea.
+            </p>
+            <div className="hero-fade-up-delay-3 mt-8 flex flex-wrap gap-3">
+              <Link href="/services" className="brand-button">Explore services</Link>
+              <Link href="/contact" className="brand-button brand-button-secondary">Get a quote</Link>
             </div>
           </div>
-        </div>
 
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
-          <div className="flex flex-col items-center gap-2">
-            <span className="text-xs uppercase tracking-[0.3em] text-slate-500">
-              Scroll
-            </span>
-            <div className="h-10 w-[1px] animate-pulse bg-gradient-to-b from-emerald-400 to-transparent" />
+          <div className="hero-fade-up-delay-2 overflow-hidden rounded-3xl border border-white/12 bg-slate-900 shadow-2xl">
+            <Image
+              src="/images/project1.webp"
+              alt="Software developer working at a laptop"
+              width={626}
+              height={417}
+              sizes="(min-width: 1280px) 550px, (min-width: 1024px) 44vw, 100vw"
+              className="aspect-[4/3] w-full object-cover sm:aspect-[3/2] lg:aspect-[5/4]"
+              preload
+            />
+            <div className="flex items-center gap-3 border-t border-white/10 px-5 py-4 text-sm font-medium text-slate-200">
+              <Globe size={18} className="shrink-0 text-emerald-300" aria-hidden="true" />
+              Based in Port Moresby, Papua New Guinea
+            </div>
           </div>
         </div>
       </section>
@@ -585,7 +484,7 @@ export default async function HomePage() {
               <div>
                 <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Why Manu Maso
+                  Why Manu Maso Digital Solutions
                 </span>
                 <h2 className="mt-6 text-4xl font-black tracking-tight text-white md:text-5xl">
                   Professional solutions you can{" "}
@@ -675,7 +574,7 @@ export default async function HomePage() {
               <span className="gradient-text">digital presence?</span>
             </h2>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-              Let Manu Maso build something extraordinary for your business.
+              Let Manu Maso Digital Solutions build something extraordinary for your business.
               Contact us today for a free consultation.
             </p>
             <div className="mt-10 flex flex-wrap justify-center gap-4">
@@ -699,6 +598,6 @@ export default async function HomePage() {
           </div>
         </ScrollReveal>
       </section>
-    </main>
+    </div>
   );
 }

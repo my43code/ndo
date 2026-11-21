@@ -138,7 +138,7 @@ export default function SearchPage() {
   }, [about, searchTerm]);
 
   return (
-    <section className="min-h-screen bg-slate-950 px-6 py-12">
+    <section className="page-hero min-h-screen bg-slate-950 px-6 py-12">
       <div className="mx-auto max-w-6xl">
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>

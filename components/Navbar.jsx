@@ -30,7 +30,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-500 ${
+      className={`site-header sticky top-0 z-50 transition-all duration-500 ${
         scrolled
           ? "border-b border-emerald-500/10 bg-slate-950/95 shadow-[0_4px_30px_rgba(0,0,0,0.3)] backdrop-blur-2xl"
           : "border-b border-white/5 bg-slate-950/60 backdrop-blur-md"
@@ -39,13 +39,14 @@ export default function Navbar() {
       <div className="relative mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6">
         <Logo compact={scrolled} />
 
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Main navigation">
           {navLinks.map((link) => {
-            const isActive = pathname === link.href;
+            const isActive = pathname === link.href || pathname.startsWith(`${link.href}/`);
             return (
               <Link
                 key={link.name}
                 href={link.href}
+                aria-current={isActive ? "page" : undefined}
                 className={`group relative rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-300 ${
                   isActive
                     ? "bg-emerald-500/10 text-emerald-400"
@@ -62,7 +63,7 @@ export default function Navbar() {
 
           <Link
             href="/yutok"
-            className="ml-3 inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 px-5 py-2 text-sm font-bold text-white shadow-lg shadow-emerald-500/20 transition-all duration-300 hover:shadow-emerald-500/40 hover:brightness-110"
+            className="brand-button ml-3 text-sm"
           >
             <Sparkles size={14} />
             YuTok AI
@@ -70,9 +71,10 @@ export default function Navbar() {
         </nav>
 
         <button
-          className="rounded-xl border border-slate-700/50 bg-slate-800/50 p-2.5 text-slate-300 backdrop-blur transition hover:border-emerald-500/30 hover:bg-slate-800 hover:text-white md:hidden"
+          className="rounded-xl border border-slate-700/50 bg-slate-800/50 p-2.5 text-slate-300 backdrop-blur transition hover:border-emerald-500/30 hover:bg-slate-800 hover:text-white lg:hidden"
           onClick={() => setMenuPath(isOpen ? null : pathname)}
           aria-expanded={isOpen}
+          aria-controls="mobile-navigation"
           aria-label="Toggle navigation menu"
         >
           {isOpen ? <X size={22} /> : <Menu size={22} />}
@@ -80,18 +82,21 @@ export default function Navbar() {
       </div>
 
       <div
-        className={`overflow-hidden transition-all duration-500 md:hidden ${
+        id="mobile-navigation"
+        inert={!isOpen}
+        className={`overflow-hidden transition-all duration-500 lg:hidden ${
           isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
         <nav className="border-t border-white/5 bg-slate-950/98 px-4 py-4">
           <div className="space-y-1">
             {navLinks.map((link) => {
-              const isActive = pathname === link.href;
+              const isActive = pathname === link.href || pathname.startsWith(`${link.href}/`);
               return (
                 <Link
                   key={link.name}
                   href={link.href}
+                  aria-current={isActive ? "page" : undefined}
                   className={`flex items-center justify-between rounded-xl px-4 py-3 text-base font-medium transition-all ${
                     isActive
                       ? "bg-emerald-500/10 text-emerald-400"

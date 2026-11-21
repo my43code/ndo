@@ -3,7 +3,7 @@ export const revalidate = 300;
 
 export const metadata = {
   title: "Updates",
-  description: "Latest news, articles, and updates from Manu Maso — stay informed about our projects and digital solutions.",
+  description: "Latest news, articles, and updates from Manu Maso Digital Solutions — stay informed about our projects and digital solutions.",
 };
 
 import Link from "next/link";
@@ -18,8 +18,8 @@ export default async function UpdatesPage() {
   const latestPost = posts[0];
 
   return (
-    <main className="bg-slate-950">
-      <section className="relative overflow-hidden bg-slate-950 text-white">
+    <div className="bg-slate-950">
+      <section className="page-hero relative overflow-hidden bg-slate-950 text-white">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_20%,rgba(16,185,129,0.15),transparent_50%),radial-gradient(ellipse_at_80%_80%,rgba(250,204,21,0.06),transparent_40%)]" />
         </div>
@@ -85,6 +85,6 @@ export default async function UpdatesPage() {
           </div>
         )}
       </section>
-    </main>
+    </div>
   );
 }

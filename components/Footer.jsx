@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
-import { ArrowUpRight, ArrowRight } from "lucide-react";
+import Logo from "@/components/Logo";
+import { ArrowUpRight } from "lucide-react";
 import { publicPages } from "@/lib/publicPages";
 import {
   FaFacebookF,
@@ -35,9 +35,9 @@ export default function Footer() {
   const phoneHref = getTelHref(contact.phone);
 
   return (
-    <footer className="border-t border-white/5 bg-slate-950 text-white">
+    <footer className="site-footer border-t border-white/10 text-white">
       {/* CTA strip */}
-      <div className="border-b border-white/5">
+      <div className="border-b border-white/10 bg-emerald-950/35">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-8 sm:flex-row">
           <div>
             <h3 className="text-lg font-bold text-white">
@@ -49,13 +49,9 @@ export default function Footer() {
           </div>
           <Link
             href="/contact"
-            className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-500/20 transition-all hover:shadow-emerald-500/40 hover:brightness-110"
+            className="brand-button"
           >
             Contact Us
-            <ArrowRight
-              size={14}
-              className="transition-transform group-hover:translate-x-1"
-            />
           </Link>
         </div>
       </div>
@@ -64,23 +60,7 @@ export default function Footer() {
         <div className="grid gap-12 md:grid-cols-[1.3fr_0.7fr_0.9fr]">
           {/* Brand column */}
           <div>
-            <Link href="/" className="group inline-flex items-center gap-3">
-              <Image
-                src="/images/manu-maso-logo.png"
-                alt="Manu Maso"
-                width={44}
-                height={44}
-                className="rounded-lg object-contain"
-              />
-              <div className="leading-tight">
-                <h2 className="text-xl font-black tracking-wide text-white">
-                  Manu<span className="text-emerald-400"> Maso</span>
-                </h2>
-                <p className="text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-slate-500">
-                  Digital Solutions
-                </p>
-              </div>
-            </Link>
+            <Logo />
 
             <p className="mt-5 max-w-sm text-sm leading-7 text-slate-400">
               {tagline}
@@ -163,7 +143,7 @@ export default function Footer() {
 
       <div className="border-t border-white/5 px-6 py-5">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 text-xs text-slate-500 sm:flex-row">
-          <p>&copy; {new Date().getFullYear()} Manu Maso. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Manu Maso Digital Solutions. All rights reserved.</p>
           <div className="flex gap-4">
             <a href="/sitemap.xml" className="transition hover:text-white">XML sitemap</a>
             <a href="/login" className="transition hover:text-white">Admin</a>

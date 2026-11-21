@@ -84,7 +84,7 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-slate-950 text-white">
+    <section className="page-hero relative min-h-screen overflow-hidden bg-slate-950 text-white">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(16,185,129,0.2),_transparent_30%),radial-gradient(circle_at_bottom_left,_rgba(250,204,21,0.1),_transparent_26%)]" />
 
       <div className="relative mx-auto flex min-h-screen max-w-lg flex-col justify-center px-6 py-16">

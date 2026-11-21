@@ -26,7 +26,7 @@ export default async function PostDetailPage({ params }) {
   }
 
   return (
-    <main className="bg-slate-950">
+    <div className="page-hero bg-slate-950">
       <div className="border-b border-white/5 px-6 py-4">
         <div className="mx-auto max-w-5xl">
           <Link
@@ -86,6 +86,6 @@ export default async function PostDetailPage({ params }) {
           ) : null}
         </div>
       </article>
-    </main>
+    </div>
   );
 }

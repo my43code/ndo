@@ -18,7 +18,7 @@ export default function Hero() {
           </h1>
 
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-300">
-            Manu Maso delivers professional websites, digital systems,
+            Manu Maso Digital Solutions delivers professional websites, digital systems,
             database-driven platforms, and IT support for modern organizations.
           </p>
 
@@ -41,7 +41,7 @@ export default function Hero() {
         <div className="relative">
           <Image
             src="/images/manu-maso-logo.png"
-            alt="Manu Maso"
+            alt="Manu Maso Digital Solutions"
             width={600}
             height={500}
             className="h-auto w-full rounded-2xl object-contain p-8"

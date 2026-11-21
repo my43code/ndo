@@ -1,3 +1,4 @@
+import { COMPANY_NAME } from "@/lib/siteDefaults";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -7,17 +8,17 @@ const BASE_URL = process.env.NEXTAUTH_URL || "https://manumaso.com";
 export const metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "Manu Maso | Digital Solutions",
-    template: "%s | Manu Maso",
+    default: COMPANY_NAME,
+    template: `%s | ${COMPANY_NAME}`,
   },
   description:
-    "Manu Maso delivers cutting-edge websites, digital systems, and technology services for businesses and organizations in Papua New Guinea and beyond.",
+    "Manu Maso Digital Solutions delivers cutting-edge websites, digital systems, and technology services for businesses and organizations in Papua New Guinea and beyond.",
   keywords: [
     "web development",
     "digital solutions",
     "IT support",
     "Papua New Guinea",
-    "Manu Maso",
+    COMPANY_NAME,
     "software development",
     "cloud solutions",
     "mobile apps",
@@ -32,15 +33,15 @@ export const metadata = {
     type: "website",
     locale: "en_US",
     url: BASE_URL,
-    siteName: "Manu Maso",
-    title: "Manu Maso | Digital Solutions",
+    siteName: COMPANY_NAME,
+    title: COMPANY_NAME,
     description:
       "Professional web development, IT support, and digital solutions for PNG businesses.",
-    images: [{ url: "/images/manu-maso-logo.png", width: 512, height: 512, alt: "Manu Maso" }],
+    images: [{ url: "/images/manu-maso-logo.png", width: 512, height: 512, alt: COMPANY_NAME }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Manu Maso | Digital Solutions",
+    title: COMPANY_NAME,
     description:
       "Professional web development, IT support, and digital solutions for PNG businesses.",
     images: ["/images/manu-maso-logo.png"],
@@ -58,11 +59,11 @@ export const metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Manu Maso",
+  name: COMPANY_NAME,
   url: BASE_URL,
   logo: `${BASE_URL}/images/manu-maso-logo.png`,
   description:
-    "Manu Maso delivers cutting-edge websites, digital systems, and technology services for businesses in Papua New Guinea.",
+    "Manu Maso Digital Solutions delivers cutting-edge websites, digital systems, and technology services for businesses in Papua New Guinea.",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Port Moresby",
@@ -87,8 +88,9 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="flex min-h-screen flex-col overflow-x-hidden bg-slate-950 text-slate-200 antialiased selection:bg-emerald-400/30 selection:text-white">
+        <a href="#main-content" className="skip-link">Skip to content</a>
         <Navbar />
-        <main className="flex-grow">{children}</main>
+        <main id="main-content" tabIndex={-1} className="flex flex-1 flex-col">{children}</main>
         <Footer />
       </body>
     </html>

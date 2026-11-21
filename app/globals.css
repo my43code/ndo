@@ -471,3 +471,97 @@ body {
 .typewriter-words > span {
   grid-area: 1 / 1;
 }
+
+/* Shared brand styles */
+@theme {
+  --color-slate-950: #091417;
+  --color-slate-900: #102126;
+  --color-slate-800: #1a3036;
+}
+
+.page-hero {
+  background-image: radial-gradient(ellipse at 12% 0%, #154338 0%, transparent 62%),
+    linear-gradient(130deg, #102429, #091417 68%);
+}
+
+.home-hero {
+  border-bottom: 1px solid rgb(167 243 208 / 0.16);
+}
+
+.gradient-text,
+.gradient-text-static {
+  background-image: linear-gradient(110deg, #adf5d8, #53d8bd 70%, #86d9ea);
+  background-size: auto;
+  animation: none;
+}
+
+.page-kicker {
+  color: #adf5d8;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.brand-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid transparent;
+  background: #adf5d8;
+  color: #0a2520;
+  font-weight: 700;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.brand-button:hover {
+  background: #ccf8ea;
+}
+
+.brand-button-secondary {
+  border-color: rgb(173 245 216 / 0.35);
+  background: rgb(255 255 255 / 0.04);
+  color: #f0fdf9;
+}
+
+.brand-button-secondary:hover {
+  background: rgb(173 245 216 / 0.14);
+}
+
+.site-header {
+  background-color: rgb(9 20 23 / 0.96);
+}
+
+.site-footer {
+  background: linear-gradient(145deg, #102429, #091417 65%);
+}
+
+:where(a, button, input, textarea, select, summary):focus-visible {
+  outline: 2px solid #5eead4;
+  outline-offset: 3px;
+}
+
+#main-content {
+  scroll-margin-top: 5rem;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 60;
+  transform: translateY(-180%);
+  border-radius: 0.5rem;
+  background: #adf5d8;
+  padding: 0.75rem 1rem;
+  color: #0a2520;
+  font-weight: 700;
+}
+
+.skip-link:focus {
+  transform: none;
+}

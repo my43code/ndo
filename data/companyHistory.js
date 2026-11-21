@@ -3,7 +3,7 @@ export const companyHistory = [
     year: "2021",
     title: "Company Founded",
     description:
-      "Manu Maso was established to provide modern digital solutions for businesses and institutions in Papua New Guinea.",
+      "Manu Maso Digital Solutions was established to provide modern digital solutions for businesses and institutions in Papua New Guinea.",
   },
   {
     year: "2022",

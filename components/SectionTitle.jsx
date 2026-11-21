@@ -12,8 +12,7 @@ export default function SectionTitle({
       className={`mb-14 max-w-4xl ${isLeft ? "text-left" : "mx-auto text-center"}`}
     >
       {eyebrow ? (
-        <p className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.3em] text-emerald-400">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        <p className="page-kicker">
           {eyebrow}
         </p>
       ) : null}
@@ -31,11 +30,6 @@ export default function SectionTitle({
         )}
       </h2>
 
-      <div
-        className={`mt-4 h-1 w-16 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-500/0 ${
-          !isLeft ? "mx-auto" : ""
-        }`}
-      />
 
       {subtitle ? (
         <p

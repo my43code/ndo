@@ -86,7 +86,7 @@ export default function LoginClient({ initialErrorCode = "", providers }) {
   }
 
   return (
-    <section className="relative overflow-hidden bg-slate-950 text-white">
+    <section className="page-hero relative overflow-hidden bg-slate-950 text-white">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(16,185,129,0.25),_transparent_30%),radial-gradient(circle_at_bottom_left,_rgba(250,204,21,0.14),_transparent_26%),linear-gradient(135deg,_rgba(2,6,23,0.98),_rgba(15,23,42,0.92))]" />
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:48px_48px] opacity-15" />
 
@@ -101,7 +101,7 @@ export default function LoginClient({ initialErrorCode = "", providers }) {
           </h1>
 
           <p className="mt-6 max-w-xl text-base leading-7 text-slate-300 md:text-lg">
-            Sign in to manage the Manu Maso website.
+            Sign in to manage the Manu Maso Digital Solutions website.
           </p>
 
           <div className="mt-10 flex items-center gap-4 text-sm text-slate-400">

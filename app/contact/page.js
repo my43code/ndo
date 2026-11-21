@@ -14,7 +14,7 @@ const contactEmail = createDefaultContact().email;
 
 export const metadata = {
   title: "Contact Us",
-  description: `Get in touch with Manu Maso. Reach us by email at ${contactEmail} or call +675 78337326. Located in Port Moresby, Papua New Guinea.`,
+  description: `Get in touch with Manu Maso Digital Solutions. Reach us by email at ${contactEmail} or call +675 78337326. Located in Port Moresby, Papua New Guinea.`,
 };
 
 function DetailRow({ icon: Icon, label, value, href }) {
@@ -55,7 +55,7 @@ function DetailRow({ icon: Icon, label, value, href }) {
 export default async function ContactPage() {
   const about = await getSiteAbout();
   const contact = about.contact || {};
-  const companyName = contact.companyName || "Manu Maso";
+  const companyName = contact.companyName || "Manu Maso Digital Solutions";
   const tagline =
     contact.tagline ||
     "Digital systems, modern websites, and dependable support.";
@@ -66,9 +66,9 @@ export default async function ContactPage() {
   const phoneHref = getTelHref(contact.phone);
 
   return (
-    <main className="bg-slate-950">
+    <div className="bg-slate-950">
       {/* ═══ HERO ═══ */}
-      <section className="relative overflow-hidden bg-slate-950 text-white">
+      <section className="page-hero relative overflow-hidden bg-slate-950 text-white">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_20%,rgba(16,185,129,0.15),transparent_50%),radial-gradient(ellipse_at_80%_80%,rgba(250,204,21,0.06),transparent_40%)]" />
         </div>
@@ -193,6 +193,6 @@ export default async function ContactPage() {
           </ScrollReveal>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

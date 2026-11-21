@@ -9,13 +9,13 @@ export async function POST(req) {
 
     if (message.includes("service")) {
       reply =
-        "Manu Maso offers modern software and web development solutions tailored for business growth.";
+        "Manu Maso Digital Solutions offers modern software and web development solutions tailored for business growth.";
     } else if (message.includes("project")) {
       reply =
-        "Our projects section showcases completed and ongoing digital solutions delivered by Manu Maso.";
+        "Our projects section showcases completed and ongoing digital solutions delivered by Manu Maso Digital Solutions.";
     } else if (message.includes("company") || message.includes("about")) {
       reply =
-        "Manu Maso focuses on modern, scalable, and reliable digital solutions for organizations in Papua New Guinea and beyond.";
+        "Manu Maso Digital Solutions focuses on modern, scalable, and reliable digital solutions for organizations in Papua New Guinea and beyond.";
     } else if (
       message.includes("hello") ||
       message.includes("hi") ||
@@ -27,7 +27,7 @@ export async function POST(req) {
         "We build professional websites with modern technologies, performance, clean design, and scalable architecture.";
     } else if (message.includes("contact")) {
       reply =
-        "You can add your contact page details so visitors can reach Manu Maso easily.";
+        "You can add your contact page details so visitors can reach Manu Maso Digital Solutions easily.";
     }
 
     return NextResponse.json({ reply });

@@ -12,7 +12,7 @@ export default function YuTokPage() {
     {
       role: "assistant",
       content:
-        "Hello! I'm YuTok, your AI assistant. Ask me about Manu Maso, our services, projects, or any technology questions.",
+        "Hello! I'm YuTok, your AI assistant. Ask me about Manu Maso Digital Solutions, our services, projects, or any technology questions.",
     },
   ]);
 
@@ -62,7 +62,7 @@ export default function YuTokPage() {
   }
 
   return (
-    <section className="min-h-screen bg-slate-950 text-white">
+    <section className="page-hero min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-5xl px-6 py-8">
         <div className="mb-8 flex items-center justify-between">
           <div>
@@ -75,7 +75,7 @@ export default function YuTokPage() {
                   YuTok <span className="text-emerald-400">AI</span>
                 </h1>
                 <p className="text-sm text-slate-500">
-                  Manu Maso&apos;s smart assistant
+                  Manu Maso Digital Solutions&apos;s smart assistant
                 </p>
               </div>
             </div>
