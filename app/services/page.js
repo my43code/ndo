@@ -117,8 +117,10 @@ export default async function ServicesPage() {
       </section>
 
       {/* ═══ SERVICE CARDS ═══ */}
-      <section className="mx-auto max-w-7xl px-6 py-20">
-        <ScrollReveal>
+      <section className="relative mx-auto max-w-7xl px-6 py-20">
+        <div className="absolute -left-16 top-40 h-72 w-72 rounded-full bg-emerald-500/4 blur-[100px] animate-float-gentle" />
+        <div className="absolute right-0 bottom-20 h-48 w-48 rounded-full bg-sky-500/3 blur-[80px] animate-float-slow" />
+        <ScrollReveal blur>
           <SectionTitle
             eyebrow="Portfolio"
             title="Browse Our Service Library"
@@ -129,7 +131,7 @@ export default async function ServicesPage() {
         {services.length > 0 ? (
           <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
             {services.map((service, i) => (
-              <ScrollReveal key={service._id} delay={i * 100}>
+              <ScrollReveal key={service._id} delay={i * 120} scale blur>
                 <ServiceCard service={service} />
               </ScrollReveal>
             ))}
@@ -143,7 +145,7 @@ export default async function ServicesPage() {
 
       {/* ═══ CTA ═══ */}
       <section className="px-6 pb-20">
-        <ScrollReveal>
+        <ScrollReveal scale blur>
           <div className="mx-auto max-w-5xl overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-r from-emerald-900/40 via-slate-900 to-slate-950 p-8 text-white shadow-2xl shadow-emerald-500/10 md:p-12">
             <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
               <div>

@@ -40,18 +40,19 @@ export default function Navbar() {
         <Logo compact={scrolled} />
 
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Main navigation">
-          {navLinks.map((link) => {
+          {navLinks.map((link, i) => {
             const isActive = pathname === link.href || pathname.startsWith(`${link.href}/`);
             return (
               <Link
                 key={link.name}
                 href={link.href}
                 aria-current={isActive ? "page" : undefined}
-                className={`group relative rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-300 ${
+                className={`animate-blur-in group relative rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-300 ${
                   isActive
                     ? "bg-emerald-500/10 text-emerald-400"
                     : "text-slate-300 hover:bg-white/5 hover:text-white"
                 }`}
+                style={{ animationDelay: `${i * 80 + 100}ms` }}
               >
                 {link.name}
                 {isActive && (
@@ -63,7 +64,8 @@ export default function Navbar() {
 
           <Link
             href="/yutok"
-            className="brand-button ml-3 text-sm"
+            className="brand-button animate-scale-bounce ml-3 text-sm"
+            style={{ animationDelay: "600ms" }}
           >
             <Sparkles size={14} />
             YuTok AI

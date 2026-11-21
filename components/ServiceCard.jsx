@@ -41,11 +41,11 @@ export default function ServiceCard({ service }) {
         )}
 
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent" />
-        <div className="absolute left-4 top-4 rounded-full border border-emerald-400/25 bg-emerald-400/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-emerald-300 backdrop-blur">
+        <div className="absolute left-4 top-4 rounded-full border border-emerald-400/25 bg-emerald-400/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-emerald-300 backdrop-blur transition-transform duration-500 group-hover:scale-105">
           {isVideo ? "Video" : "Service"}
         </div>
         <div className="absolute inset-x-4 bottom-4">
-          <h3 className="text-2xl font-bold tracking-tight text-white">
+          <h3 className="text-2xl font-bold tracking-tight text-white animated-underline">
             {title}
           </h3>
         </div>

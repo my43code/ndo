@@ -1,3 +1,7 @@
+"use client";
+
+import AnimatedText from "./AnimatedText";
+
 export default function SectionTitle({
   title,
   subtitle,
@@ -6,6 +10,9 @@ export default function SectionTitle({
   gradient = false,
 }) {
   const isLeft = align === "left";
+
+  const lastWord = title.split(" ").slice(-1)[0];
+  const restWords = title.split(" ").slice(0, -1).join(" ");
 
   return (
     <div
@@ -20,16 +27,15 @@ export default function SectionTitle({
       <h2 className="mt-5 text-3xl font-black tracking-tight text-white md:text-5xl">
         {gradient ? (
           <>
-            {title.split(" ").slice(0, -1).join(" ")}{" "}
+            <AnimatedText text={restWords} stagger={50} />{" "}
             <span className="gradient-text">
-              {title.split(" ").slice(-1)[0]}
+              <AnimatedText text={lastWord} stagger={50} blur={false} />
             </span>
           </>
         ) : (
-          title
+          <AnimatedText text={title} stagger={50} />
         )}
       </h2>
-
 
       {subtitle ? (
         <p

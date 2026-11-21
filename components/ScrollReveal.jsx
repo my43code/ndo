@@ -11,6 +11,8 @@ export default function ScrollReveal({
   duration = 700,
   threshold = 0.15,
   once = true,
+  blur = false,
+  scale = false,
 }) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -43,14 +45,24 @@ export default function ScrollReveal({
     none: "none",
   };
 
+  const hiddenTransform = [
+    transforms[direction],
+    scale ? "scale(0.92)" : "",
+  ].filter(Boolean).join(" ") || "none";
+
   return (
     <div
       ref={ref}
-      className={`motion-reduce:opacity-100! motion-reduce:transform-none! motion-reduce:transition-none! ${className}`}
+      className={`motion-reduce:opacity-100! motion-reduce:transform-none! motion-reduce:transition-none! motion-reduce:filter-none! ${className}`}
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? "none" : transforms[direction],
-        transition: `opacity ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
+        transform: visible ? "none" : hiddenTransform,
+        filter: blur ? (visible ? "blur(0)" : "blur(6px)") : undefined,
+        transition: [
+          `opacity ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
+          `transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
+          blur ? `filter ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms` : "",
+        ].filter(Boolean).join(", "),
       }}
     >
       {children}

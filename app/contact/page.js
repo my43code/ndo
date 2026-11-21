@@ -93,8 +93,9 @@ export default async function ContactPage() {
       </section>
 
       {/* ═══ CONTACT DETAILS + FORM ═══ */}
-      <section className="mx-auto max-w-7xl px-6 py-16">
-        <ScrollReveal>
+      <section className="relative mx-auto max-w-7xl px-6 py-16">
+        <div className="absolute -right-20 top-40 h-64 w-64 rounded-full bg-emerald-500/4 blur-[100px] animate-float-gentle" />
+        <ScrollReveal blur>
           <SectionTitle
             eyebrow="Get in touch"
             title="Contact Details & Response Form"
@@ -104,7 +105,7 @@ export default async function ContactPage() {
         </ScrollReveal>
 
         <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
-          <ScrollReveal direction="left">
+          <ScrollReveal direction="left" blur>
             <div className="overflow-hidden rounded-2xl border border-white/8 bg-white/[0.03]">
               <div className="relative aspect-[16/10]">
                 <Image
@@ -188,7 +189,7 @@ export default async function ContactPage() {
             </div>
           </ScrollReveal>
 
-          <ScrollReveal direction="right" delay={150}>
+          <ScrollReveal direction="right" delay={150} scale blur>
             <ContactForm />
           </ScrollReveal>
         </div>

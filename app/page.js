@@ -175,9 +175,11 @@ export default async function HomePage() {
       {/* ═══ CAPABILITIES ═══ */}
       <section className="noise-overlay relative overflow-hidden bg-slate-950 py-28">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.06),transparent_70%)]" />
+        <div className="absolute -right-32 top-20 h-64 w-64 rounded-full bg-emerald-500/5 blur-[100px] animate-float-gentle" />
+        <div className="absolute -left-20 bottom-20 h-48 w-48 rounded-full bg-sky-500/5 blur-[80px] animate-float-slow" />
 
         <div className="relative mx-auto max-w-7xl px-6">
-          <ScrollReveal>
+          <ScrollReveal blur>
             <SectionTitle
               eyebrow="What We Do"
               title="End-to-End Digital Capabilities"
@@ -188,12 +190,12 @@ export default async function HomePage() {
 
           <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {capabilities.map((cap, i) => (
-              <ScrollReveal key={cap.title} delay={i * 80}>
+              <ScrollReveal key={cap.title} delay={i * 100} scale blur>
                 <GlowingCard className="gradient-border h-full border border-white/8 bg-white/[0.03] p-7 backdrop-blur hover-lift">
                   <div className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${colorMap[cap.color]}`}>
                     <cap.icon size={24} />
                   </div>
-                  <h3 className="mt-5 text-xl font-bold text-white">
+                  <h3 className="mt-5 text-xl font-bold text-white animated-underline">
                     {cap.title}
                   </h3>
                   <p className="mt-3 text-sm leading-7 text-slate-400">
@@ -209,9 +211,11 @@ export default async function HomePage() {
       {/* ═══ OUR PROCESS ═══ */}
       <section className="relative overflow-hidden border-y border-white/5 bg-[linear-gradient(180deg,#020617_0%,#0c1222_50%,#020617_100%)] py-28">
         <div className="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/5 blur-[120px]" />
+        <div className="absolute right-10 top-10 h-3 w-3 rounded-full bg-emerald-400/40 animate-pulse-ring" />
+        <div className="absolute left-[20%] bottom-16 h-2 w-2 rounded-full bg-emerald-400/30 animate-float-gentle" />
 
         <div className="relative mx-auto max-w-7xl px-6">
-          <ScrollReveal>
+          <ScrollReveal blur>
             <SectionTitle
               eyebrow="How We Work"
               title="From Idea to Launch in Four Steps"
@@ -222,17 +226,17 @@ export default async function HomePage() {
 
           <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             {process.map((step, i) => (
-              <ScrollReveal key={step.step} delay={i * 120}>
+              <ScrollReveal key={step.step} delay={i * 150} direction={i % 2 === 0 ? "up" : "down"} scale blur>
                 <div className={`group relative h-full rounded-2xl border border-white/8 bg-white/[0.03] p-7 transition-all duration-500 hover:border-emerald-500/30 hover:bg-white/[0.06] ${i < 3 ? "process-connector" : ""}`}>
                   <div className="flex items-center justify-between">
-                    <span className="text-4xl font-black text-emerald-500/20 transition-colors group-hover:text-emerald-500/40">
+                    <span className="text-4xl font-black text-emerald-500/20 transition-all duration-500 group-hover:text-emerald-500/40 group-hover:scale-110">
                       {step.step}
                     </span>
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 transition-colors group-hover:bg-emerald-500/20">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 transition-all duration-500 group-hover:bg-emerald-500/20 group-hover:rotate-6 group-hover:scale-110">
                       <step.icon size={22} className="text-emerald-400" />
                     </div>
                   </div>
-                  <h3 className="mt-5 text-lg font-bold text-white">
+                  <h3 className="mt-5 text-lg font-bold text-white animated-underline">
                     {step.title}
                   </h3>
                   <p className="mt-3 text-sm leading-7 text-slate-400">
@@ -246,9 +250,10 @@ export default async function HomePage() {
       </section>
 
       {/* ═══ SERVICES FROM DB ═══ */}
-      <section className="bg-slate-950 py-28">
-        <div className="mx-auto max-w-7xl px-6">
-          <ScrollReveal>
+      <section className="relative bg-slate-950 py-28">
+        <div className="absolute left-0 top-1/3 h-80 w-80 rounded-full bg-emerald-500/3 blur-[120px] animate-float-slow" />
+        <div className="relative mx-auto max-w-7xl px-6">
+          <ScrollReveal blur>
             <SectionTitle
               eyebrow="Our Services"
               title="Services That Drive Growth"
@@ -260,7 +265,7 @@ export default async function HomePage() {
           <div className="mt-12 grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {services && services.length > 0 ? (
               services.slice(0, 6).map((service, i) => (
-                <ScrollReveal key={service._id} delay={i * 100}>
+                <ScrollReveal key={service._id} delay={i * 120} scale blur>
                   <div className="gradient-border group flex h-full flex-col overflow-hidden rounded-2xl border border-white/8 bg-white/[0.03] shadow-xl transition-all duration-500 hover:-translate-y-2 hover:border-emerald-500/20 hover:shadow-emerald-500/10">
                     <div className="relative h-[220px] overflow-hidden">
                       {service.video ? (
@@ -323,10 +328,10 @@ export default async function HomePage() {
           </div>
 
           {services.length > 0 && (
-            <ScrollReveal className="mt-14 text-center">
+            <ScrollReveal className="mt-14 text-center" blur>
               <Link
                 href="/services"
-                className="group inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-7 py-3.5 font-semibold text-emerald-400 transition hover:bg-emerald-500/20"
+                className="group inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-7 py-3.5 font-semibold text-emerald-400 transition hover:bg-emerald-500/20 animate-shine-sweep"
               >
                 View All Services
                 <ArrowRight
@@ -352,8 +357,8 @@ export default async function HomePage() {
             { value: 99, suffix: "%", icon: Award, label: "Uptime Guarantee" },
             { value: 5, suffix: "+", icon: Star, label: "Years in Business" },
           ].map((stat, i) => (
-            <ScrollReveal key={stat.label} delay={i * 120}>
-              <div className="group rounded-2xl border border-white/5 bg-white/[0.02] p-6 text-center transition-all duration-500 hover:border-emerald-500/20 hover:bg-white/[0.04]">
+            <ScrollReveal key={stat.label} delay={i * 150} scale blur>
+              <div className="group rounded-2xl border border-white/5 bg-white/[0.02] p-6 text-center transition-all duration-500 hover:border-emerald-500/20 hover:bg-white/[0.04] hover:-translate-y-1">
                 <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 transition group-hover:bg-emerald-500/20">
                   <stat.icon size={22} className="text-emerald-400" />
                 </div>
@@ -374,9 +379,10 @@ export default async function HomePage() {
       </section>
 
       {/* ═══ PROJECTS ═══ */}
-      <section className="bg-slate-950 py-28">
-        <div className="mx-auto max-w-7xl px-6">
-          <ScrollReveal>
+      <section className="relative bg-slate-950 py-28">
+        <div className="absolute right-0 top-1/4 h-72 w-72 rounded-full bg-violet-500/3 blur-[100px] animate-float-gentle" />
+        <div className="relative mx-auto max-w-7xl px-6">
+          <ScrollReveal blur>
             <SectionTitle
               eyebrow="Portfolio"
               title="Projects We've Delivered"
@@ -388,7 +394,7 @@ export default async function HomePage() {
           <div className="mt-12 grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {projects.length > 0 ? (
               projects.slice(0, 6).map((project, i) => (
-                <ScrollReveal key={project._id} delay={i * 100}>
+                <ScrollReveal key={project._id} delay={i * 120} scale blur>
                   <div className="gradient-border group flex h-full flex-col overflow-hidden rounded-2xl border border-white/8 bg-white/[0.03] transition duration-300 motion-safe:hover:-translate-y-2 hover:border-emerald-400/40 focus-within:border-emerald-400/40 hover:shadow-xl hover:shadow-emerald-500/10">
                     <div className="relative h-[200px] overflow-hidden">
                       {project.video ? (
@@ -477,10 +483,11 @@ export default async function HomePage() {
       </section>
 
       {/* ═══ WHY CHOOSE US ═══ */}
-      <section className="bg-slate-950 py-28">
+      <section className="relative bg-slate-950 py-28">
+        <div className="absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent" />
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
-            <ScrollReveal direction="left">
+            <ScrollReveal direction="left" blur>
               <div>
                 <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -532,9 +539,9 @@ export default async function HomePage() {
               </div>
             </ScrollReveal>
 
-            <ScrollReveal direction="right" delay={200}>
+            <ScrollReveal direction="right" delay={200} scale blur>
               <div className="relative">
-                <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-emerald-500/10 to-yellow-500/5 blur-2xl" />
+                <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-emerald-500/10 to-yellow-500/5 blur-2xl animate-float-gentle" />
                 <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03]">
                   <Image
                     src="/images/project1.webp"
@@ -564,7 +571,7 @@ export default async function HomePage() {
 
       {/* ═══ CTA ═══ */}
       <section className="bg-slate-950 px-6 py-28">
-        <ScrollReveal>
+        <ScrollReveal scale blur>
           <div className="gradient-border mx-auto max-w-5xl overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-emerald-900/40 via-slate-900 to-slate-950 p-10 text-center shadow-2xl shadow-emerald-500/10 md:p-16">
             <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300">
               Get Started Today

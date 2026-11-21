@@ -172,6 +172,123 @@ body {
   }
 }
 
+@keyframes blur-in {
+  0% {
+    opacity: 0;
+    filter: blur(12px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes text-slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(100%) rotateX(-10deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg);
+  }
+}
+
+@keyframes shine-sweep {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes scale-bounce {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  60% {
+    transform: scale(1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes underline-grow {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes fade-in-up-stagger {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes card-entrance {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(-6px) translateX(3px);
+  }
+  50% {
+    transform: translateY(-2px) translateX(-2px);
+  }
+  75% {
+    transform: translateY(-8px) translateX(1px);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+@keyframes rotate-slow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /* ═══ Staggered hero entrance — real cascade ═══ */
 
 .hero-fade-up {
@@ -236,6 +353,31 @@ body {
 }
 .animate-border-glow {
   animation: border-glow 3s ease-in-out infinite;
+}
+.animate-blur-in {
+  animation: blur-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.animate-shine-sweep {
+  background: linear-gradient(
+    110deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.08) 37%,
+    transparent 50%
+  );
+  background-size: 200% 100%;
+  animation: shine-sweep 4s ease-in-out infinite;
+}
+.animate-scale-bounce {
+  animation: scale-bounce 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.animate-float-gentle {
+  animation: float-gentle 10s ease-in-out infinite;
+}
+.animate-pulse-ring {
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+.animate-rotate-slow {
+  animation: rotate-slow 30s linear infinite;
 }
 
 /* ═══ Glowing card effect ═══ */
@@ -365,6 +507,78 @@ body {
     0 0 30px rgba(16, 185, 129, 0.08);
 }
 
+/* ═══ Animated underline ═══ */
+
+.animated-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.animated-underline::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #10b981, #34d399, #10b981);
+  background-size: 200% 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 1px;
+}
+
+.animated-underline:hover::after,
+.group:hover .animated-underline::after {
+  transform: scaleX(1);
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* ═══ Text shimmer on hover ═══ */
+
+.text-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.text-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.12) 35%,
+    transparent 50%
+  );
+  background-size: 200% 100%;
+  background-position: -200% 0;
+  pointer-events: none;
+  transition: none;
+}
+
+.text-shimmer:hover::after,
+.group:hover .text-shimmer::after {
+  animation: shine-sweep 1.2s ease forwards;
+}
+
+/* ═══ Stagger children utility ═══ */
+
+.stagger-children > * {
+  opacity: 0;
+  animation: fade-in-up-stagger 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(7) { animation-delay: 0.35s; }
+.stagger-children > *:nth-child(8) { animation-delay: 0.4s; }
+
 /* ═══ Process step connector line ═══ */
 
 .process-connector {
@@ -442,7 +656,18 @@ body {
   .animate-marquee,
   .animate-marquee-reverse,
   .animate-float-slow,
-  .animate-border-glow {
+  .animate-border-glow,
+  .animate-blur-in,
+  .animate-shine-sweep,
+  .animate-scale-bounce,
+  .animate-float-gentle,
+  .animate-pulse-ring,
+  .animate-rotate-slow {
+    animation: none;
+  }
+
+  .stagger-children > * {
+    opacity: 1;
     animation: none;
   }
 
@@ -450,7 +675,9 @@ body {
     transform: none;
   }
 
-  .gradient-border::before {
+  .gradient-border::before,
+  .animated-underline::after,
+  .text-shimmer::after {
     display: none;
   }
 }

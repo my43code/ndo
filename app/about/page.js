@@ -10,6 +10,7 @@ import {
   Eye,
   Heart,
 } from "lucide-react";
+import AnimatedText from "@/components/AnimatedText";
 import SectionTitle from "@/components/SectionTitle";
 import ServiceCard from "@/components/ServiceCard";
 import PostCard from "@/components/PostCard";
@@ -271,8 +272,8 @@ export default async function AboutPage() {
               detail: "Published stories and announcements.",
             },
           ].map((stat, i) => (
-            <ScrollReveal key={stat.label} delay={i * 100}>
-              <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-5 backdrop-blur">
+            <ScrollReveal key={stat.label} delay={i * 120} scale blur>
+              <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-5 backdrop-blur transition-all duration-500 hover:-translate-y-1 hover:border-emerald-500/20">
                 <div className="flex items-center gap-3">
                   <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-500/15">
                     <stat.icon size={18} className="text-emerald-400" />
@@ -296,8 +297,9 @@ export default async function AboutPage() {
       </section>
 
       {/* ═══ STORY + MISSION/VISION ═══ */}
-      <section className="mx-auto max-w-7xl px-6 py-20">
-        <ScrollReveal>
+      <section className="relative mx-auto max-w-7xl px-6 py-20">
+        <div className="absolute -left-20 top-20 h-60 w-60 rounded-full bg-emerald-500/4 blur-[100px] animate-float-gentle" />
+        <ScrollReveal blur>
           <SectionTitle
             eyebrow="Story"
             title="Our Journey & Operating Rhythm"
@@ -307,7 +309,7 @@ export default async function AboutPage() {
         </ScrollReveal>
 
         <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
-          <ScrollReveal>
+          <ScrollReveal direction="left" blur>
             <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-8">
               <p className="text-xs font-semibold uppercase tracking-[0.32em] text-emerald-400">
                 Short history
@@ -332,8 +334,8 @@ export default async function AboutPage() {
           </ScrollReveal>
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <ScrollReveal delay={100}>
-              <div className="h-full rounded-2xl border border-white/8 bg-gradient-to-br from-emerald-500/10 to-transparent p-7">
+            <ScrollReveal delay={100} direction="right" scale blur>
+              <div className="h-full rounded-2xl border border-white/8 bg-gradient-to-br from-emerald-500/10 to-transparent p-7 transition-all duration-500 hover:border-emerald-500/20 hover:-translate-y-1">
                 <Target size={24} className="text-emerald-400" />
                 <h3 className="mt-4 text-sm font-semibold uppercase tracking-[0.32em] text-emerald-400">
                   Mission
@@ -344,8 +346,8 @@ export default async function AboutPage() {
                 </p>
               </div>
             </ScrollReveal>
-            <ScrollReveal delay={200}>
-              <div className="h-full rounded-2xl border border-white/8 bg-gradient-to-br from-sky-500/10 to-transparent p-7">
+            <ScrollReveal delay={200} direction="right" scale blur>
+              <div className="h-full rounded-2xl border border-white/8 bg-gradient-to-br from-sky-500/10 to-transparent p-7 transition-all duration-500 hover:border-sky-500/20 hover:-translate-y-1">
                 <Eye size={24} className="text-sky-400" />
                 <h3 className="mt-4 text-sm font-semibold uppercase tracking-[0.32em] text-sky-400">
                   Vision
@@ -356,7 +358,7 @@ export default async function AboutPage() {
                 </p>
               </div>
             </ScrollReveal>
-            <ScrollReveal delay={300} className="sm:col-span-2">
+            <ScrollReveal delay={300} className="sm:col-span-2" scale blur>
               <div className="rounded-2xl border border-white/8 bg-gradient-to-r from-slate-800 to-slate-900 p-7">
                 <Heart size={20} className="text-emerald-400" />
                 <p className="mt-3 text-xs font-semibold uppercase tracking-[0.32em] text-emerald-300">
@@ -385,9 +387,10 @@ export default async function AboutPage() {
 
       {/* ═══ TEAM ═══ */}
       {about.team.length > 0 ? (
-        <section id="team" className="scroll-mt-24 border-t border-white/5 px-6 py-20">
-          <div className="mx-auto max-w-7xl">
-            <ScrollReveal>
+        <section id="team" className="relative scroll-mt-24 border-t border-white/5 px-6 py-20">
+          <div className="absolute right-0 top-20 h-56 w-56 rounded-full bg-emerald-500/4 blur-[80px] animate-float-slow" />
+          <div className="relative mx-auto max-w-7xl">
+            <ScrollReveal blur>
               <SectionTitle
                 eyebrow="People"
                 title="Leadership & Team"
@@ -396,7 +399,7 @@ export default async function AboutPage() {
             </ScrollReveal>
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
               {about.team.map((member, i) => (
-                <ScrollReveal key={member._id || member.name} delay={i * 100}>
+                <ScrollReveal key={member._id || member.name} delay={i * 150} scale blur>
                   <TeamCard member={member} />
                 </ScrollReveal>
               ))}
@@ -408,7 +411,7 @@ export default async function AboutPage() {
       {/* ═══ SERVICES ═══ */}
       <section className="border-t border-white/5 px-6 py-20">
         <div className="mx-auto max-w-7xl">
-          <ScrollReveal>
+          <ScrollReveal blur>
             <SectionTitle
               eyebrow="Services"
               title="What We Offer"
@@ -418,7 +421,7 @@ export default async function AboutPage() {
           {serviceShowcase.length > 0 ? (
             <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
               {serviceShowcase.map((service, i) => (
-                <ScrollReveal key={service._id} delay={i * 100}>
+                <ScrollReveal key={service._id} delay={i * 120} scale blur>
                   <ServiceCard service={service} />
                 </ScrollReveal>
               ))}
@@ -434,7 +437,7 @@ export default async function AboutPage() {
       {/* ═══ PROJECTS ═══ */}
       <section className="border-t border-white/5 px-6 py-20">
         <div className="mx-auto max-w-7xl">
-          <ScrollReveal>
+          <ScrollReveal blur>
             <SectionTitle
               eyebrow="Projects"
               title="Selected Work"
@@ -446,7 +449,9 @@ export default async function AboutPage() {
               {projectShowcase.map((project, i) => (
                 <ScrollReveal
                   key={project._id || project.title}
-                  delay={i * 100}
+                  delay={i * 120}
+                  scale
+                  blur
                 >
                   <ProjectCard project={project} />
                 </ScrollReveal>
@@ -463,7 +468,7 @@ export default async function AboutPage() {
       {/* ═══ UPDATES ═══ */}
       <section className="border-t border-white/5 px-6 py-20">
         <div className="mx-auto max-w-7xl">
-          <ScrollReveal>
+          <ScrollReveal blur>
             <SectionTitle
               eyebrow="Updates"
               title="Latest News & Stories"
@@ -473,7 +478,7 @@ export default async function AboutPage() {
           {postShowcase.length > 0 ? (
             <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
               {postShowcase.map((post, i) => (
-                <ScrollReveal key={post._id} delay={i * 100}>
+                <ScrollReveal key={post._id} delay={i * 120} scale blur>
                   <PostCard post={post} />
                 </ScrollReveal>
               ))}
@@ -488,7 +493,7 @@ export default async function AboutPage() {
 
       {/* ═══ CTA ═══ */}
       <section className="px-6 py-20">
-        <ScrollReveal>
+        <ScrollReveal scale blur>
           <div className="mx-auto max-w-5xl overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-r from-emerald-900/40 via-slate-900 to-slate-950 p-8 text-center shadow-2xl shadow-emerald-500/10 md:p-12">
             <h2 className="text-3xl font-black tracking-tight text-white md:text-5xl">
               Need a polished digital{" "}

@@ -61,8 +61,9 @@ export default async function UpdatesPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-16">
-        <ScrollReveal>
+      <section className="relative mx-auto max-w-7xl px-6 py-16">
+        <div className="absolute -left-16 top-20 h-56 w-56 rounded-full bg-emerald-500/4 blur-[80px] animate-float-gentle" />
+        <ScrollReveal blur>
           <SectionTitle
             eyebrow="Editorial"
             title="Published Updates"
@@ -78,7 +79,7 @@ export default async function UpdatesPage() {
         ) : (
           <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
             {posts.map((post, i) => (
-              <ScrollReveal key={post._id} delay={i * 100}>
+              <ScrollReveal key={post._id} delay={i * 120} scale blur>
                 <PostCard post={post} />
               </ScrollReveal>
             ))}

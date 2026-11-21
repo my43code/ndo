@@ -44,7 +44,7 @@ export default function PostCard({ post }) {
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
             {postedAt}
           </p>
-          <h3 className="mt-2 text-xl font-bold tracking-tight text-white md:text-2xl">
+          <h3 className="mt-2 text-xl font-bold tracking-tight text-white md:text-2xl animated-underline">
             {post.title}
           </h3>
           <p className="mt-3 text-sm leading-7 text-slate-400">
